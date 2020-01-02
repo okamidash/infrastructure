@@ -1,0 +1,10 @@
+---
+- name: Adding user {{ user.key }} to group
+  user:
+    name: "{{ user.key }}"
+    groups: "{{ group }}"
+    append: yes
+  with_items: "{{ user.value.groups }}"
+  loop_control:
+    loop_var: group
+

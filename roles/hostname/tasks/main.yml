@@ -1,0 +1,14 @@
+---
+
+- name: "Set hostname"
+  hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: "Set hostname in /etc/hosts"
+  template:
+    src: hosts.j2
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+

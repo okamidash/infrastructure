@@ -1,0 +1,17 @@
+---
+
+- name: Install SSH Public key for Okami
+  become: yes
+  authorized_key:
+    user: "{{ item }}"
+    state: present
+    key: https://github.com/okamidash.keys
+  with_items:
+    - root
+    - okami
+
+- name: Update all the packages
+  dnf:
+    name: "*"
+    state: latest
+

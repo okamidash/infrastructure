@@ -1,0 +1,11 @@
+---
+- name: "Download DNF Automatic package"
+  dnf:
+    name: dnf-automatic
+    state: present
+
+- name: "Enable DNF Automatic"
+  service:
+    name: dnf-automatic-download.timer
+    state: started
+    enabled: yes

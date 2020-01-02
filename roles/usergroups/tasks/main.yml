@@ -1,0 +1,14 @@
+---
+
+- name: "Add groups specified in group_vars/all.yml"
+  group:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ system_groups }}"
+
+- name: "Add users to groups"
+  include_tasks: groups.yml
+  with_dict: "{{ system_users }}"
+  loop_control:
+    loop_var: user
+

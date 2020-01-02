@@ -1,0 +1,34 @@
+---
+
+- set_fact: eth_interface="{{ ansible_default_ipv4.interface }}"
+- name: Setup Bridges
+  command: "nmcli con add type bridge con-name {{ item.key }} ifname {{ item.key }} stp no ipv4.method disabled ipv6.method ignore"
+  when: item.value.vlan_id is defined
+  with_dict:
+    - "{{ system_networks }}"
+
+- name: Attach VLAN to Bridge
+  command: "nmcli con add type vlan con-name {{ item.key }}_vlan ifname {{ item.key }}_vlan dev {{ eth_interface }} id {{ item.value.vlan_id }} master {{ item.key }} slave-type bridge"
+  when: item.value.vlan_id is defined
+  with_dict:
+    - "{{ system_networks }}"
+
+- name: Assign Static IP for Subnets
+  include_tasks: static.yml
+  when: item.value | ipaddr
+  with_dict:
+    - "{{ network_addresses }}"
+
+- name: Assign DHCP settings for Subnets
+  include_tasks: auto.yml
+  when:
+    - not item.value | ipaddr
+    - item.value == "dhcp"
+  with_dict:
+    - "{{ network_addresses }}"
+
+
+# Stage 1
+# nmcli con add type bridge con-name server ifname server stp no ipv4.method disabled ipv6.method ignore
+# Stage 2
+# nmcli connection add type vlan con-name server_vlan ifname server_vlan dev enp130s0 id 2 master server slave-type bridge

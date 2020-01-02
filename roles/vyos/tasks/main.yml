@@ -1,0 +1,19 @@
+#- name: "show config"
+#  vyos_command:
+#    commands:
+#      - configure
+#      - "set interfaces ethernet {{ item.key }} description {{ item.value }}"
+#      - commit
+#      - save
+#  with_dict:
+#    - "{{ network_mapping }}"
+
+#- include_tasks: addresses.yml
+#  with_dict:
+#    - "{{ network_mapping }}"
+
+- include_tasks: dhcpd.yml
+  with_dict:
+    - "{{ network_mapping }}"
+  loop_control:
+    loop_var: network

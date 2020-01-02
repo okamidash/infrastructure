@@ -1,0 +1,45 @@
+---
+
+- name: "Remove Docker packages"
+  dnf:
+    name:
+      - docker
+      - docker-client
+      - docker-client-latest
+      - docker-common
+      - docker-latest
+      - docker-latest-logrotate
+      - docker-logrotate
+      - docker-selinux
+      - docker-engine-selinux
+      - docker-engine
+    state: absent
+
+- name: "Ensure dnf-plugins-core is present"
+  dnf:
+    name: dnf-plugins-core
+    state: present
+
+- name: "Add Docker-CE repo"
+  yum_repository:
+    name: docker-ce-stable
+    description: Docker CE Stable - $basearch
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: https://download.docker.com/linux/fedora/gpg
+    baseurl: https://download.docker.com/linux/fedora/$releasever/$basearch/stable
+
+- name: "Download Docker"
+  dnf:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: present
+
+- name: "Enable and start Docker service"
+  service:
+    name: docker
+    state: started
+    enabled: yes
+

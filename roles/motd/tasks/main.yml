@@ -1,0 +1,23 @@
+---
+- name: Make sure relevant packages are installed
+  dnf:
+    name:
+      - git
+      - figlet
+      - lolcat
+    state: present
+
+- name: "Clone MOTD Repo"
+  git:
+    repo: 'https://github.com/okamidash/motdshell.git'
+    dest: /usr/local/bin/motdshell
+
+- name: "Make sure file is executable"
+  file: dest=/usr/local/bin/motdshell/dynmotd mode=a+x
+
+- name: "Enter line into /etc/profile"
+  lineinfile:
+    path: /etc/profile
+    state: present
+    regexp: '^\/usr\/local\/bin\/motdshell\/dynmotd'
+    line: /usr/local/bin/motdshell/dynmotd

@@ -1,0 +1,59 @@
+---
+- name: "Gather facts again"
+  setup:
+
+- set_fact: volume_group="{{ ansible_lvm.lvs.virt.vg }}"
+- set_fact: default_storage_path="/storage/loc/{{ volume_group }}/virt/"
+- name: "Create images dir"
+  file:
+    path: /storage/loc/{{ volume_group }}/virt/{{ item }}
+    state: directory
+    owner: qemu
+    group: qemu
+    mode: '0755'
+  with_items:
+    - base
+    - images
+
+- virt_pool:
+    command: info
+  register: pool_info
+
+- debug: msg="{{ item.key }}"
+  when: item.key == "default"
+  with_dict:
+    - "{{ pool_info.pools }}"
+
+- name: "Stop all pools"
+  virt_pool:
+    command: destroy
+    name: "{{ item.key }}"
+  when: item.value.state == "active"
+  with_dict:
+    - "{{ pool_info.pools }}"
+
+- name: "Undefine All pools"
+  virt_pool:
+    command: undefine
+    name: "{{ item.key }}"
+  with_dict:
+    - "{{ pool_info.pools }}"
+
+- name: "Define new default pool"
+  virt_pool:
+    command: define
+    autostart: yes
+    name: "{{ item.name }}"
+    xml: "<pool type='dir'><name>{{ item.name }}</name><target><path>{{ default_storage_path }}/{{ item.path }}</path></target></pool>"
+  with_items:
+    - { name: 'default', path: 'images' }
+    - { name: 'base', path: 'base' }
+
+- name: "Make sure pools are started"
+  virt_pool:
+    command: start
+    state: active
+    name: "{{ item }}"
+  with_items:
+    - default
+    - base

@@ -1,0 +1,20 @@
+---
+- set_fact: net_name="{{ network.value }}" address="{{ network_addresses[ network.value ] }}"
+- set_fact: domain_name="{{ system_networks[ network.value ].subdomain }}.{{ domain }}"
+- set_fact: full_address="{{ address }}/24" dns_server="{{ dns_server }}" 
+- set_fact: subnet="{{ full_address | ipaddr('network') }}" 
+- set_fact: network_start="10.0.{{ system_networks[ network.value ].gateway.split('.')[2] }}.{{ dhcp_start }}"
+- set_fact: network_end="10.0.{{ system_networks[ network.value ].gateway.split('.')[2] }}.{{ dhcp_end }}"
+- set_fact: precmd="set service dhcp-server shared-network-name {{ net_name }} subnet {{ subnet }}/24 "
+- name: "Set DHCP Server up"
+  vyos_command:
+    commands:
+      - configure
+      - "{{ precmd }}default-router '{{ address }}'"
+      - "{{ precmd }} dns-server '{{ dns_server }}'"
+      - "{{ precmd }} domain-name '{{ domain_name }}'"
+      - "{{ precmd }} lease '86400'"
+      - "{{ precmd }} range 0 start '{{ network_start }}'"
+      - "{{ precmd }} range 0 stop '{{ network_end }}'"
+      - commit
+      - save

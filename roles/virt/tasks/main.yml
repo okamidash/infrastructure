@@ -1,0 +1,58 @@
+---
+
+- name: Install Virtualization packags
+  dnf:
+    name: '@virtualization'
+    state: present
+
+- name: Install cloud-utils
+  dnf:
+    name: clout-utils
+    state: present
+
+- name: Install LXML
+  dnf:
+    name: python3-lxml
+    state: present
+
+- name: Set Sysctl Variable
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: Enable and start Libvirt
+  service:
+    name: libvirtd
+    state: started
+    enabled: yes
+
+- name: Stop Default Network
+  virt_net:
+    command: destroy
+    name: default
+
+- name: Undefine Default Network
+  virt_net:
+    command: undefine
+    name: default
+
+- name: "Define Libvirt Networks"
+  include: define_networks.yml
+  with_dict:
+    - "{{ virt_networks }}"
+
+- virt_net:
+    command: info
+  register: virt_networks
+
+- virt_net:
+    name: "{{ item.key }}"
+    autostart: yes
+    state: active
+    command: start
+  with_dict:
+    - "{{ virt_networks.networks }}"
+

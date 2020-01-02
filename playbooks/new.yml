@@ -1,0 +1,7 @@
+---
+
+- name: "Setup Systems"
+  hosts: hypervisors
+  roles:
+    - role: network
+    - role: virt

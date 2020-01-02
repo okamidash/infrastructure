@@ -1,0 +1,15 @@
+---
+
+
+
+- name: "Setup Systems"
+  hosts: hypervisors
+  tasks:
+  - name: get device name
+    set_fact:
+      device_name: "{{ item.key }}"
+      vm_disk_speed: "blaze"
+    with_dict: "{{ ansible_devices }}"
+    when: "item.key.startswith('nvme')"
+  #roles:
+  #  - role: network
