@@ -1,4 +1,6 @@
 ---
+- include: delete_all.yml
+  when: action == 'reinit'
 
 - set_fact: eth_interface="{{ ansible_default_ipv4.interface }}"
 - name: Setup Bridges
@@ -15,7 +17,9 @@
 
 - name: Assign Static IP for Subnets
   include_tasks: static.yml
-  when: item.value | ipaddr
+  when:
+    - item.value | ipaddr
+    - system_networks[ item.key ].vlan_id is defined
   with_dict:
     - "{{ network_addresses }}"
 

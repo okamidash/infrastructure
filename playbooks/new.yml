@@ -3,5 +3,5 @@
 - name: "Setup Systems"
   hosts: hypervisors
   roles:
-    - role: network
+#    - { role: network, action: 'reinit' }
     - role: virt

@@ -6,6 +6,10 @@ dns_server: 10.0.5.2
 dhcp_start: 50
 dhcp_end: 220
 system_networks:
+  server:
+      gateway: 10.0.2.1
+      vlan_id: 2
+      subdomain: srv
   virtual:
       gateway: 10.0.4.1
       vlan_id: 4
@@ -31,8 +35,8 @@ system_networks:
       vlan_id: 10
       subdomain: mgmt
   out:
-      gateway: 10.0.0.1
-      subdomain: dhcp
+     gateway: 10.0.0.1
+     subdomain: dhcp
   untagged:
       gateway: 10.0.20.1
       subdomain: untag

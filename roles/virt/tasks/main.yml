@@ -7,7 +7,7 @@
 
 - name: Install cloud-utils
   dnf:
-    name: clout-utils
+    name: cloud-utils
     state: present
 
 - name: Install LXML
@@ -29,15 +29,14 @@
     state: started
     enabled: yes
 
-- name: Stop Default Network
+- name: Remove all networks
   virt_net:
-    command: destroy
-    name: default
+    command: info
+  register: curr_vm_nets
 
-- name: Undefine Default Network
-  virt_net:
-    command: undefine
-    name: default
+- include: undefine_networks.yml
+  with_dict:
+    - "{{ curr_vm_nets.networks }}"
 
 - name: "Define Libvirt Networks"
   include: define_networks.yml
@@ -50,9 +49,13 @@
 
 - virt_net:
     name: "{{ item.key }}"
-    autostart: yes
     state: active
     command: start
   with_dict:
     - "{{ virt_networks.networks }}"
 
+- virt_net:
+    name: "{{ item.key }}"
+    autostart: yes
+  with_dict:
+    - "{{ virt_networks.networks }}"

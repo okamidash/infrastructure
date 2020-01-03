@@ -1,0 +1,6 @@
+---
+- name: Delete interfaces before remaking them
+  command: nmcli con del {{ item.key }} {{ item.key }}_vlan
+  when: item.value.vlan_id is defined
+  with_dict:
+    - "{{ system_networks }}"

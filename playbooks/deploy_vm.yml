@@ -1,6 +1,6 @@
 ---
 - name: "Setup VM"
-  hosts: 
+  hosts: virtual_machines
   gather_facts: no
   roles:
     - role: vm_deployment
