@@ -8,7 +8,6 @@ dhcp_end: 220
 system_networks:
   server:
       gateway: 10.0.2.1
-      vlan_id: 2
       subdomain: srv
   virtual:
       gateway: 10.0.4.1
