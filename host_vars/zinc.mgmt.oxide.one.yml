@@ -1,12 +1,11 @@
 ---
 ansible_user: 'vyos'
-ansible_host: 10.0.20.1
+ansible_host: 10.0.0.249
 ansible_connection: network_cli
 ansible_network_os: vyos
 
 network_addresses:
   out: dhcp
-  untagged: 10.0.20.1
   server:   10.0.2.1
   virtual:  10.0.4.1
   utility:  10.0.5.1
@@ -16,12 +15,11 @@ network_addresses:
   management: 10.0.10.1
 
 network_mapping:
-  eth0: 'virtual'
-#  eth1: 'untagged'
-  eth2: 'utility'
-  eth3: 'server'
-#  eth4: 'out'
-  eth5: 'wireguard'
-  eth6: 'kube'
+  eth0: 'out'
+  eth1: 'server'
+  eth2: 'virtual'
+  eth3: 'utility'
+  eth4: 'zoned'
+  eth5: 'kube'
+  eth6: 'wireguard'
   eth7: 'management'
-  eth8: 'zoned'

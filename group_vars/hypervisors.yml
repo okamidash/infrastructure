@@ -1,3 +1,3 @@
 ---
-virt_storage_dir: "/srv/hello"
 single_disk: "False"
+vm_disk_speed: "ember"

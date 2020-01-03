@@ -10,7 +10,9 @@
   vyos_command:
     commands:
       - configure
-      - "{{ precmd }}default-router '{{ address }}'"
+      - "set interface ethernet {{ network.key }} address {{ address }}/24"
+      - "set interface ethernet {{ network.key }} description {{ net_name }}"
+      - "{{ precmd }} default-router '{{ address }}'"
       - "{{ precmd }} dns-server '{{ dns_server }}'"
       - "{{ precmd }} domain-name '{{ domain_name }}'"
       - "{{ precmd }} lease '86400'"

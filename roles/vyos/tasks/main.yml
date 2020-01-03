@@ -15,5 +15,6 @@
 - include_tasks: dhcpd.yml
   with_dict:
     - "{{ network_mapping }}"
+  when: network.value != 'out'
   loop_control:
     loop_var: network

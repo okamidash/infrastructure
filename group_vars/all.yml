@@ -31,14 +31,10 @@ system_networks:
       subdomain: wg
   management:
       gateway: 10.0.10.1
-      vlan_id: 10
       subdomain: mgmt
   out:
      gateway: 10.0.0.1
      subdomain: dhcp
-  untagged:
-      gateway: 10.0.20.1
-      subdomain: untag
 
 virt_networks:
   virtual:
@@ -46,7 +42,6 @@ virt_networks:
   zoned:
   kube:
   wireguard:
-  management:
 
 #### User Related Stuff
 

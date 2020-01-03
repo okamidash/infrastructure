@@ -3,19 +3,19 @@
 - name: "Setup Systems"
   hosts: hypervisors
   roles:
-    - role: init
-    - role: hostname
-    - role: selinux
-    - role: firewall
-    - role: sudo
-    - role: ssh
-    - role: dnf_automatic
-    - role: network
-    - role: virt
-    - role: storage_dirs
-    - role: nvme_storage
-    - role: virt_storage
-    - role: motd
-    - role: docker
+#    - role: init
+#    - role: hostname
+#    - role: selinux
+#    - role: firewall
+#    - role: sudo
+    #- role: ssh
+    #- role: dnf_automatic
+    #- { role: network, action: reinit }
+    #- role: virt
+    #- role: storage_dirs
+    #- role: nvme_storage
+    #- role: virt_storage
+    #- role: motd
+    #- role: docker
     - role: usergroups
 

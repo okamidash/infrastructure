@@ -1,8 +1,10 @@
 ---
 - include: delete_all.yml
-  when: action == 'reinit'
+  when: action is defined and action == 'reinit'
 
 - set_fact: eth_interface="{{ ansible_default_ipv4.interface }}"
+  when: eth_interface is not defined
+
 - name: Setup Bridges
   command: "nmcli con add type bridge con-name {{ item.key }} ifname {{ item.key }} stp no ipv4.method disabled ipv6.method ignore"
   when: item.value.vlan_id is defined

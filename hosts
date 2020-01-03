@@ -1,8 +1,8 @@
 [hypervisors]
-#hydrogen.srv.oxide.one
-blackbird.srv.oxide.one
-inferno.srv.oxide.one
-phoenix.srv.oxide.one
+hydrogen.srv.oxide.one
+#blackbird.srv.oxide.one
+#inferno.srv.oxide.one
+#phoenix.srv.oxide.one
 #halcyon.srv.oxide.one
 [others]
 cobra.srv.oxide.one
