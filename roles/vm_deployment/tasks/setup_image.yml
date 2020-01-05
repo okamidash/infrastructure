@@ -1,5 +1,4 @@
 ---
-
 - setup:
 - set_fact: lvm_name="{{ ansible_lvm.lvs.virt.vg }}"
 - set_fact: base_image_dir="/storage/loc/{{ lvm_name }}/virt/base" vm_dir="/storage/loc/{{ lvm_name }}/virt/images"
@@ -68,16 +67,17 @@
     path: "{{ vm_dir }}/{{ hostname }}.iso"
     state: absent
 
-- include: get_ip.yml
-  when: network_address == 'dhcp'
+#- include: get_ip.yml
+#  when: network_address == 'dhcp'
 
 - set_fact: ansible_host="{{ network_address | ipaddr('address') }}"
   when: network_address | ipaddr != False
 
-- name: Set File
-  lineinfile:
-    path: "../host_vars/{{ inventory_hostname }}.yml"
-    regexp: '^ansible_host'
-    line: "ansible_host: {{ ansible_host }}"
-  delegate_to: localhost
+#- name: Set File
+#  lineinfile:
+#    path: "../host_vars/{{ inventory_hostname }}.yml"
+#    regexp: '^ansible_host'
+#    line: "ansible_host: {{ ansible_host }}"
+#    create: yes
+#  delegate_to: localhost
 

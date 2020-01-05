@@ -1,0 +1,19 @@
+---
+- set_fact: short_name="{{ item.value.host.split('.')[0] }}"
+- set_fact: filepath="/storage/net/nfs/{{ short_name }}/{{ item.key }}{{ item.value.path }}"
+- debug: msg="{{ short_name }} {{ filepath }}"
+- name: Create a directory if it does not exist
+  ## Example /storage/net/nfs/proton/apogee/downloads
+  file:
+    path: "{{ filepath }}"
+    state: directory
+    mode: '0755'
+
+- name: "Mount NFS Filesystems"
+  mount:
+    path: "{{ filepath }}"
+    src: "{{ item.value.host }}:/mnt/{{ item.key }}{{ item.value.path }}"
+    fstype: nfs
+    state: mounted
+    opts: "_netdev"
+

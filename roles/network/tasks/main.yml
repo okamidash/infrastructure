@@ -17,21 +17,21 @@
   with_dict:
     - "{{ system_networks }}"
 
-- name: Assign Static IP for Subnets
-  include_tasks: static.yml
-  when:
-    - item.value | ipaddr
-    - system_networks[ item.key ].vlan_id is defined
-  with_dict:
-    - "{{ network_addresses }}"
+#- name: Assign Static IP for Subnets
+#  include_tasks: static.yml
+#  when:
+#    - item.value | ipaddr
+#    - system_networks[ item.key ].vlan_id is defined
+#  with_dict:
+#    - "{{ network_addresses }}"
 
-- name: Assign DHCP settings for Subnets
-  include_tasks: auto.yml
-  when:
-    - not item.value | ipaddr
-    - item.value == "dhcp"
-  with_dict:
-    - "{{ network_addresses }}"
+#- name: Assign DHCP settings for Subnets
+#  include_tasks: auto.yml
+#  when:
+#    - not item.value | ipaddr
+#    - item.value == "dhcp"
+#  with_dict:
+#    - "{{ network_addresses }}"
 
 
 # Stage 1

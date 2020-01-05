@@ -1,0 +1,7 @@
+- name: Copy file with owner and permissions
+  fetch:
+    src: /etc/kubernetes/admin.conf
+    dest: /tmp/kubeconf.conf
+    flat: yes
+  become: yes
+

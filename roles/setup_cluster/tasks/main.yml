@@ -1,0 +1,11 @@
+- include: create.yml
+  when: action == 'create'
+
+- include: token.yml
+  when: action == 'token'
+
+- include: kubeconf.yml
+  when: action == 'kubeconf'
+
+- include: join.yml
+  when: action == 'join'

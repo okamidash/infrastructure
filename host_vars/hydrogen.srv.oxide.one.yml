@@ -1,7 +1,7 @@
 ---
 hostname: "hydrogen"
-ansible_host: 10.0.0.68
+ansible_host: 10.0.2.2
 single_disk: "True"
 eth_interface: enp130s0
 network_addresses:
-    virtual: 10.0.4.9
+

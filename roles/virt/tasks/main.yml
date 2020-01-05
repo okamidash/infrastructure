@@ -29,6 +29,15 @@
     state: started
     enabled: yes
 
+- name: Remove Default network
+  virt_net:
+    command: destroy
+    name: default
+
+- virt_net:
+    command: undefine
+    name: default
+
 - name: Remove all networks
   virt_net:
     command: info

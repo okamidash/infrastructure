@@ -1,4 +1,4 @@
-hypervisor_host: blackbird.srv.oxide.one
+hypervisor_host: hydrogen.srv.oxide.one
 network: utility
 network_address: 10.0.5.8/24
 dns_server: 1.1.1.1

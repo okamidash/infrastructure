@@ -1,15 +1,6 @@
 ---
-
-
-
 - name: "Setup Systems"
-  hosts: hypervisors
+  hosts: localhost
   tasks:
-  - name: get device name
-    set_fact:
-      device_name: "{{ item.key }}"
-      vm_disk_speed: "blaze"
-    with_dict: "{{ ansible_devices }}"
-    when: "item.key.startswith('nvme')"
-  #roles:
-  #  - role: network
+    - set_fact: randomhost="{{ groups['hypervisors'] | random }}"
+    - debug: msg="{{ randomhost }}"

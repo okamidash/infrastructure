@@ -1,0 +1,2 @@
+network: wireguard
+hypervisor_host: inferno.srv.oxide.one

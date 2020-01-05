@@ -1,0 +1,5 @@
+- name: Get kubeadm join token
+  command: kubeadm token create --print-join-command
+  become: yes
+  register: join_command
+

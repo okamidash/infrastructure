@@ -1,6 +1,6 @@
 ---
 - name: "Setup VM"
-  hosts: virtual_machines
+  hosts: sandbagger.vm.oxide.one
   gather_facts: no
   roles:
     - role: vm_deployment

@@ -12,9 +12,21 @@
 #  with_dict:
 #    - "{{ network_mapping }}"
 
+- include_tasks: update_dns.yml
+  when: network.value != 'out' and action == 'update_dns'
+  with_dict:
+    - "{{ network_mapping }}"
+  loop_control:
+    loop_var: network
+
 - include_tasks: dhcpd.yml
   with_dict:
     - "{{ network_mapping }}"
-  when: network.value != 'out'
+  when: network.value != 'out' and action == 'dhcpd'
   loop_control:
     loop_var: network
+
+- include: ddns.yml
+  when: action == 'ddns'
+  with_dict:
+    - "{{ system_networks }}"
