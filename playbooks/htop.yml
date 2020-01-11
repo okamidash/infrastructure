@@ -1,0 +1,6 @@
+---
+- name: "Htop"
+  hosts: hypervisors
+  tasks:
+    - name: Install Htop
+      dnf: name="htop" state=present

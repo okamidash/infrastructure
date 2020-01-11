@@ -1,7 +1,6 @@
 ---
 
 - name: "Setup Systems"
-  hosts: hypervisors
+  hosts: halcyon.srv.oxide.one
   roles:
-    - { role: network, action: 'reinit' }
-#    - role: virt
+    - role: nfs_client

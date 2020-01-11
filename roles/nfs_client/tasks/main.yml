@@ -1,4 +1,6 @@
 ---
+- name: "Make sure nfs-utils is present"
+  dnf: name="nfs-utils" state="present"
 - include: auto.yml
   with_dict:
     -  "{{ nfs_servers }}"

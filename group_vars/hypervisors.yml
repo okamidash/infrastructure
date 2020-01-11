@@ -4,7 +4,3 @@ vm_disk_speed: "ember"
 network_addresses:
   server: 'dhcp'
 
-nfs_servers:
-  apogee:
-    host: midnight.nix.oxide.one
-    path: /downloads

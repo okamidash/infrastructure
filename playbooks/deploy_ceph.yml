@@ -1,0 +1,7 @@
+---
+- name: "Setup VM"
+  hosts: ceph
+  gather_facts: no
+  roles:
+    - role: vm_deployment
+

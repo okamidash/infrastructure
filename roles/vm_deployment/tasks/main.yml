@@ -1,11 +1,9 @@
 ---
-- set_fact: hypervisor_host="{{ groups['hypervisors'] | random }}"
+- set_fact: hypervisor_host="{{ groups['hypervisors'] | random }}" undef="True"
   when: hypervisor_host is undefined
 
 - debug: msg="Hypervisor host was undefined, Deploying onto {{ hypervisor_host }}"
+  when: undef is defined
+
 - include: setup_image.yml
   delegate_to: "{{ hypervisor_host }}"
-#- name: "Wait for connection"
-#  wait_for_connection:
-#- name: "Run setup module"
-#  setup:

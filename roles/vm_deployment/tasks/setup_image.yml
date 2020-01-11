@@ -42,6 +42,15 @@
 - name: "Create ISO image for cloud-init"
   command: "cloud-localds {{ vm_dir }}/{{ hostname }}.iso {{ tmp_fpath }}/user-data {{ tmp_fpath }}/meta-data"
 
+- set_fact: vm_subdomain="{{ inventory_hostname.split('.')[1] }}"
+- set_fact: network="{{ item.key }}"
+  with_dict:
+    - "{{ system_networks }}"
+  when: vm_subdomain == item.value.subdomain
+
+- set_fact: network="default"
+  when: network == "virtual"
+
 - set_fact:
     vm_req_opts:  "--name {{ full_hostname }} --vcpus {{ cpus }} --memory {{ memory }} --network=network:{{ network }} --import"
     vm_disk_opts: "--disk '{{ vm_dir }}/{{ full_hostname }}',format=qcow2,bus=virtio --disk {{ vm_dir }}/{{ hostname }}.iso,device=cdrom"
@@ -67,17 +76,5 @@
     path: "{{ vm_dir }}/{{ hostname }}.iso"
     state: absent
 
-#- include: get_ip.yml
-#  when: network_address == 'dhcp'
-
 - set_fact: ansible_host="{{ network_address | ipaddr('address') }}"
   when: network_address | ipaddr != False
-
-#- name: Set File
-#  lineinfile:
-#    path: "../host_vars/{{ inventory_hostname }}.yml"
-#    regexp: '^ansible_host'
-#    line: "ansible_host: {{ ansible_host }}"
-#    create: yes
-#  delegate_to: localhost
-

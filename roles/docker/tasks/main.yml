@@ -35,6 +35,7 @@
       - docker-ce
       - docker-ce-cli
       - containerd.io
+      - python3-docker
     state: present
 
 - name: "Enable and start Docker service"

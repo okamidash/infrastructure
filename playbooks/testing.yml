@@ -1,6 +1,7 @@
 ---
 - name: "Setup Systems"
-  hosts: localhost
+  hosts: ceph
+  gather_facts: no
   tasks:
-    - set_fact: randomhost="{{ groups['hypervisors'] | random }}"
-    - debug: msg="{{ randomhost }}"
+
+    - debug: msg="{{ network }}"

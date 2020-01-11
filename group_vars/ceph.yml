@@ -1,7 +1,6 @@
 cpus: 4
 memory: 2049
 disk_size: 10G
-network: default
 network_address: dhcp
 base_image_name: bionic-server-cloudimg-amd64.img
 

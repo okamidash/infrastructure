@@ -3,20 +3,20 @@
   hosts: flare
   gather_facts: no
   roles:
-#    - role: vm_deployment
+    - role: vm_deployment
 
 - name: "Wait for a few seconds"
   hosts: localhost
   tasks:
- #   - name: "Sleep the thread"
- #     pause:
- #       seconds: 30
+   - name: "Sleep the thread"
+     pause:
+       seconds: 60
 
 - name: "Setup Kubernetes on master node"
   hosts: flare-master
   roles:
-#    - { role: setup_cluster, action: create }
-#    - { role: setup_cluster, action: kubeconf }
+    - { role: setup_cluster, action: create }
+    - { role: setup_cluster, action: kubeconf }
     - { role: setup_cluster, action: token }
 
 - name: "Add Kubernetes Nodes to the network"

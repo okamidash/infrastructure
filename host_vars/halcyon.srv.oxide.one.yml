@@ -1,6 +1,6 @@
 ---
 hostname: "halcyon"
-ansible_host: 10.0.20.54
+ansible_host: 10.0.2.200
 single_disk: "True"
 network_addresses:
   server: 10.0.2.200
