@@ -15,17 +15,17 @@ zinc.mgmt.oxide.one
 proton.nix.oxide.one
 zenith.wg.oxide.one
 
-[flare:children]
-flare-master
-flare-nodes
+[apollo:children]
+apollo-master
+apollo-nodes
 
-[flare-nodes]
-flare-node-[01:03].kube.oxide.one hypervisor_host="blackbird.srv.oxide.one"
-flare-node-[04:06].kube.oxide.one hypervisor_host="inferno.srv.oxide.one"
-flare-node-[07:09].kube.oxide.one hypervisor_host="phoenix.srv.oxide.one"
+[apollo-nodes]
+apollo-node-[01:03].kube.oxide.one hypervisor_host="blackbird.srv.oxide.one"
+apollo-node-[04:06].kube.oxide.one hypervisor_host="inferno.srv.oxide.one"
+apollo-node-[07:09].kube.oxide.one hypervisor_host="phoenix.srv.oxide.one"
 
-[flare-master]
-flare-master-01.kube.oxide.one hypervisor_host="hydrogen.srv.oxide.one"
+[apollo-master]
+apollo-master-01.kube.oxide.one hypervisor_host="hydrogen.srv.oxide.one"
 
 [ceph]
 ceph-admin-01.kube.oxide.one hypervisor_host="hydrogen.srv.oxide.one"
