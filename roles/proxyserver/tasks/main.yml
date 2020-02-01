@@ -1,0 +1,56 @@
+---
+- stat:
+    path: "{{ certificate_location }}"
+  register: certificate_location_exists
+
+- stat:
+    path: "{{ certificate_location }}/cert.cert"
+  register: certificate_exists
+
+
+- include_tasks: install.yml
+  when: certificate_location_exists.stat.exists == False
+
+- include_tasks: certs.yml
+  when: certificate_exists.stat.exists == False
+
+- name: "Create Caddy folder"
+  file:
+    path: "{{ caddy_location }}"
+    state: directory
+    owner: caddy
+    group: web
+
+- name: "Set correct capabilities on Caddy binary"
+  capabilities:
+    path: /usr/local/bin/caddy
+    capability: cap_net_bind_service+ep
+    state: present
+
+- name: "Set ulimit on System to 8192"
+  command: "ulimit -n 8192"
+
+- name: "Install Caddy Service"
+  template:
+    src: caddyservice.j2
+    dest: /etc/systemd/system/caddy.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: "Install Caddy Config"
+  template:
+    src: caddyconfig.j2
+    dest: "{{ caddy_location }}/Caddyfile"
+    owner: caddy
+    group: web
+    mode: 0740
+
+- name: "Start/Restart Caddy service and enable it"
+  systemd:
+    name: caddy
+    daemon_reload: yes
+    state: reloaded
+    enabled: yes
+
+

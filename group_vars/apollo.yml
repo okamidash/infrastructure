@@ -1,5 +1,5 @@
-cpus: 6
-memory: 6144
-disk_size: 25G
+cpus: 8
+memory: 8192
+disk_size: 30G
 network_address: dhcp
 base_image_name: fedora-cloud-base-kubernetes.qcow2

@@ -1,0 +1,52 @@
+---
+- name: "Setup VM"
+  hosts: neutron.nix.oxide.one
+  gather_facts: yes
+  vars:
+    keycloak_postgres_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          65353236356366333265363334383530643332646535616531633631613632653039393130383139
+          3663396233373361663634363236636630646635313463390a326461623339646664323838663838
+          37666531363031343332336465353837633430633530616131316634333639643131626234313965
+          3565323863333335660a373734306265643734303237396262393834663132303132306562613465
+          32313962343333316137613832386163323638313664383930316231316234396430
+  roles:
+#    - role: docker
+  tasks:
+    - name: "Create Postgres Database folder"
+      file:
+        path: "/srv/postgres"
+        state: directory
+        mode: '0755'
+    - name: "Create Postgres Database folder"
+      file:
+        path: "/srv/keycloak"
+        state: directory
+        mode: '0755'
+    - name: "Start docker containers"
+      docker_container:
+        name: Postgres
+        image: postgres
+        network_mode: host
+        restart_policy: unless-stopped
+        env:
+          POSTGRES_DB: keycloak
+          POSTGRES_USER: keycloak
+          POSTGRES_PASSWORD: "{{ keycloak_postgres_password }}"
+        volumes:
+          - "/srv/postgres:/var/lib/postgresql/data"
+    - name: "Start docker containers"
+      docker_container:
+        name: Keycloak
+        image: jboss/keycloak:8.0.1
+        ports:
+          - "8080:8080"
+          - "9441:9441"
+        restart_policy: unless-stopped
+        volumes:
+          - "/srv/keycloak/data:/data"
+        env:
+          DB_ADDR: 10.0.5.6
+          DB_USER: keycloak
+          DB_PASSWORD: "{{ keycloak_postgres_password }}"
+          PROXY_ADDRESS_FORWARDING: "true"

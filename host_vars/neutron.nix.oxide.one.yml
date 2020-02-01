@@ -1,0 +1,4 @@
+hypervisor_host: hydrogen.srv.oxide.one
+network_address: 10.0.5.6/24
+cpus: 4
+memory: 4096

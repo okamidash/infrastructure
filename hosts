@@ -13,6 +13,8 @@ zinc.mgmt.oxide.one
 
 [virtual_machines]
 proton.nix.oxide.one
+neutron.nix.oxide.one
+testvm.vm.oxide.one
 zenith.wg.oxide.one
 
 [apollo:children]

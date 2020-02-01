@@ -1,6 +1,6 @@
 ---
 - name: "Setup VM"
-  hosts: sandbagger.vm.oxide.one
+  hosts: neutron.nix.oxide.one
   gather_facts: no
   roles:
     - role: vm_deployment

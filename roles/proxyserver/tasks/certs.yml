@@ -1,0 +1,19 @@
+---
+- name: "Get certificates for domain"
+  shell: "/opt/acme/.acme.sh/acme.sh --issue --dns dns_cf -d {{ proxyserver | join(' -d ') }} --cert-file {{ certificate_location }}/cert.cert --key-file {{ certificate_location }}/key.key"
+  environment:
+    CF_Key: "{{ cloudflare_api_key }}"
+    CF_Email: "{{ cloudflare_email }}"
+  args:
+    creates: "{{ certificate_location }}/cert.cert"
+    executable: /bin/bash
+  become: yes
+  become_user: acme
+
+- name: "Set permissions on certs"
+  file:
+    path: "{{ certificate_location }}"
+    group: web
+    mode: '0770'
+    recurse: yes
+

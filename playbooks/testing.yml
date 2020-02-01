@@ -1,7 +1,6 @@
 ---
 - name: "Setup Systems"
-  hosts: ceph
+  hosts: proton.nix.oxide.one
   gather_facts: no
-  tasks:
-
-    - debug: msg="{{ network }}"
+  roles:
+    - docker
