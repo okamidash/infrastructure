@@ -20,14 +20,6 @@
     shell: /sbin/nologin
     home: /opt/acme
 
-- name: "Make sure that caddy user is created"
-  user:
-    name: caddy
-    groups: wheel,web
-    state: present
-    shell: /sbin/nologin
-    home: /opt/caddy
-
 - name: "Ensure that certificate folder is created"
   file:
     path: "{{ certificate_location }}"
@@ -47,13 +39,4 @@
   become: yes
   become_user: acme
 
-- name: "Download caddy"
-  get_url:
-    url: https://getcaddy.com
-    dest: /tmp/getcaddy
-    mode: '0777'
-
-- name: "Install caddy"
-  command: "/tmp/getcaddy personal http.git,http.realip,tls.dns.cloudflare"
-  become: yes
 

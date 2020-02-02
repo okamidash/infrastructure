@@ -34,3 +34,7 @@ ceph-admin-01.kube.oxide.one hypervisor_host="hydrogen.srv.oxide.one"
 ceph-node-01.kube.oxide.one  hypervisor_host="blackbird.srv.oxide.one"
 ceph-node-02.kube.oxide.one  hypervisor_host="inferno.srv.oxide.one"
 ceph-node-03.kube.oxide.one  hypervisor_host="phoenix.srv.oxide.one"
+
+[webservers]
+lightspeed-01.vm.oxide.one
+

@@ -1,7 +1,7 @@
 ---
 - name: "Setup VM"
-  hosts: zenith.wg.oxide.one
+  hosts: neutron.nix.oxide.one
   gather_facts: no
   roles:
-    - role: proxyserver
+   - { role: proxyserver, action: setup_caddy }
 

@@ -1,0 +1,22 @@
+---
+
+
+- name: "Enable wireguard COPR repo"
+  command: "dnf copr enable jdoss/wireguard -y"
+
+- name: "Upgrade all packages so wireguard properly installs"
+  dnf:
+    name: "*"
+    state: latest
+
+- name: "Download Wireguard"
+  dnf:
+    name:
+      - wireguard-dkms
+      - wireguard-tools
+      - kernel-headers
+      - iptables
+    state: present
+
+- name: "Reboot machine so kernel modules load"
+  reboot:

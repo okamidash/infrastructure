@@ -1,0 +1,13 @@
+---
+
+- name: "Setup a webserver and wireguard server"
+  hosts: webservers
+  vars:
+    ansible_user: root
+    local_wireguard_pubkey: "7+GD1Hd7Ya5VOl0F7DU0WXYDsKUAT2AJGDC8r/ga2RA="
+    vps_network_address: 10.2.0.1
+    vpn_network: 10.2.0.0/24
+    vpn_network_address: 10.2.0.2
+    allowed_networks: 10.0.0.0/16
+  roles:
+    - { role: webserver, action: setup_wireguard }
