@@ -13,7 +13,7 @@ ssl_prefer_server_ciphers off;
 ssl_stapling on;
 ssl_stapling_verify on;
 
-ssl_certificate /certs/fullchain.pem;
-ssl_certificate_key /certs/privkey.pem;
+ssl_certificate {{ cert_path }};
+ssl_certificate_key {{ key_path }};
 
 add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;

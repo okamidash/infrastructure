@@ -3,6 +3,9 @@
 - include_tasks: warn.yml
   when: ( action == 'install_wireguard' or action == 'all' or action == 'setup_wireguard' )
 
+- include_tasks: certs.yml
+  when: action == 'get_certs' or action == 'all'
+
 - include_tasks: install_wireguard.yml
   when: ( action == 'install_wireguard' or action == 'all' ) and pause.user_input == "yes"
 
@@ -12,5 +15,5 @@
 - include_tasks: finish.yml
   when: ( action == 'install_wireguard' or action == 'all' or action == 'setup_wireguard' )
 
-- include_tasks: nginx_test.yml
-  when: action == 'nginx_test'
+- include_tasks: nginx_setup.yml
+  when: action == 'nginx_setup'

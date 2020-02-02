@@ -12,6 +12,6 @@
     certificate_location: /var/www/certs
   roles:
 #   - { role: webserver, action: setup_wireguard }
-    - { role: proxyserver, action: 'get_certs' }
-    - { role: webserver, action: 'nginx_test' }
+#    - { role: webserver, action: 'get_certs' }
+    - { role: webserver, action: 'nginx_setup' }
 

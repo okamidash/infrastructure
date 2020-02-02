@@ -1,10 +1,12 @@
 user nginx;
 worker_processes  auto;
 error_log /var/log/nginx/error.log;
-pid /run/nginx.pid;
 worker_cpu_affinity auto;
 worker_rlimit_nofile 65535;
 pcre_jit on;
+
+# Load Dynamic modules
+include /usr/share/nginx/modules/*.conf;
 
 events {
     worker_connections  1024;
@@ -28,17 +30,24 @@ http {
     client_max_body_size 4G;
     client_body_buffer_size 10k;
     client_header_buffer_size 1k;
-    include mime.types;
-    include gzip.conf;
-    access_log /var/log/nginx/access.log;
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
 
-    # Include sites
+    include mime.types;
+    include conf/gzip.conf;
+    access_log /var/log/nginx/access.log main;
+
+# Include sites
 {% for domain,site in sites.items() %}
+# ===============================================
+# {{ domain }} - type {{ site.type }}
+# ===============================================
 {% if site.https_only is defined and site.https_only %}
 server {
     listen 80;
     listen [::]:80;
-    server_name {{ domain }}
+    server_name {{ domain }};
     return 301 https://{{ domain }}$request_uri;
 }
 {% endif %}
@@ -47,23 +56,26 @@ server {
 {#  Http or HTTPS Stuff #}
 {% if site.https is defined and site.https %}
     listen 443 ssl http2;
+    include conf/ssl.conf;
 {% endif %}
 {% if site.http is defined and site.http %}
     listen 80;
 {% endif %}
-
 {# Define extra headers if needed #}
 {% if site.extra_headers is defined %}
-    {% for header in site.extra_headers %}
+{% for header in site.extra_headers %}
     {{ header }};
-    {% endfor %}
+{% endfor %}
 {% endif %}
-
 {# Proxying #}
 {% if site.type == 'proxy' %}
     location ~ / {
         proxy_pass {{ site.target }};
-        include conf/ssl.conf;
+{% if site.proxy_headers is defined %}
+{% for header in site.proxy_headers %}
+        {{ header }};
+{% endfor %}
+{% endif %}
     }
 {% endif %}
 {# Redirection #}
@@ -73,7 +85,5 @@ server {
 {# Static | TODO#}
 
 }
-
-
 {% endfor %}
 }

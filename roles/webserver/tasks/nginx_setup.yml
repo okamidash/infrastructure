@@ -14,14 +14,25 @@
   with_items:
     - gzip.conf
     - proxy.conf
-    - ssl.conf
     - mime.types
 
+- name: "Template out ssl.conf"
+  template:
+    src: ssl.conf.j2
+    dest: /etc/nginx/conf/ssl.conf
+    owner: root
+    group: root
+    mode: 0750
 - name: "Template temp"
   template:
     src: nginx.conf.j2
-    dest: /tmp/nginx.conf
+    dest: /etc/nginx/nginx.conf
     owner: root
     group: root
     mode: 0750
 
+- name: "Start and enable nginx"
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes
