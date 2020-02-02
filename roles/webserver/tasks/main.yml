@@ -1,21 +1,7 @@
 ---
 
-- pause:
-    prompt: |
-      Please run the following commands on VyOS
-      ---------------
-      configure
-      run generate wireguard named-keypairs vps
-      run show wireguard keypairs pubkey vps
-      ---------------
-      And store the output of the final command as a var at local_wireguard_pubkey
-      Currently it appears to be {{ local_wireguard_pubkey }}
-      =============================================================================
-      Have you run the commands printed above? (yes/no)
-  register: pause
-
-- fail: msg="Please run the commands"
-  when: pause.user_input == "no"
+- include_tasks: warn.yml
+  when: ( action == 'install_wireguard' or action == 'all' or action == 'setup_wireguard' )
 
 - include_tasks: install_wireguard.yml
   when: ( action == 'install_wireguard' or action == 'all' ) and pause.user_input == "yes"
@@ -23,21 +9,8 @@
 - include_tasks: setup_wireguard.yml
   when: ( action == 'setup_wireguard' or action == 'all' ) and pause.user_input == "yes"
 
-- debug:
-    msg: |
-      Please run the following commands on VyOS
-      ---------------
-      configure
-      set interfaces wireguard wg1 address {{ vpn_network_address }}/24
-      set interfaces wireguard wg1 description 'tunnel to {{ ansible_hostname }}'.vm.{{ domain }}
-      set interfaces wireguard wg1 peer {{ ansible_hostname }} endpoint {{ ansible_hostname }}:55107
-      set interfaces wireguard wg1 peer {{ ansible_hostname }} allowed-ips {{ vpn_network }}
-      set interfaces wireguard wg1 peer {{ ansible_hostname }} pubkey '{{ wireguard_public_key }}'
-      set interfaces wireguard wg1 peer {{ ansible_hostname }} persistent-keepalive 25
-      set interfaces wireguard wg1 private-key (YOUR PRIVATE KEY)
-      ---------------
-      And store the output of the final command as a var at local_wireguard_pubkey
-      Currently it appears to be {{ local_wireguard_pubkey }}
-      =============================================================================
-      Have you run the commands printed above? (yes/no)
-  register: pause
+- include_tasks: finish.yml
+  when: ( action == 'install_wireguard' or action == 'all' or action == 'setup_wireguard' )
+
+- include_tasks: nginx_test.yml
+  when: action == 'nginx_test'

@@ -1,0 +1,36 @@
+# sites
+#   site_name - url of site
+#   type      - proxy, static, redirect
+#   https     - listen on https
+#   http      - listen on http
+#   https_only - redirect to https
+#   ========================== Type vars
+#   == proxy ==
+#   extra_headers - headers to include in server block
+#   proxy_headers - headers to include in location block
+#   proxy_target  - url to target proxy
+#   == static ==
+#   root - file root
+#   index - indexfile to serve at base (/)
+#   == redirect ==
+#   redirect_target - url to target redirecton
+sites:
+  doubledash.org:
+    type: redirect
+    https: true
+    https_only: true
+    target: "https://okami.dev"
+  cloud.doubledash.org:
+    type: proxy
+    https: true
+    https_only: true
+    target: "10.0.2.200:475"
+    extra_headers:
+      - "keepalive_timeout 10m"
+      - "proxy_connect_timeout  20s"
+      - "proxy_send_timeout  600s"
+      - "proxy_read_timeout  150s"
+      - "client_body_buffer_size 70m"
+      - "client_header_buffer_size 50k"
+      - "large_client_header_buffers 2 50k"
+      - "client_max_body_size 0"

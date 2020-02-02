@@ -1,0 +1,27 @@
+---
+- name: Ensure NGINX conf dir is created
+  file:
+    path: /etc/nginx/conf
+    owner: nginx
+    group: web
+    mode: 0755
+    state: directory
+
+- name: Copy relevant files across
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/nginx/conf/{{ item }}"
+  with_items:
+    - gzip.conf
+    - proxy.conf
+    - ssl.conf
+    - mime.types
+
+- name: "Template temp"
+  template:
+    src: nginx.conf.j2
+    dest: /tmp/nginx.conf
+    owner: root
+    group: root
+    mode: 0750
+

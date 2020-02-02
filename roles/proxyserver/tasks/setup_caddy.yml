@@ -12,6 +12,9 @@
     capability: cap_net_bind_service+ep
     state: present
 
+- name: "Try again"
+  command: "setcap 'cap_net_bind_service=+ep' /usr/local/bin/caddy"
+
 - name: "Set ulimit on System to 8192"
   command: "ulimit -n 8192"
 

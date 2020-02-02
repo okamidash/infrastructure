@@ -1,0 +1,19 @@
+---
+- pause:
+    prompt: |
+      Please run the following commands on VyOS
+      ---------------
+      configure
+      run generate wireguard named-keypairs vps
+      run show wireguard keypairs pubkey vps
+      ---------------
+      And store the output of the final command as a var at local_wireguard_pubkey
+      Currently it appears to be {{ local_wireguard_pubkey }}
+      =============================================================================
+      Have you run the commands printed above? (yes/no)
+  register: pause
+  when: ( action == 'install_wireguard' or action == 'all' or action == 'setup_wireguard' )
+
+- fail: msg="Please run the commands"
+  when: pause.user_input == "no"
+

@@ -9,5 +9,9 @@
     vpn_network: 10.2.0.0/24
     vpn_network_address: 10.2.0.2
     allowed_networks: 10.0.0.0/16
+    certificate_location: /var/www/certs
   roles:
-    - { role: webserver, action: setup_wireguard }
+#   - { role: webserver, action: setup_wireguard }
+    - { role: proxyserver, action: 'get_certs' }
+    - { role: webserver, action: 'nginx_test' }
+

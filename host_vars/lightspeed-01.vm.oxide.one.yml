@@ -1,0 +1,4 @@
+---
+proxyserver:
+  identity.doubledash.org:  "https://id.svc.oxide.one"
+
