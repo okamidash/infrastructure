@@ -1,6 +1,0 @@
----
-- name: "Setup Systems"
-  hosts: proton.nix.oxide.one
-  gather_facts: no
-  roles:
-    - docker
