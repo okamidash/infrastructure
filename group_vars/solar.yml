@@ -1,17 +1,18 @@
 ---
 ansible_user: 'vyos'
-ansible_host: 10.0.0.249
 ansible_connection: network_cli
 ansible_network_os: vyos
+base_image_name: "vyos-1.2.4-amd64.qcow2"
+
+cpus: 4
+memory: 6144
+disk_size: 7.5G
+
+vm_net_opts: "--network=network:{{ system_networks | join(' --network=network:') | regex_replace('virtual','default') }}"
+
+network_address: dhcp
 network_addresses:
   out: dhcp
-  server:   10.0.2.1
-  virtual:  10.0.4.1
-  utility:  10.0.5.1
-  zoned:    10.0.6.1
-  kube:     10.0.7.1
-  wireguard:  10.0.8.1
-  management: 10.0.10.1
 
 network_mapping:
   eth0: 'out'

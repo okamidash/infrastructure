@@ -8,6 +8,12 @@ phoenix.srv.oxide.one
 cobra.srv.oxide.one
 helix.srv.oxide.one
 
+[solar]
+solar-01.nix.oxide.one hypervisor_host="hydrogen.srv.oxide.one"
+#solar-02.nix.oxide.one
+#solar-03.nix.oxide.one
+#solar-04.nix.oxide.one
+
 [vyos]
 zinc.mgmt.oxide.one
 

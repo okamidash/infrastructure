@@ -1,0 +1,5 @@
+set system host-name {{ inventory_hostname }}
+set system domain-name "oxide.one"
+set system login user vyos authentication public-keys default key {{ ssh_short_key }}
+set system login user vyos authentication public-keys default type {{ ssh_key_type }}
+set service ssh disable-password-authentication

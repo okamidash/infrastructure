@@ -1,11 +1,16 @@
 ---
 ansible_become: yes
+github_user_key: okamidash
+
 #### Network Related stuff
 domain: oxide.one
 dns_server: 10.0.5.8
 dhcp_start: 50
 dhcp_end: 220
 system_networks:
+  out:
+     gateway: 10.0.0.1
+     subdomain: dhcp
   server:
       gateway: 10.0.2.1
       subdomain: srv
@@ -32,9 +37,6 @@ system_networks:
   management:
       gateway: 10.0.10.1
       subdomain: mgmt
-  out:
-     gateway: 10.0.0.1
-     subdomain: dhcp
 
 virt_networks:
   virtual:

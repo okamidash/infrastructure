@@ -5,7 +5,7 @@
 - set_fact: full_hostname="{{ inventory_hostname }}" hostname="{{ inventory_hostname.split('.')[0] }}"
 - name: "Ensure file owner of file {{ base_image_dir }}/fedora-cloud-base.qcow2 is set to qemu"
   file:
-    path: "{{ base_image_dir }}/fedora-cloud-base.qcow2"
+    path: "{{ base_image_dir }}/{{ base_image_name }}"
     owner: qemu
     group: qemu
     mode: '0755'
@@ -52,12 +52,16 @@
   when: network == "virtual"
 
 - set_fact:
-    vm_req_opts:  "--name {{ full_hostname }} --vcpus {{ cpus }} --memory {{ memory }} --network=network:{{ network }} --import"
+    vm_net_opts:  "--network=network:{{ network }}"
+  when: vm_net_opts is undefined
+
+- set_fact:
+    vm_req_opts:  "--name {{ full_hostname }} --vcpus {{ cpus }} --memory {{ memory }} --import"
     vm_disk_opts: "--disk '{{ vm_dir }}/{{ full_hostname }}',format=qcow2,bus=virtio --disk {{ vm_dir }}/{{ hostname }}.iso,device=cdrom"
     vm_misc_opts: "--os-type=linux --os-variant=archlinux --graphics none --noautoconsole"
 
 - name: "Install virtual machine"
-  command: virt-install {{ vm_req_opts }} {{ vm_disk_opts }} {{ vm_misc_opts }}
+  command: virt-install {{ vm_req_opts }} {{ vm_disk_opts }} {{ vm_misc_opts }} {{ vm_net_opts }}
 
 - name: "Pause for 2 seconds"
   pause:
