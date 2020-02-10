@@ -1,32 +1,4 @@
-#- name: "show config"
-#  vyos_command:
-#    commands:
-#      - configure
-#      - "set interfaces ethernet {{ item.key }} description {{ item.value }}"
-#      - commit
-#      - save
-#  with_dict:
-#    - "{{ network_mapping }}"
-
-#- include_tasks: addresses.yml
-#  with_dict:
-#    - "{{ network_mapping }}"
-
-- include_tasks: update_dns.yml
-  when: network.value != 'out' and action == 'update_dns'
-  with_dict:
-    - "{{ network_mapping }}"
-  loop_control:
-    loop_var: network
-
-- include_tasks: dhcpd.yml
-  with_dict:
-    - "{{ network_mapping }}"
-  when: network.value != 'out' and action == 'dhcpd'
-  loop_control:
-    loop_var: network
-
-- include: ddns.yml
-  when: action == 'ddns'
-  with_dict:
-    - "{{ system_networks }}"
+---
+- name: "Template out config for VyOS"
+  vyos_config:
+    src: template.j2

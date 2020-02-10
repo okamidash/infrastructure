@@ -3,13 +3,12 @@
 - name: "Deploy router (TESTING)"
   hosts: solar
   gather_facts: no
+  connection: network_cli
   vars:
     ansible_host: 10.0.0.69
-  tasks:
-#    - debug: msg="{{ vm_net_opts }}"
   roles:
 #    - virt/deployment
-    - common/github_ssh_key
-    - network/vyos_ha
+#    - common/github_ssh_key
+    - network/vyos
 
 

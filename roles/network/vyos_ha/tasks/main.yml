@@ -1,3 +1,0 @@
----
-- vyos_config:
-    src: template.j2

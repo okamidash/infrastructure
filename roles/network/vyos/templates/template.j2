@@ -1,0 +1,15 @@
+set system host-name {{ inventory_hostname }}
+set system domain-name "oxide.one"
+{% if ssh_key_type is defined %}
+set system login user vyos authentication public-keys default key {{ ssh_short_key }}
+set system login user vyos authentication public-keys default type {{ ssh_key_type }}
+{% endif %}
+{% for network,desc in system_networks.items() %}
+set interfaces ethernet eth{{ loop.index0 }} description {{ network }}
+{% if network_addresses[network] == "dhcp" %}
+set interfaces ethernet eth{{ loop.index0 }} address dhcp
+{% else %}
+set interfaces ethernet eth{{ loop.index0 }} address {{ network_addresses[network] }}/24
+{% endif %}
+{% endfor %}
+{# set service ssh disable-password-authentication #}

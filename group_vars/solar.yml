@@ -13,13 +13,10 @@ vm_net_opts: "--network=network:{{ system_networks | join(' --network=network:')
 network_address: dhcp
 network_addresses:
   out: dhcp
-
-network_mapping:
-  eth0: 'out'
-  eth1: 'server'
-  eth2: 'virtual'
-  eth3: 'utility'
-  eth4: 'zoned'
-  eth5: 'kube'
-  eth6: 'wireguard'
-  eth7: 'management'
+  server: 10.0.2.109
+  virtual: 10.0.4.109
+  utility: 10.0.5.109
+  zoned: 10.0.6.109
+  kube: 10.0.7.109
+  wireguard: 10.0.8.109
+  management: 10.0.10.109
