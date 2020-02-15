@@ -1,4 +1,5 @@
 ---
+ansible_user: oxide
 single_disk: "False"
 vm_disk_speed: "ember"
 network_addresses:

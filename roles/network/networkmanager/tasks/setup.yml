@@ -1,0 +1,43 @@
+---
+#### BRIDGE SETUP ####
+- name: "Check if bridge already exists for network {{ network.key }}"
+  command: "nmcli -f GENERAL.STATE con show {{ network.key }}"
+  register: conn_status_bridge
+  ignore_errors: yes
+
+- name: "Setup bridge for network: {{ network.key }}"
+  command: "nmcli con add type bridge con-name {{ network.key }} ifname {{ network.key }} stp no ipv4.method disabled ipv6.method ignore"
+  when: "conn_status_bridge.rc != 0"
+
+#### IP SETUP ####
+- name: "Setup DHCP IP settings for network interface {{ network.key }}"
+  command: "nmcli con mod {{ network.key }} ipv4.method auto"
+  when:
+    - networks[network.key] is defined
+    - "networks[network.key] == 'dhcp'"
+
+- name: "Setup Static IP settings for network interface {{ network.key }}"
+  command: "nmcli con mod {{ network.key }} ipv4.method manual ip4 {{ networks[network.key] }} gw4 {{ network.value.gateway }}"
+  when:
+    - networks[network.key] is defined
+    - networks[network.key] | ipv4 != False
+
+#### VLAN SETUP ####
+- name: "Check if VLAN already exists for network {{ network.key }}"
+  command: "nmcli -f GENERAL.STATE con show {{ network.key }}_vlan"
+  when: "network.value.vlan_id is defined"
+  register: conn_status_vlan
+  ignore_errors: yes
+
+- name: Attach VLAN to Bridge
+  command: "nmcli con add type vlan con-name {{ network.key }}_vlan ifname {{ network.key }}_vlan dev {{ intf_primary }} id {{ network.value.vlan_id }} master {{ network.key }} slave-type bridge"
+  when:
+    - "network.value.vlan_id is defined"
+    - "conn_status_vlan.rc != 0"
+
+#### BRIDGE -> INTERFACE SETUP ####
+- name: Attach Slave to Bridge
+  command: "nmcli con mod {{ lookup( 'vars', network.value.interface) }} master {{ network.key }} slave-type bridge"
+  when:
+    - "network.value.interface is defined"
+    - "conn_status_eth.rc != 0"

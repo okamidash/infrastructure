@@ -1,0 +1,22 @@
+---
+
+- name: "Setup Systems"
+  hosts: infinity.srv.oxide.one
+  roles:
+    #- role: common/init
+    #- role: common/hostname
+    #- role: common/selinux
+    #- role: common/firewall
+    #- role: common/sudo
+    #- role: common/ssh
+    #- role: common/dnf_automatic
+    - role: network/networkmanager
+#    - role: network
+#    - role: virt
+#    - role: storage_dirs
+#    - role: nvme_storage
+#    - role: virt_storage
+#    - role: motd
+#    - role: docker
+#    - role: usergroups
+

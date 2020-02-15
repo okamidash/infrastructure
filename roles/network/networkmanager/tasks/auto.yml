@@ -1,9 +1,0 @@
-- set_fact: net={{ item.key }} gw4={{ system_networks[ item.key ].gateway }} ip={{ system_networks[ item.key ].gateway }} dns={{ dns_server }}
-- set_fact: ipnet="{{ ip }}/24"
-- set_fact: network="{{ ipnet | ipaddr('network') }}"
-- set_fact: cmd="ipv4.method auto ipv4.routes {{ network }}/24"
-- name: "Setup Dynamic IP for {{ item.key }} network"
-  command: "nmcli con mod {{ item.key }} {{ cmd }}"
-- name: "Bring up network {{ item.key }}"
-  command: "nmcli con up {{ item.key }}"
-

@@ -1,0 +1,13 @@
+---
+
+hostname: "infinity"
+ansible_user: oxide
+ansible_host: "10.0.0.106"
+single_disk: "False"
+
+intf_primary: "enp3s0"
+intf_out:  "enp5s0f0"
+
+networks:
+  out: dhcp
+  server: 10.0.2.6/24

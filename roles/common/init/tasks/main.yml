@@ -8,7 +8,7 @@
     key: https://github.com/okamidash.keys
   with_items:
     - root
-    - okami
+    - "{{ ansible_user }}"
 
 - name: Update all the packages
   dnf:
