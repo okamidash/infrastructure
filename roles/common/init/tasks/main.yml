@@ -5,7 +5,7 @@
   authorized_key:
     user: "{{ item }}"
     state: present
-    key: https://github.com/okamidash.keys
+    key: "https://github.com/{{ github_user_key }}.keys"
   with_items:
     - root
     - "{{ ansible_user }}"

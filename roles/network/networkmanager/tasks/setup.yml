@@ -7,7 +7,7 @@
 
 - name: "Setup bridge for network: {{ network.key }}"
   command: "nmcli con add type bridge con-name {{ network.key }} ifname {{ network.key }} stp no ipv4.method disabled ipv6.method ignore"
-  when: "conn_status_bridge.rc != 0"
+  when: "conn_status_bridge.rc == 10"
 
 #### IP SETUP ####
 - name: "Setup DHCP IP settings for network interface {{ network.key }}"
@@ -40,4 +40,3 @@
   command: "nmcli con mod {{ lookup( 'vars', network.value.interface) }} master {{ network.key }} slave-type bridge"
   when:
     - "network.value.interface is defined"
-    - "conn_status_eth.rc != 0"

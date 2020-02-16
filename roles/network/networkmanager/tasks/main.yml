@@ -12,5 +12,6 @@
 - name: "Setup"
   include_tasks: setup.yml
   with_dict:  "{{ system_networks }}"
+  when: network.key != 'out'
   loop_control:
       loop_var: "network"
