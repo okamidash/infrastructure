@@ -2,14 +2,14 @@
   virt_net:
     autostart: yes
     command: define
-    name: "{{ item.key }}"
-    xml: "<network><name>default</name><forward mode='bridge'/><bridge name='{{ item.key }}'/></network>"
-  when: item.key == "virtual"
+    name: "{{ network.key }}"
+    xml: "<network><name>default</name><forward mode='bridge'/><bridge name='{{ network.key }}'/></network>"
+  when: network.key == "virtual"
 
 - name: "Define Libvirt Network"
   virt_net:
     autostart: yes
     command: define
-    name: "{{ item.key }}"
-    xml: "<network><name>{{ item.key }}</name><forward mode='bridge'/><bridge name='{{ item.key }}'/></network>"
-  when: item.key != "virtual"
+    name: "{{ network.key }}"
+    xml: "<network><name>{{ network.key }}</name><forward mode='bridge'/><bridge name='{{ network.key }}'/></network>"
+  when: network.key != "virtual"

@@ -49,22 +49,25 @@
 
 - name: "Define Libvirt Networks"
   include: define_networks.yml
-  with_dict:
-    - "{{ virt_networks }}"
+  with_dict: "{{ system_networks }}"
+  loop_control:
+    loop_var: "network"
 
 - virt_net:
     command: info
   register: virt_networks
 
 - virt_net:
-    name: "{{ item.key }}"
+    name: "{{ network.key }}"
     state: active
     command: start
-  with_dict:
-    - "{{ virt_networks.networks }}"
+  with_dict: "{{ system_networks | replace('virtual','default') }}"
+  loop_control:
+    loop_var: "network"
 
 - virt_net:
-    name: "{{ item.key }}"
+    name: "{{ network.key }}"
     autostart: yes
-  with_dict:
-    - "{{ virt_networks.networks }}"
+  with_dict: "{{ system_networks | replace('virtual','default') }}"
+  loop_control:
+    loop_var: "network"

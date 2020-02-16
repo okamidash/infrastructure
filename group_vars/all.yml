@@ -36,12 +36,6 @@ system_networks:
       gateway: "10.0.8.1"
       vlan_id: "8"
       subdomain: wg
-virt_networks:
-  virtual:
-  utility:
-  zoned:
-  kube:
-  wireguard:
 
 system_groups:
   - docker
