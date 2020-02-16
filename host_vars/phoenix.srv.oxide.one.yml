@@ -1,5 +1,13 @@
 ---
+
 hostname: "phoenix"
-ansible_host: 10.0.2.8
+ansible_user: oxide
+ansible_host: "10.0.0.146"
 single_disk: "False"
-network_addresses:
+
+intf_primary: "enp3s0"
+intf_out:  "enp6s0f1"
+
+networks:
+  out: dhcp
+  server: dhcp

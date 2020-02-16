@@ -1,6 +1,6 @@
 ---
 
-- name: Install SSH Public key for Okami
+- name: "Install SSH Public key for root and {{ ansible_user }}"
   become: yes
   authorized_key:
     user: "{{ item }}"

@@ -1,7 +1,7 @@
 ---
 
 - name: "Setup Systems"
-  hosts: infinity.srv.oxide.one
+  hosts: blackbird.srv.oxide.one
   roles:
     - role: common/init
     - role: common/hostname

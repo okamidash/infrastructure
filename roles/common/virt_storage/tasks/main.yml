@@ -19,11 +19,6 @@
     command: info
   register: pool_info
 
-- debug: msg="{{ item.key }}"
-  when: item.key == "default"
-  with_dict:
-    - "{{ pool_info.pools }}"
-
 - name: "Stop all pools"
   virt_pool:
     command: destroy
