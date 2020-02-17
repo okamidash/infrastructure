@@ -1,10 +1,8 @@
 ---
-
-hostname: "blackbird"
 ansible_user: oxide
-ansible_host: "10.0.0.95"
-single_disk: "False"
+ansible_host: "10.0.0.5"
 
+single_disk: "False"
 intf_primary: "enp3s0"
 intf_out:  "eno2"
 

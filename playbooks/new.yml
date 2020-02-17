@@ -1,6 +1,0 @@
----
-
-- name: "Setup Systems"
-  hosts: halcyon.srv.oxide.one
-  roles:
-    - role: nfs_client

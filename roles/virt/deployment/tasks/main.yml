@@ -2,6 +2,7 @@
 - set_fact: vm_subdomain="{{ inventory_hostname.split('.')[1] }}"
   when: inventory_hostname.split('.')[1] != "vm"
 
+- debug: msg="{{ cloud_init }}"
 - set_fact: network="{{ item.key }}"
   with_dict: "{{ system_networks }}"
   when:

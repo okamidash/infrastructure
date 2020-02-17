@@ -1,0 +1,30 @@
+set system host-name {{ inventory_hostname }}
+set system domain-name "oxide.one"
+
+{% if ssh_key_type is defined %}
+set system login user vyos authentication public-keys default key {{ ssh_short_key }}
+set system login user vyos authentication public-keys default type {{ ssh_key_type }}
+{% endif %}
+
+{% for network,desc in system_networks.items() %}
+{# Set vars here #}
+{% set eth = "eth" + (loop.index0 | string) %}
+{% set ip_index = cluster_index | int + 10%}
+{# end vars here #}
+{% if network not in banlist %}
+set interfaces ethernet {{ eth }} description {{ network }}
+{% if network == "out" %}
+set interfaces ethernet {{ eth }} address dhcp
+set high-availability vrrp group {{ network }} virtual-address {{ out_virtual_address }}
+{% else %}
+set interfaces ethernet {{ eth }} address {{ desc.gateway | ipaddr('network') | ipmath(ip_index) }}/{{ desc.gateway | ipaddr('prefix') }}
+set high-availability vrrp group {{ network }} virtual-address {{ desc.gateway }}
+{% endif %}
+set high-availability vrrp sync-group sync member '{{ network }}'
+set high-availability vrrp group {{ network }} vrid {{ loop.index0 + 1 }}
+set high-availability vrrp group {{ network }} interface {{ eth }}
+set high-availability vrrp group {{ network }} priority '{{ 250 - ( cluster_index | int ) }}'
+set high-availability vrrp group {{ network }} preempt-delay 5
+{% endif %}
+{% endfor %}
+{# set service ssh disable-password-authentication #}

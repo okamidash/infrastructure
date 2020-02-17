@@ -1,7 +1,0 @@
----
-
-- name: "Setup VyOS"
-  hosts: vyos
-  roles:
-    - { role: vyos, action: 'update_dns' }
-

@@ -1,15 +1,15 @@
 ---
 
 - name: "Setup Systems"
-  hosts: phoenix.srv.oxide.one
+  hosts: inferno.srv.oxide.one
   roles:
-    - role: common/init
-    - role: common/hostname
-    - role: common/selinux
-    - role: common/firewall
-    - role: common/sudo
-    - role: common/ssh
-    - role: common/dnf_automatic
+    #- role: common/init
+    #- role: common/hostname
+    #- role: common/selinux
+    #- role: common/firewall
+    #- role: common/sudo
+    #- role: common/ssh
+    #- role: common/dnf_automatic
     - role: network/networkmanager
     - role: common/virt
     - role: common/storage_dirs

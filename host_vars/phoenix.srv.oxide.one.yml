@@ -2,7 +2,7 @@
 
 hostname: "phoenix"
 ansible_user: oxide
-ansible_host: "10.0.0.146"
+ansible_host: "10.0.0.7"
 single_disk: "False"
 
 intf_primary: "enp3s0"

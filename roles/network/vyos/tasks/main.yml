@@ -1,4 +1,19 @@
 ---
-- name: "Template out config for VyOS"
+- name: "Template out Ethernet and High Availability config for VyOS"
   vyos_config:
-    src: template.j2
+    src: setup_solar.j2
+    save: yes
+  when: action == "setup" or action is undefined
+
+- name: "Template out DHCPD config for VyOS"
+  vyos_config:
+    src: dhcpd.j2
+    save: yes
+  when:
+    - cluster_index == "1" and (action == "dhcp" or action is undefined)
+
+- name: "Template out eclipse config"
+  template:
+    src: setup_eclipse.j2
+    dest: "/tmp/{{ inventory_hostname }}"
+  delegate_to: localhost

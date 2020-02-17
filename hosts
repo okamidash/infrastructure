@@ -9,19 +9,19 @@ cobra.srv.oxide.one
 helix.srv.oxide.one
 
 [solar]
-solar-01.nix.oxide.one hypervisor_host="hydrogen.srv.oxide.one"
-#solar-02.nix.oxide.one
-#solar-03.nix.oxide.one
-#solar-04.nix.oxide.one
+solar-01.nix.oxide.one hypervisor_host="infinity.srv.oxide.one" ansible_host="10.0.0.245"
+solar-02.nix.oxide.one hypervisor_host="blackbird.srv.oxide.one" ansible_host="10.0.0.246"
+solar-03.nix.oxide.one hypervisor_host="inferno.srv.oxide.one"  ansible_host="10.0.0.247"
+solar-04.nix.oxide.one hypervisor_host="phoenix.srv.oxide.one" ansible_host="10.0.0.248"
 
-[vyos]
-zinc.mgmt.oxide.one
+[eclipse]
+eclipse-01.nix.oxide.one hypervisor_host="infinity.srv.oxide.one" ansible_host="10.0.0.245"
+eclipse-02.nix.oxide.one hypervisor_host="blackbird.srv.oxide.one" ansible_host="10.0.0.245"
+eclipse-03.nix.oxide.one hypervisor_host="inferno.srv.oxide.one" ansible_host="10.0.0.245"
+eclipse-04.nix.oxide.one hypervisor_host="phoenix.srv.oxide.one" ansible_host="10.0.0.245"
 
 [virtual_machines]
-proton.nix.oxide.one
-neutron.nix.oxide.one
-testvm.vm.oxide.one
-zenith.wg.oxide.one
+ipa.oxide.one
 
 [apollo:children]
 apollo-master

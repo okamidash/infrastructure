@@ -1,12 +1,11 @@
 ---
 
-hostname: "phoenix"
 ansible_user: oxide
-ansible_host: "10.0.0.146"
-single_disk: "False"
+ansible_host: "10.0.0.6"
 
-intf_primary: "enp3s0"
-intf_out:  "enp6s0f1"
+single_disk: "False"
+intf_primary: "enp5s0"
+intf_out:  "eno2"
 
 networks:
   out: dhcp

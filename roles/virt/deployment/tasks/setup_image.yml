@@ -3,7 +3,7 @@
 - set_fact: lvm_name="{{ ansible_lvm.lvs.virt.vg }}"
 - set_fact: base_image_dir="/storage/loc/{{ lvm_name }}/virt/base" vm_dir="/storage/loc/{{ lvm_name }}/virt/images"
 - set_fact: full_hostname="{{ inventory_hostname }}" hostname="{{ inventory_hostname.split('.')[0] }}"
-- name: "Ensure file owner of file {{ base_image_dir }}/fedora-cloud-base.qcow2 is set to qemu"
+- name: "Ensure file owner of file {{ base_image_dir }}/{{ base_image_name }} is set to qemu"
   file:
     path: "{{ base_image_dir }}/{{ base_image_name }}"
     owner: qemu
@@ -13,34 +13,8 @@
 - name: "Create VMI Based from Backing image"
   command: qemu-img create -f qcow2 -b {{ base_image_dir }}/{{ base_image_name }} {{ vm_dir }}/{{ full_hostname }} {{ disk_size }}
 
-- name: "Create Metadata dir for {{ hostname }}"
-  file:
-    path: "/tmp/{{ full_hostname }}"
-    state: directory
-    owner: qemu
-    group: qemu
-    mode: '0755'
-
-- set_fact: tmp_fpath="/tmp/{{ full_hostname }}"
-
-- name: "Create meta-data file for {{ hostname }}"
-  template:
-    src: meta-data.j2
-    dest: "{{ tmp_fpath }}/meta-data"
-    owner: qemu
-    group: qemu
-    mode: '0755'
-
-- name: "Create user-data file for {{ hostname }}"
-  template:
-    src: user-data.j2
-    dest: "{{ tmp_fpath }}/user-data"
-    owner: qemu
-    group: qemu
-    mode: '0755'
-
-- name: "Create ISO image for cloud-init"
-  command: "cloud-localds {{ vm_dir }}/{{ hostname }}.iso {{ tmp_fpath }}/user-data {{ tmp_fpath }}/meta-data"
+- include_tasks: cloud_init.yml
+  when: cloud_init
 
 - set_fact: vm_subdomain="{{ inventory_hostname.split('.')[1] }}"
 - set_fact: network="{{ item.key }}"
@@ -57,11 +31,11 @@
 
 - set_fact:
     vm_req_opts:  "--name {{ full_hostname }} --vcpus {{ cpus }} --memory {{ memory }} --import"
-    vm_disk_opts: "--disk '{{ vm_dir }}/{{ full_hostname }}',format=qcow2,bus=virtio --disk {{ vm_dir }}/{{ hostname }}.iso,device=cdrom"
+    vm_disk_opts: "--disk '{{ vm_dir }}/{{ full_hostname }}',format=qcow2,bus=virtio"
     vm_misc_opts: "--os-type=linux --os-variant=archlinux --graphics none --noautoconsole"
 
 - name: "Install virtual machine"
-  command: virt-install {{ vm_req_opts }} {{ vm_disk_opts }} {{ vm_misc_opts }} {{ vm_net_opts }}
+  command: virt-install {{ vm_req_opts }} {{ vm_disk_opts }} {{ vm_misc_opts }} {{ vm_net_opts }} {{ cloud_init_opts }}
 
 - name: "Pause for 2 seconds"
   pause:
@@ -69,16 +43,19 @@
 
 - name: "Eject the iso"
   command: virsh change-media {{ full_hostname }} sda --eject --config
+  when: cloud_init
 
 - name: "Remove {{ tmp_fpath }}"
   file:
     path: "{{ tmp_fpath }}"
     state: absent
+  when: cloud_init
 
 - name: "Remove ISO in {{ vm_dir }}/{{ hostname }}.iso"
   file:
     path: "{{ vm_dir }}/{{ hostname }}.iso"
     state: absent
+  when: cloud_init
 
 - set_fact: ansible_host="{{ network_address | ipaddr('address') }}"
   when: network_address | ipaddr != False

@@ -6,7 +6,7 @@
   ignore_errors: yes
 
 - name: "Setup bridge for network: {{ network.key }}"
-  command: "nmcli con add type bridge con-name {{ network.key }} ifname {{ network.key }} stp no ipv4.method disabled ipv6.method ignore"
+  command: "nmcli con add type bridge con-name {{ network.key }} ifname {{ network.key }} stp no ipv4.method disabled ipv6.method ignore ipv4.may-fail TRUE"
   when: "conn_status_bridge.rc == 10"
 
 #### IP SETUP ####
