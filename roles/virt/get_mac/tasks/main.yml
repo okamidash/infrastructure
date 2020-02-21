@@ -1,0 +1,12 @@
+- virt:
+    command: get_xml
+    name: "{{ inventory_hostname }}"
+  register: xmlset
+  delegate_to: "{{ hypervisor_host }}"
+
+- set_fact: xmla="{{ xmlset.get_xml | xml_to_json }}"
+
+- vyos_config:
+    src: dhcp_set.j2
+  delegate_to: "{{ groups['solar'] | first }}"
+

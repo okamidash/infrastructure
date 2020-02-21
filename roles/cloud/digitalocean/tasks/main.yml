@@ -1,5 +1,5 @@
 ---
-- include_vars: secrets.yml
+#- include_vars: secrets.yml
 - digital_ocean_droplet:
     oauth_token: "{{ digitalocean_api_key }}"
     name: "{{ inventory_hostname }}"

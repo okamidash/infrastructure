@@ -4,10 +4,9 @@
   hosts: solar
   gather_facts: no
   vars:
-    banlist: ["wireguard","zoned"]
   roles:
-    - virt/deployment
-    - common/github_ssh_key
+#    - virt/deployment
+#    - common/github_ssh_key
     - role: network/vyos
 
 

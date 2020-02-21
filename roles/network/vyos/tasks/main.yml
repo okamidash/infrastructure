@@ -1,9 +1,14 @@
 ---
+- name: "Template out file"
+  template:
+    src: setup_solar.j2
+    dest: "/tmp/{{ inventory_hostname }}"
+  delegate_to: localhost
 - name: "Template out Ethernet and High Availability config for VyOS"
   vyos_config:
     src: setup_solar.j2
     save: yes
-  when: action == "setup" or action is undefined
+  when: "'solar' in groups"
 
 - name: "Template out DHCPD config for VyOS"
   vyos_config:

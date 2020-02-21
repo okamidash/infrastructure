@@ -1,6 +1,6 @@
 ---
 - name: "Testing playbook"
-  hosts: eclipse
+  hosts: solar
   gather_facts: no
   roles:
-    - virt/deployment
+    - virt/get_mac

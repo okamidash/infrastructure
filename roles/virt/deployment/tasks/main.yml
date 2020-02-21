@@ -17,3 +17,4 @@
 
 - include: setup_image.yml
   delegate_to: "{{ hypervisor_host }}"
+

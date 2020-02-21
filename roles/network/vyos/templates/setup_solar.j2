@@ -27,4 +27,16 @@ set high-availability vrrp group {{ network }} priority '{{ 250 - ( cluster_inde
 set high-availability vrrp group {{ network }} preempt-delay 5
 {% endif %}
 {% endfor %}
+{# Connection tracking #}
+{# BROKEN 21.02.2020 UPSTEAM BUG
+set firewall state-policy established action accept
+set service conntrack-sync accept-protocol 'tcp,udp'
+set service conntrack-sync event-listen-queue-size '8'
+set service conntrack-sync failover-mechanism vrrp sync-group sync
+set service conntrack-sync interface 'eth0'
+set service conntrack-sync mcast-group '225.0.0.50'
+set service conntrack-sync sync-queue-size '8'
+#}
+{# end of connection tracking #}
+
 {# set service ssh disable-password-authentication #}

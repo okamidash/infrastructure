@@ -1,0 +1,7 @@
+---
+- name: "Testing playbook"
+  hosts: lightspeed
+  gather_facts: no
+  roles:
+    - cloud/digitalocean
+    - network/wireguard
