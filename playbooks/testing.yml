@@ -1,0 +1,8 @@
+---
+- name: "Testing playbook"
+  hosts: lightspeed
+  gather_facts: no
+  vars:
+    wrapped: "{{ lookup('file', '../vars/secrets.yml') | from_yaml }}"
+  roles:
+    - cloud/digitalocean

@@ -1,0 +1,39 @@
+---
+- include_vars: secrets.yml
+- digital_ocean_droplet:
+    oauth_token: "{{ digitalocean_api_key }}"
+    name: "{{ inventory_hostname }}"
+    size: "{{ digitalocean_size }}"
+    image: "{{ digitalocean_image }}"
+    ipv6: yes
+    ssh_keys: "{{ digitalocean_key_id }}"
+    region: "{{ digitalocean_region }}"
+    unique_name: yes
+    tags: ["wireguard","webserver","proxy"]
+    state: present
+  register: droplet_info
+  delegate_to: localhost
+
+- name: "Set facts from returned variables"
+  set_fact: ipv4_address="{{ droplet_info.data.ip_address }}" ipv6_address="{{ droplet_info.data.ipv6_address }}" record="{{ inventory_hostname }}"
+  delegate_to: localhost
+
+- include_role: role=cloud/cloudflare
+  vars:
+    type: "A"
+    value: "{{ ipv4_address }}"
+
+- include_role: role=cloud/cloudflare
+  vars:
+    type: "A"
+    value: "{{ ipv4_address }}"
+    record: "lightspeed"
+- include_role: role=cloud/cloudflare
+  vars:
+    type: "AAAA"
+    value: "{{ ipv6_address }}"
+- include_role: role=cloud/cloudflare
+  vars:
+    type: "AAAA"
+    value: "{{ ipv6_address }}"
+    record: "lightspeed"

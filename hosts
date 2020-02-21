@@ -44,3 +44,6 @@ ceph-node-03.kube.oxide.one  hypervisor_host="phoenix.srv.oxide.one"
 [webservers]
 lightspeed-01.vm.oxide.one
 
+[lightspeed]
+lightspeed-01.vm.oxide.one
+lightspeed-02.vm.oxide.one

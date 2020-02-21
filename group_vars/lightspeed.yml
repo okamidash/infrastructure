@@ -1,0 +1,5 @@
+---
+digitalocean_image: fedora-31-x64
+digitalocean_size: s-1vcpu-3gb
+digitalocean_key_id: 26286981
+digitalocean_region: lon1
