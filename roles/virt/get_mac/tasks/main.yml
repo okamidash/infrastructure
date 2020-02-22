@@ -5,8 +5,13 @@
   delegate_to: "{{ hypervisor_host }}"
 
 - set_fact: xmla="{{ xmlset.get_xml | xml_to_json }}"
-
-- vyos_config:
+- template:
     src: dhcp_set.j2
-  delegate_to: "{{ groups['solar'] | first }}"
+    dest: "/tmp/{{inventory_hostname}}"
+  delegate_to: localhost
+
+- name: "Template out file for Static DHCP mapping to vyos"
+  vyos_config:
+    src: dhcp_set.j2
+  delegate_to: solar-01.nix.oxide.one
 

@@ -39,9 +39,9 @@ system_networks:
 
 static_mappings:
   server:
-    solar-01.nix.oxide.one: 10.0.2.52
   virtual:
-    solar-02.nix.oxide.one: 10.0.4.52
+  utility:
+    ipa.nix.oxide.one: 10.0.5.2
 system_groups:
   - docker
   - libvirt
