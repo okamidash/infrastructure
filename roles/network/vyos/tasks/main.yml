@@ -1,24 +1,19 @@
 ---
-- name: "Template out file"
-  template:
-    src: setup_solar.j2
-    dest: "/tmp/{{ inventory_hostname }}"
-  delegate_to: localhost
 - name: "Template out Ethernet and High Availability config for VyOS"
   vyos_config:
     src: setup_solar.j2
     save: yes
-  when: "'solar' in groups"
+  when: state|default('solar') == 'solar'
 
 - name: "Template out DHCPD config for VyOS"
   vyos_config:
     src: dhcpd.j2
     save: yes
-  when:
-    - cluster_index == "1" and (action == "dhcp" or action is undefined)
+  when: state|default('dhcpd') == 'dhcpd' and cluster_index == 1
 
 - name: "Template out eclipse config"
-  template:
+  vyos_config:
     src: setup_eclipse.j2
-    dest: "/tmp/{{ inventory_hostname }}"
-  delegate_to: localhost
+    save: yes
+  when: state|default('eclipse') == 'eclipse'
+

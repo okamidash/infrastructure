@@ -3,10 +3,10 @@
 - name: "Deploy router (TESTING)"
   hosts: eclipse
   gather_facts: no
-  vars:
-    banlist: ["out","server","virtual","zoned","kube","wireguard"]
   roles:
-    - virt/deployment
+#    - virt/deployment
+#    - network/vyos/static_ip
     - common/github_ssh_key
-
+    - role: network/vyos
+      state: 'eclipse'
 

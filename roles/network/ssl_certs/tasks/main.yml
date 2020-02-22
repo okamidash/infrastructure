@@ -1,0 +1,12 @@
+---
+- name: "Install acme.sh"
+  include_tasks: install.yml
+  when: state|default('install') == 'install'
+
+- name: "Get Certificates"
+  include_tasks: get_certificates.yml
+  when: state|default('get') == 'get'
+
+- name: "Renew Certificates"
+  include_tasks: renew_certificates.yml
+  when: state|default('renew') == 'renew'

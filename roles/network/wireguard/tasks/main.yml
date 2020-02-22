@@ -1,0 +1,9 @@
+---
+- name: "Install Wireguard"
+  include_tasks: install.yml
+  when: state|default('install') == 'install'
+
+- name: "Get Certificates"
+  include_tasks: setup.yml
+  when: state|default('setup') == 'setup'
+

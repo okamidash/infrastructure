@@ -1,8 +1,0 @@
-{% if xmla.domain.devices.interface[0] is defined %}
-{% for interface in xmla.domain.devices.interface %}
-{% include 'iterator.j2' %}
-{% endfor %}
-{% else %}
-{% set interface=xmla.domain.devices.interface %}
-{% include 'iterator.j2' %}
-{% endif %}

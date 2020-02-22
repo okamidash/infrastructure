@@ -3,5 +3,7 @@
   hosts: lightspeed
   gather_facts: no
   roles:
-    - cloud/digitalocean
-    - network/wireguard
+#    - cloud/digitalocean
+    - role: network/wireguard
+      state: setup
+

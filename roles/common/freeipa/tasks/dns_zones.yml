@@ -1,0 +1,19 @@
+---
+- block:
+  - name: "Set DNS zone"
+    ipa_dnszone:
+      ipa_host: "{{ groups['ipa'] | first }}"
+      ipa_pass: "{{ ipa_password }}"
+      state: present
+      dynamicupdate: true
+      zone_name: "{{ item.value.subdomain }}.{{ domain }}"
+    with_dict: "{{ system_networks }}"
+  - name: "Set ARPA DNS zone"
+    ipa_dnszone:
+      ipa_host: "{{ groups['ipa'] | first }}"
+      ipa_pass: "{{ ipa_password }}"
+      state: present
+      dynamicupdate: true
+      zone_name: "{{ (item.value.gateway | ipaddr('subnet') | ipaddr('revdns'))[2:] }}"
+    with_dict: "{{ system_networks }}"
+  delegate_to: localhost

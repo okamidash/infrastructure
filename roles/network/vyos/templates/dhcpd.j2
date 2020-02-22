@@ -2,7 +2,7 @@
 set service dhcp-server dynamic-dns-update
 set service dhcp-server host-decl-name
 {% if rndc_key is defined %}
-set service dhcp-server global-parameters {{ rndc_key }}
+set service dhcp-server global-parameters "{{ rndc_key }}"
 {% endif %}
 
 {% for network,desc in system_networks.items() %}

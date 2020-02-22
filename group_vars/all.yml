@@ -4,7 +4,7 @@ github_user_key: okamidash
 
 #### Network Related stuff
 domain: oxide.one
-dns_server: 1.1.1.1
+dns_server: 10.0.5.2
 dhcp_start: 50
 dhcp_end: 220
 system_networks:
@@ -38,10 +38,12 @@ system_networks:
       subdomain: wg
 
 static_mappings:
-  server:
-  virtual:
   utility:
-    ipa.nix.oxide.one: 10.0.5.2
+    ipa.oxide.one: 10.0.5.2
+    eclipse-01.nix.oxide.one: 10.0.5.31
+    eclipse-02.nix.oxide.one: 10.0.5.32
+    eclipse-03.nix.oxide.one: 10.0.5.33
+    eclipse-04.nix.oxide.one: 10.0.5.34
 system_groups:
   - docker
   - libvirt

@@ -1,0 +1,7 @@
+---
+cpus: 4
+memory: 3072
+disk_size: 10G
+ssl_certs:
+  - "{{ inventory_hostname }}"
+network: utility

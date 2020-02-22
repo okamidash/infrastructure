@@ -1,7 +1,6 @@
 ---
 - name: "Testing playbook"
-  hosts: ipa.nix.oxide.one
+  hosts: ipa
   gather_facts: no
-  roles:
-#    - virt/deployment
-    - virt/get_mac
+  tasks:
+    - debug: msg="{{ rndc_key }}"

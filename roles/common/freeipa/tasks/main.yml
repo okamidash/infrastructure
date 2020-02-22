@@ -1,0 +1,12 @@
+---
+- name: "Install Certificates from Letsencrypt"
+  include_tasks: certs.yml
+  when: state|default('certs') == 'certs'
+
+- name: "Setup DNS Zones"
+  include_tasks: dns_zones.yml
+  when: state|default('dns_zones') == 'dns_zones'
+
+- name: "Renew Certificates"
+  include_tasks: renew_certificates.yml
+  when: state|default('renew') == 'renew'

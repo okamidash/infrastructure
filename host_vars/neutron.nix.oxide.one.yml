@@ -1,8 +1,0 @@
-hypervisor_host: hydrogen.srv.oxide.one
-network_address: 10.0.5.6/24
-cpus: 4
-memory: 4096
-proxyserver:
-  id.svc.oxide.one:  "http://localhost:8080"
-  neutron.nix.oxide.one: "http://localhost:8080"
-

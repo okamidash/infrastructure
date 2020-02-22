@@ -1,7 +1,7 @@
 ---
 - name: "Setup VM"
-  hosts: neutron.nix.oxide.one
+  hosts: vma.vm.oxide.one
   gather_facts: no
   roles:
-    - role: vm_deployment
+    - role: virt/deployment
 
