@@ -44,6 +44,13 @@ static_mappings:
     eclipse-02.nix.oxide.one: 10.0.5.32
     eclipse-03.nix.oxide.one: 10.0.5.33
     eclipse-04.nix.oxide.one: 10.0.5.34
+pubkeys:
+  eclipse-01.nix.oxide.one: "kilNXB4zjbFe4uuWCDxWjUmzq06WelloHpluv8AHAVQ="
+  eclipse-02.nix.oxide.one: "+oVePqPwl+NRIsPRZ+UD0lsRYR4/78MVYrE5ijlEBg8="
+  eclipse-03.nix.oxide.one: "dWFGQdoAnIn2LLbwUWTkDWLMxOyWkG/1tDEowK5pPF4="
+  eclipse-04.nix.oxide.one: "Q8Be7K6amLk2+i+MgIVUfEKXdaDze9oLbMOEqImcGhw="
+
+
 system_groups:
   - docker
   - libvirt

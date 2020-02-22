@@ -1,9 +1,16 @@
 ---
-- name: "Testing playbook"
+- name: "Lightspeed setup"
   hosts: lightspeed
   gather_facts: no
   roles:
 #    - cloud/digitalocean
+#     - role: network/wireguard
+#       state: install
     - role: network/wireguard
       state: setup
-
+- name: "Eclipse setup to tunnel"
+  hosts: eclipse
+  gather_facts: no
+  roles:
+    - role: network/vyos
+      state: eclipse

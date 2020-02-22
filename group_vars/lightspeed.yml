@@ -7,3 +7,5 @@ ansible_user: root
 ssl_certs:
   - "{{ inventory_hostname }}"
   - "{{ sites }}"
+cluster_index: "{{ inventory_hostname_short.split('-')[1][1] }}"
+

@@ -6,7 +6,7 @@
   roles:
 #    - virt/deployment
 #    - network/vyos/static_ip
-    - common/github_ssh_key
+#    - common/github_ssh_key
     - role: network/vyos
       state: 'eclipse'
 
