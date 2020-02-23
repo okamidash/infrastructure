@@ -1,0 +1,14 @@
+---
+
+- name: "Deploy router (TESTING)"
+  hosts: lunar
+  gather_facts: no
+  vars:
+  roles:
+#    - virt/deployment
+#    - common/github_ssh_key
+    - role: network/vyos
+      state: lunar
+    - role: network/vyos
+      state: "dhcpd"
+
