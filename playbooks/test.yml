@@ -1,0 +1,6 @@
+---
+- name: "Testing playbook"
+  hosts: localhost
+  roles:
+    - virt/ovirt/auth
+
