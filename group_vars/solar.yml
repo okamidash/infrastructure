@@ -1,4 +1,0 @@
----
-banlist: ["wireguard","zoned"]
-vm_net_opts: "--network=network:{{ system_networks | join(' --network=network:') | regex_replace('virtual','default') }}"
-out_virtual_address: "10.0.0.249/24"

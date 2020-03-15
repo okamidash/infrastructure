@@ -1,7 +1,0 @@
----
-- name: "Deploy FreeIPA onto ipa.oxide.one"
-  hosts: ipa.oxide.one
-  gather_facts: no
-  roles:
-    - role: virt/deployment
-

@@ -1,6 +1,0 @@
----
-- name: "Testing playbook"
-  hosts: ipa
-  gather_facts: no
-  tasks:
-    - debug: msg="{{ rndc_key }}"

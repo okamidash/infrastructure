@@ -1,9 +1,0 @@
----
-
-- name: Disable FirewallD
-  service:
-    name: firewalld
-    state: stopped
-    enabled: false
-
-

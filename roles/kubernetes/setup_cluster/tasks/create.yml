@@ -1,7 +1,0 @@
-- name: Wait for master to become available
-  wait_for_connection:
-
-- name: Initialise the kubernetes cluster
-  command: kubeadm init --pod-network-cidr=192.168.0.0/16
-  become: yes
-

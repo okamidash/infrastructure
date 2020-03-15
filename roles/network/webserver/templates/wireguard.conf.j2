@@ -1,9 +1,0 @@
-[Interface]
-PrivateKey = {{ wireguard_private_key }}
-ListenPort = 55107
-Address = {{ vps_network_address }}
-
-[Peer]
-PublicKey = {{ local_wireguard_pubkey }}
-AllowedIPs = {{ vpn_network_address }}/32,{{ allowed_networks }}
-

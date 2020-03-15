@@ -1,7 +1,0 @@
----
-proxyserver:
-  torrent.media.svc.oxide.one:  "http://localhost:8080"
-  movies.media.svc.oxide.one:   "http://localhost:7878"
-  tv.media.svc.oxide.one:       "http://localhost:8989"
-  request.media.svc.oxide.one:  "http://localhost:3579"
-  test.svc.oxide.one:           "http://localhost:8080"

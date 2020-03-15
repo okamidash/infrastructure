@@ -1,7 +1,0 @@
-cpus: 4
-memory: 6144
-disk_size: 15G
-network_address: dhcp
-network: default
-base_image_name: fedora-cloud-base.qcow2
-ansible_user: oxide

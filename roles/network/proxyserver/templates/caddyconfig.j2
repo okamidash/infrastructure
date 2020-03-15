@@ -1,8 +1,0 @@
-{% for domain,proxy in proxyserver.items() %}
-https://{{ domain }} {
-    tls {{ certificate_location }}/cert.cert {{ certificate_location }}/key.key
-    proxy / {{ proxy }}
-}
-
-
-{% endfor %}

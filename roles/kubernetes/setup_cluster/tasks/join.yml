@@ -1,4 +1,0 @@
-- name: Join the cluster
-  command: "{{ join_token_command }}"
-  become: yes
-
