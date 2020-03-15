@@ -17,7 +17,7 @@
     - "networks[network.key] == 'dhcp'"
 
 - name: "Setup Static IP settings for network interface {{ network.key }}"
-  command: "nmcli con mod {{ network.key }} ipv4.method manual ip4 {{ networks[network.key] }} gw4 {{ network.value.gateway }}"
+  command: "nmcli con mod {{ network.key }} ipv4.method manual ip4 {{ networks[network.key] }} gw4 {{ network.value.gateway | ipaddr('address') }}"
   when:
     - networks[network.key] is defined
     - networks[network.key] | ipv4 != False

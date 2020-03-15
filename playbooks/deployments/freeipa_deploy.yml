@@ -5,12 +5,12 @@
   roles:
 #    - virt/deployment
 #    - network/vyos/static_ip
-#    - role: network/ssl_certs
-#      state: install
-#    - role: network/ssl_certs
-#      state: get
-#    - role: common/freeipa
-#      state: certs
+    - role: network/ssl_certs
+      state: install
+    - role: network/ssl_certs
+      state: get
+    - role: common/freeipa
+      state: certs
     - role: common/freeipa
       state: dns_zones
 

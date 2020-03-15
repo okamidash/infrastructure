@@ -5,8 +5,10 @@
   gather_facts: no
   vars:
   roles:
-    - virt/deployment
+#    - virt/deployment
     - common/github_ssh_key
     - role: network/vyos
-
+      state: 'solar'
+    - role: network/vyos
+      state: 'dhcpd'
 

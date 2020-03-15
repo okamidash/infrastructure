@@ -1,6 +1,6 @@
 ---
 - name: "Setup VM"
-  hosts: vma.vm.oxide.one
+  hosts: vma.wg.oxide.one
   gather_facts: no
   roles:
     - role: virt/deployment

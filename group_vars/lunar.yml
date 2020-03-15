@@ -1,5 +1,6 @@
 ---
 banlist: ["out","server","virtual","utility","kube","zoned"]
-vm_net_opts: "--network=network:utility --network=network:wireguard"
+cluster_index: "1"
+vm_net_opts: "--network=network:out --network=network:wireguard --network=network:utility"
 mullvad_endpoint: "gb4-wireguard.mullvad.net"
 mullvad_endpoint_pubkey: "IJJe0TQtuQOyemL4IZn6oHEsMKSPqOuLfD5HoAWEPTY="

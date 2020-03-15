@@ -15,16 +15,24 @@ set system login user vyos authentication public-keys default type {{ ssh_key_ty
 set interfaces ethernet {{ eth }} description {{ network }}
 {% if network == "out" %}
 set interfaces ethernet {{ eth }} address dhcp
+{% if (groups['solar'] | length) != 1 %}
 set high-availability vrrp group {{ network }} virtual-address {{ out_virtual_address }}
+{% endif %}
 {% else %}
+{% if (groups['solar'] | length) != 1 %}
 set interfaces ethernet {{ eth }} address {{ desc.gateway | ipaddr('network') | ipmath(ip_index) }}/{{ desc.gateway | ipaddr('prefix') }}
 set high-availability vrrp group {{ network }} virtual-address {{ desc.gateway }}
+{% else %}
+set interfaces ethernet {{ eth }} address {{ desc.gateway }}
 {% endif %}
+{% endif %}
+{% if (groups['solar'] | length) != 1 %}
 set high-availability vrrp sync-group sync member '{{ network }}'
 set high-availability vrrp group {{ network }} vrid {{ loop.index0 + 1 }}
 set high-availability vrrp group {{ network }} interface {{ eth }}
 set high-availability vrrp group {{ network }} priority '{{ 250 - ( cluster_index | int ) }}'
 set high-availability vrrp group {{ network }} preempt-delay 5
+{% endif %}
 {% endif %}
 {% endfor %}
 {# Connection tracking #}

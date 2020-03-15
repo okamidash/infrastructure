@@ -3,5 +3,6 @@
   hosts: ipa.oxide.one
   gather_facts: no
   roles:
-    - role: virt/deployment
+#   - role: virt/deployment
+   - role: network/vyos/static_ip
 
