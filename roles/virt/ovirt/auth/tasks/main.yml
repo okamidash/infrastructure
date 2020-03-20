@@ -1,3 +1,0 @@
----
-- include_vars: "{{ lookup('file', playbook_dir + '/../vars/secrets.yml') }}"
-- debug: msg="{{ ovirt_username }}"

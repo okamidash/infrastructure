@@ -1,6 +1,10 @@
 ---
 - name: "Testing playbook"
-  hosts: localhost
+  hosts: solar
+  gather_facts: no
+  tasks:
   roles:
-    - virt/ovirt/auth
+#    - role: net/vyos/init
+#    - role: net/vyos/phys_network
+    - role: net/vyos/dhcp
 

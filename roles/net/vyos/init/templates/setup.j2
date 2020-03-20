@@ -1,0 +1,16 @@
+{% if state|default('present') == 'present' %}
+{% set action = 'set' %}
+{% elif state|default('present') == 'absent' %}
+{% set action = 'delete' %}
+{% endif %}
+{{ action }} system host-name {{ inventory_hostname }}
+{{ action }} system domain-name {{ domain }}
+{% for user in ssh_keys %}
+{% set key_type = ssh_keys[user].split(' ')[0] %}
+{% set key = ssh_keys[user].split(' ')[1] %}
+{{ action }} system login user vyos authentication public-keys "{{ user }}" type "{{ key_type }}"
+{{ action }} system login user vyos authentication public-keys "{{ user }}" key "{{ key }}"
+{% if action == 'delete' %}
+{{ action }} system login user vyos authentication public-keys "{{ user }}"
+{% endif %}
+{% endfor %}

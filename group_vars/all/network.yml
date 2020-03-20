@@ -1,0 +1,38 @@
+dhcp_range_start: 50
+dhcp_range_end:   200
+
+networks:
+  wan:
+    gateway:    "10.0.0.1/24"
+    managed_by: "wan"
+    subdomain:  "dhcp"
+  server:
+    gateway:    "10.0.2.1/24"
+    managed_by: "solar"
+    subdomain:  "srv"
+  virtual:
+    gateway:    "10.0.4.1/24"
+    managed_by: "solar"
+    subdomain:  "vm"
+    vlan_id:    "4"
+  utility:
+    gateway:    "10.0.5.1/24"
+    managed_by: "solar"
+    subdomain:  "nix"
+    vlan_id:    "5"
+  zoned:
+    gateway:    "10.0.6.1/24"
+    managed_by: "lunar"
+    subdomain:  "zone"
+    vlan_id:    "6"
+  kube:
+    gateway:    "10.0.7.1/24"
+    managed_by: "solar"
+    subdomain:  "kube"
+    vlan_id:    "7"
+  wireguard:
+    gateway:    "10.0.8.1/24"
+    managed_by: "flare"
+    subdomain:  "wg"
+    vlan_id:    "8"
+

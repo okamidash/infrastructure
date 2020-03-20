@@ -1,0 +1,6 @@
+---
+- name: "Initial setup of vyos"
+  vyos_config:
+    src: setup.j2
+    save: yes
+
