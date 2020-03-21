@@ -1,0 +1,3 @@
+ovirt_datacenter: "oxide"
+ovirt_engine_endpoint: "https://ovirt.srv.oxide.one/ovirt-engine"
+

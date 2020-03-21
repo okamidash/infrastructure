@@ -1,14 +1,10 @@
 ---
-
-- name: "Check if ovirt ca file exists"
-  stat:
-    path: "{{ playbook_dir }}/../files/ovirt.ca"
-  delegate_to: "127.0.0.1"
-  register: stat_ovirt_ca
-
-- name: "Remove ovirt ca file if it exists"
-  file:
-    path: "{{ playbook_dir }}/../files/ovirt.ca"
+- ovirt_network:
+    data_center: "{{ ovirt_datacenter }}"
+    name: "{{ item.key }}"
+    vlan_tag: "{{ item.value.vlan_id }}"
+    label: "{{ item.value.subdomain }}"
     state: absent
-  delegate_to: "127.0.0.1"
-  when: stat_ovirt_ca.stat.exists
+    auth: "{{ ovirt_auth }}"
+  when: item.value.vlan_id is defined
+  with_dict: "{{ networks }}"

@@ -1,5 +1,5 @@
 ---
-- name: "Deploy Solar infrastructure"
+- name: "Deploy ovirt networks"
   hosts: localhost
   gather_facts: no
   tasks:
@@ -8,3 +8,6 @@
       state: present
     - role: virt/ovirt/auth
       state: present
+    - role: virt/ovirt/networks
+      state: present
+

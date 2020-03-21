@@ -8,8 +8,10 @@ These are the virtualization roles.
 
 ```
 roles/virt
-├── ovirt
-│   └── get_ca
+└── ovirt
+    ├── auth
+    ├── get_ca
+    └── networks
 ```
 
 ### ovirt/get_ca
@@ -36,5 +38,13 @@ Vars used:
 States: `present`,`absent`
 
 Returns: `ovirt_auth`
+
+### ovirt/networks
+
+Sets up and destroys networks for ovirt. 
+
+Loops through the variable `networks` , only creating networks with an assigned vlan_id. 
+
+Vars used: `ovirt_auth`,`ovirt_datacenter`, `networks`
 
 
