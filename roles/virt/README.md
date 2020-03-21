@@ -43,8 +43,13 @@ Returns: `ovirt_auth`
 
 Sets up and destroys networks for ovirt. 
 
-Loops through the variable `networks` , only creating networks with an assigned vlan_id. 
+Loops through the variable `networks` , only creating networks with an assigned vlan_id. After they are created, the networks are assigned to the interface that does not contain the management subnet.
 
-Vars used: `ovirt_auth`,`ovirt_datacenter`, `networks`
+Vars used: `ovirt_auth`,`ovirt_datacenter`, `networks`,`ovirt_cluster_name`
 
-
+| Var name         | Purpose                 | Defined where              |
+| ---------------- | ----------------------- | -------------------------- |
+| ovirt_auth       | Ovirt Authentication    | From auth                  |
+| ovirt_datacenter | Setting Datacenter      | group_vars/all/ovirt.yml   |
+| networks         | List of networks        | group_vars/all/network.yml |
+| vm_interface     | Eth interface for hosts | group_vars/ovirt.yml       |

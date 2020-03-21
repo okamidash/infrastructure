@@ -1,12 +1,17 @@
 ---
-- ovirt_network:
+- name: "Setup networks for ovirt"
+  ovirt_network:
     data_center: "{{ ovirt_datacenter }}"
     name: "{{ item.key }}"
     vlan_tag: "{{ item.value.vlan_id }}"
     comment: "{{ item.value.subdomain }}"
-    label: "{{ item.key }}"
-    state: present
     auth: "{{ ovirt_auth }}"
+    clusters:
+      - name: "{{ ovirt_cluster_name }}"
+        assigned: yes
   when: item.value.vlan_id is defined
   with_dict: "{{ networks }}"
 
+- name: "Attach networks for each host"
+  include_tasks: attach_network.yml
+  with_list: "{{ groups['ovirt'] }}"

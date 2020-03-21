@@ -1,3 +1,4 @@
 ovirt_datacenter: "oxide"
+ovirt_cluster_name: "oxide.one"
 ovirt_engine_endpoint: "https://ovirt.srv.oxide.one/ovirt-engine"
 
