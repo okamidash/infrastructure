@@ -1,0 +1,16 @@
+---
+
+- name: "Create ovirt networks"
+  :
+    path: "{{ playbook_dir }}/../files/ovirt.ca"
+  delegate_to: "127.0.0.1"
+  register: stat_ovirt_ca
+
+- name: "Download ovirt ca file if it does not exist already"
+  get_url:
+    url: "{{ ovirt_engine_endpoint }}/services/pki-resource?resource=ca-certificate&format=X509-PEM-CA"
+    dest: "{{ playbook_dir }}/../files/ovirt.ca"
+    mode: '0440'
+    validate_certs: no
+  when: not stat_ovirt_ca.stat.exists
+

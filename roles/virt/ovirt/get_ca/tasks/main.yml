@@ -1,0 +1,9 @@
+---
+- name: "Get ovirt CA"
+  include_tasks: setup.yml
+  when: state|default('present') == 'present'
+
+- name: "Delete ovirt CA"
+  include_tasks: destroy.yml
+  when: state|default('present') == 'absent'
+

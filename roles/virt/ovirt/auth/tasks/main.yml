@@ -1,0 +1,16 @@
+---
+- name: "Get ovirt authentication"
+  ovirt_auth:
+    url: "{{ ovirt_engine_endpoint }}/api"
+    ca_file: "{{ playbook_dir }}/../files/ovirt.ca"
+    username: "{{ ovirt_username }}"
+    password: "{{ ovirt_password }}"
+  when: state|default('present') == 'present'
+  delegate_to: 127.0.0.1
+
+- name: "Remove ovirt authentication"
+  ovirt_auth:
+    state: absent
+    ovirt_auth: "{{ ovirt_auth }}"
+  when: state|default('present') == 'absent' and ovirt_auth is defined
+  delegate_to: 127.0.0.1

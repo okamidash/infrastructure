@@ -1,0 +1,14 @@
+---
+
+- name: "Check if ovirt ca file exists"
+  stat:
+    path: "{{ playbook_dir }}/../files/ovirt.ca"
+  delegate_to: "127.0.0.1"
+  register: stat_ovirt_ca
+
+- name: "Remove ovirt ca file if it exists"
+  file:
+    path: "{{ playbook_dir }}/../files/ovirt.ca"
+    state: absent
+  delegate_to: "127.0.0.1"
+  when: stat_ovirt_ca.stat.exists

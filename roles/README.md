@@ -1,25 +1,26 @@
-# About
+# Roles
 
-This the roles folder.
+These are my roles within my infrastructure. As it currently stands, there are 3 Categories of roles. App, Net and Virt.
 
-## App
+---
 
-## Net
+# Folder Structure
 
-### Vyos
+```
+├── app
+├── net
+│   └── vyos
+└── virt
+```
 
-- `inventory_hostname`
+### App
 
-- `domain`
+Application related roles. These are the roles to deploy applications. Commonly associated with the virt moduels.
 
-- `ssh_keys`
+### Net
 
-- `wan_interface`
+Network related modules for setting up network architecture (wireguard, vyos, DNS etc)
 
-- `lan_interface`
+### Virt
 
-- `ip_addresses`
-
-- `networks`
-
-## Virt
+Virtualization related modules for setting up virt stuff. 

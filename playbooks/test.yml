@@ -1,11 +1,10 @@
 ---
-- name: "Testing playbook"
-  hosts: solar
+- name: "Deploy Solar infrastructure"
+  hosts: localhost
   gather_facts: no
   tasks:
   roles:
-#    - role: net/vyos/init
-#    - role: net/vyos/phys_network
-#    - role: net/vyos/dhcp
-#    - role: net/vyos/dns
-     - role: net/vyos/static_dhcp
+    - role: virt/ovirt/get_ca
+      state: present
+    - role: virt/ovirt/auth
+      state: present

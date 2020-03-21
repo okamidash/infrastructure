@@ -1,2 +1,2 @@
 domain: "oxide.one"
-
+ovirt_engine_endpoint: "https://ovirt.srv.oxide.one/ovirt-engine"

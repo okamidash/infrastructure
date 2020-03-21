@@ -18,7 +18,6 @@ This repo is my master repository for all of my Infrastructure.
     ├── app        - Application specific roles
     ├── net        - Network based operations
     └── virt       - Virtualization related
-
 ```
 
 ### Files
@@ -35,14 +34,11 @@ group_vars/all
 ├── network.yml     - Network related vars
 ├── secrets.yml     - Secrets
 └── ssh_keys.yml    - SSH keys for users
-
 ```
 
 **main.yml**
 
 `domain` | (Currently `oxide.one`)
-
-
 
 **network.yml**
 
@@ -66,13 +62,9 @@ networks:
                 ip:  "10.0.2.2"          # Ip address for mapping
 ```
 
-
-
 **secrets.yml**
 
 No vars defined in this file just yet.
-
-
 
 **ssh_keys.yml**
 
