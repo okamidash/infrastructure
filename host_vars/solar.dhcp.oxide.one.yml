@@ -1,8 +1,2 @@
 wan_interface: "eth0"
 lan_interface: "eth2"
-ip_addresses:
-  out: "dhcp"
-  server: "10.0.2.1"
-  virtual: "10.0.4.1"
-  utility: "10.0.5.1"
-  kube: "10.0.7.1"

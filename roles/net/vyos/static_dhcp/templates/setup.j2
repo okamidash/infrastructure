@@ -16,8 +16,8 @@
 {% set prefix = action + " service dhcp-server shared-network-name " + network[0] + " subnet " + subnet %}
 {% if network[1].static_mappings is defined %}
 {% for static_mapping in network[1].static_mappings.items() %}
-{{ prefix }} static-mapping {{ static_mapping[0] }} mac-address "{{ static_mapping[1].mac }}"
-{{ prefix }} static-mapping {{ static_mapping[0] }} ip-address "{{ static_mapping[1].ip }}"
+{{ prefix }} static-mapping {{ static_mapping[0] }}.{{ domain_name }} mac-address "{{ static_mapping[1].mac }}"
+{{ prefix }} static-mapping {{ static_mapping[0] }}.{{ domain_name }} ip-address "{{ static_mapping[1].ip }}"
 {% endfor %}
 {% endif %}
 {% endif %}

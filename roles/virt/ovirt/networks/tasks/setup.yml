@@ -3,7 +3,8 @@
     data_center: "{{ ovirt_datacenter }}"
     name: "{{ item.key }}"
     vlan_tag: "{{ item.value.vlan_id }}"
-    label: "{{ item.value.subdomain }}"
+    comment: "{{ item.value.subdomain }}"
+    label: "{{ item.key }}"
     state: present
     auth: "{{ ovirt_auth }}"
   when: item.value.vlan_id is defined
