@@ -1,3 +1,5 @@
+dns_server: 10.0.0.1
+
 dhcp_range_start: 50
 dhcp_range_end:   200
 
@@ -10,6 +12,19 @@ networks:
     gateway:    "10.0.2.1/24"
     managed_by: "solar"
     subdomain:  "srv"
+    static_mappings:
+      infinity.srv.oxide.one:
+        mac:  "90:E2:BA:3F:27:D0"
+        ip:   "10.0.2.2"
+      blackbird.srv.oxide.one:
+        mac:  "90:E2:BA:34:82:AA"
+        ip:   "10.0.2.3"
+      inferno.srv.oxide.one:
+        mac:  "90:E2:BA:3F:27:DA"
+        ip:   "10.0.2.4"
+      phoenix.srv.oxide.one:
+        mac:  "90:E2:BA:3F:25:D6"
+        ip:   "10.0.2.5"
   virtual:
     gateway:    "10.0.4.1/24"
     managed_by: "solar"

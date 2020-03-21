@@ -8,23 +8,11 @@ This the roles folder.
 
 ### Vyos
 
-**init**
-
-Vars used:
-
 - `inventory_hostname`
 
 - `domain`
 
 - `ssh_keys`
-
-**dhcp**
-
-**dns**
-
-**phys__network**
-
-Vars used:
 
 - `wan_interface`
 
@@ -33,9 +21,5 @@ Vars used:
 - `ip_addresses`
 
 - `networks`
-
-**static_dhcp**
-
-Modules
 
 ## Virt

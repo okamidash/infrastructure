@@ -4,9 +4,6 @@
 {% set action = 'delete' %}
 {% endif %}
 
-{{ action }} service dhcp-server host-decl-name
-{{ action }} service dhcp-server dynamic-dns-update
-
 {% for network in networks.items() %}
 {% set manager = network[1].managed_by %}
 {% if manager in group_names %}
@@ -17,15 +14,11 @@
 {% set dhcp_stop = subnet | ipmath(dhcp_range_end) %}
 {% set domain_name = network[1].subdomain + "." + domain %}
 {% set prefix = action + " service dhcp-server shared-network-name " + network[0] + " subnet " + subnet %}
-{{ prefix }} default-router {{ address }}
-{{ prefix }} dns-server {{ address }}
-{{ prefix }} domain-name {{ domain_name }}
-{{ prefix }} domain-search {{ domain_name }}
-{{ prefix }} lease 86400
-{{ prefix }} range 0 start {{ dhcp_start }}
-{{ prefix }} range 0 stop {{ dhcp_stop }}
-{% if action == 'delete' %}
-{{ action }} service dhcp-server
+{% if network[1].static_mappings is defined %}
+{% for static_mapping in network[1].static_mappings.items() %}
+{{ prefix }} static-mapping {{ static_mapping[0] }} mac-address "{{ static_mapping[1].mac }}"
+{{ prefix }} static-mapping {{ static_mapping[0] }} ip-address "{{ static_mapping[1].ip }}"
+{% endfor %}
 {% endif %}
 {% endif %}
 {% endfor %}

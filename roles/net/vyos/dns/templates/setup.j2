@@ -1,0 +1,19 @@
+{% if state|default('present') == 'present' %}
+{% set action = 'set' %}
+{% elif state|default('present') == 'absent' %}
+{% set action = 'delete' %}
+{% endif %}
+{{ action }} service dns forwarding name-server {{ dns_server }}
+{% for network in networks.items() %}
+{% set manager = network[1].managed_by %}
+{% if manager in group_names %}
+{% set gateway = network[1].gateway %}
+{% set subnet = gateway | ipaddr('host/prefix') | ipaddr('subnet') %}
+{% set address = gateway | ipaddr('address') %}
+{{ action }} service dns forwarding allow-from {{ subnet }}
+{{ action }} service dns forwarding listen-address {{ address }}
+{% endif %}
+{% endfor %}
+{% if action == 'delete' %}
+{{ action }} service dns
+{% endif %}

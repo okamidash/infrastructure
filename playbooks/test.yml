@@ -6,5 +6,6 @@
   roles:
 #    - role: net/vyos/init
 #    - role: net/vyos/phys_network
-    - role: net/vyos/dhcp
-
+#    - role: net/vyos/dhcp
+#    - role: net/vyos/dns
+     - role: net/vyos/static_dhcp
