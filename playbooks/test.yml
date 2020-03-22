@@ -4,10 +4,8 @@
   gather_facts: no
   tasks:
   roles:
-    - role: virt/ovirt/get_ca
-      state: present
     - role: virt/ovirt/auth
       state: present
-    - role: virt/ovirt/networks
-      state: present
+    - role: virt/ovirt/import_template
+      state: absent
 

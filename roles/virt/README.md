@@ -53,3 +53,23 @@ Vars used: `ovirt_auth`,`ovirt_datacenter`, `networks`,`ovirt_cluster_name`
 | ovirt_datacenter | Setting Datacenter      | group_vars/all/ovirt.yml   |
 | networks         | List of networks        | group_vars/all/network.yml |
 | vm_interface     | Eth interface for hosts | group_vars/ovirt.yml       |
+
+### ovirt/import_template
+
+Imports and removes a template in ovirt from the OpenStack glance image repository. This is named ovirt-image-repository.
+
+Vars used:
+
+| Var name                    | Purpose                                    | Defined where            |
+| --------------------------- | ------------------------------------------ | ------------------------ |
+| ovirt_auth                  | Ovirt Authentication                       | From auth                |
+| ovirt_base_template_name    | Name of template to create                 | Defaults of role         |
+| ovirt_template_import_image | Name of template from glance to import     | Defaults of role         |
+| ovirt_storage_domain        | The storage domain to save the template to | group_vars/all/ovirt.yml |
+| ovirt_cluster_name          | The Cluster to save the template to        | group_vars/all/ovirt.yml |
+
+States: `present`,`absent`
+
+
+
+

@@ -1,0 +1,2 @@
+ovirt_template_import_image: "Fedora 31 Cloud Base Image v1.9 for x86_64"
+ovirt_base_template_name: "base_image"
