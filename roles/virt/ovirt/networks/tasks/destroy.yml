@@ -1,10 +1,15 @@
 ---
-- ovirt_network:
+- name: "Setup networks for ovirt"
+  ovirt_network:
     data_center: "{{ ovirt_datacenter }}"
     name: "{{ item.key }}"
     vlan_tag: "{{ item.value.vlan_id }}"
-    label: "{{ item.value.subdomain }}"
-    state: absent
+    comment: "{{ item.value.subdomain }}"
     auth: "{{ ovirt_auth }}"
+    state: absent
+    clusters:
+      - name: "{{ ovirt_cluster_name }}"
+        assigned: yes
   when: item.value.vlan_id is defined
   with_dict: "{{ networks }}"
+
