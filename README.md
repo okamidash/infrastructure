@@ -69,3 +69,39 @@ No vars defined in this file just yet.
 **ssh_keys.yml**
 
 Contains the var `ssh_keys` with the output of public keys assigned to a user in the format of `user:"key"`
+
+
+
+# Playbooks
+
+---
+
+
+
+Playbooks are located in the (you guessed it) playbook/ dir.
+
+
+
+### dhcp.yml
+
+This logs into solar and sets up static DHCP reservations. These reservations are defined in `group_vars/all/networks.yml`. 
+
+
+
+### solar_deploy.yml
+
+This playbook takes a *physical* VyOS machine, with at least one working ethernet connection; and configures it to provide DNS, DHCP and routing for all networks in `group_vars/all/networks.yml`. These networks have the flag `managed_by`. This flag indicates whether the machine will be configured to provide connectivity to that network, or whether another network will do this task.
+
+
+
+### ovirt_networks.yml
+
+This playbook runs on localhost, and performs the following tasks. Downloads the CA, Gets an authentication token and finally creates the networks defined in `networks.yml` (provided they have a VLAN id)
+
+
+
+
+
+
+
+

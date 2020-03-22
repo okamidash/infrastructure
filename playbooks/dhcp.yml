@@ -1,0 +1,7 @@
+---
+- name: "Create static DHCP Reservations"
+  hosts: solar
+  gather_facts: no
+  tasks:
+  roles:
+    - role: net/vyos/static_dhcp

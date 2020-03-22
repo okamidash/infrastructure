@@ -35,6 +35,10 @@ networks:
     managed_by: "solar"
     subdomain:  "nix"
     vlan_id:    "5"
+    static_mappings:
+      nas:
+        mac:    "56:6f:7b:93:00:00"
+        ip:     "10.0.5.4"
   zoned:
     gateway:    "10.0.6.1/24"
     managed_by: "lunar"
