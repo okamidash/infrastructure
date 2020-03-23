@@ -1,0 +1,9 @@
+---
+- ovirt_template:
+    auth: "{{ ovirt_auth }}"
+    state: imported
+    name: "{{ ovirt_base_template_name }}"
+    image_disk: "{{ ovirt_template_import_image }}"
+    image_provider: "ovirt-image-repository"
+    storage_domain: "{{ ovirt_storage_domain }}"
+    cluster: "{{ ovirt_cluster_name }}"

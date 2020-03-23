@@ -70,8 +70,6 @@ Vars used:
 
 States: `present`,`absent`
 
-
-
 ### ovirt/modify_template
 
 Imports a template and performs modifications on it, before saving it as a template.
@@ -106,10 +104,26 @@ Vars used:
 
 After this has completed, it will create a subversion of the template with all the intalled packages and modifications.
 
+### ovirt/virtual_machine
+
+Creates and deletes virtual machines.
 
 
 
+Vars used: `less`,`than`,`three`
 
+Vars used:
 
+| Var name         | Purpose       | Defined where   |
+| ---------------- | ------------- | --------------- |
+| More than 3 vars | Why it's used | Where it's used |
 
+States: `present`,`absent`
 
+Returned vars: `less`,`than`,`three`
+
+Returned vars:
+
+| Var name         | Purpose       | Type            |
+| ---------------- | ------------- | --------------- |
+| More than 3 vars | Why it's used | Where it's used |

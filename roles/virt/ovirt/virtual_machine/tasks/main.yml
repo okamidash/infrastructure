@@ -1,0 +1,9 @@
+---
+- name: "Import ovirt template for use"
+  include_tasks: setup.yml
+  when: state|default('present') == 'present'
+
+- name: "Delete imported ovirt template"
+  include_tasks: destroy.yml
+  when: state|default('present') == 'absent'
+

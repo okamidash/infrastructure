@@ -1,0 +1,4 @@
+ovirt_base_template_name: "base_image"
+ovirt_vm_cores: 4
+ovirt_vm_ram: 2048
+
