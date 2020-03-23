@@ -4,9 +4,9 @@
     auth: "{{ ovirt_auth }}"
     state: present
     name: "{{ ovirt_base_template_name }}"
-    cpu_cores: 4
+    cpu_cores: 2
     graphical_console:
-      headless_mode: "true"
+      protocol: "vnc"
     template: "{{ ovirt_base_template_name }}"
     cluster: "{{ ovirt_cluster_name }}"
     type: "server"
@@ -35,10 +35,10 @@
         {% if ovirt_template_selinux_disabled %}
          - sed -i 's/enforcing/disabled/g' /etc/selinux/config /etc/selinux/config
         {% endif %}
-         - rm -rf /var/lib/cloud/*
         {% for unit in ovirt_template_enabled_services %}
          - systemctl enable {{ unit }}
         {% endfor %}
+        final_message: "The system is finally up, after $UPTIME seconds"
         power_state:
          delay: "0"
          mode: poweroff
@@ -77,8 +77,6 @@
     seal: "yes"
     cluster: "{{ ovirt_cluster_name }}"
     vm: "{{ ovirt_base_template_name }}"
-    cloud_init:
-    nics:
     version:
       name: "subversion"
 
