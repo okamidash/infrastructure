@@ -2,10 +2,11 @@
 - name: "Deploy ovirt networks"
   hosts: localhost
   gather_facts: no
-  tasks:
+  collections:
+    - ovirt.ovirt_collection
   roles:
     - role: virt/ovirt/auth
       state: present
     - role: virt/ovirt/import_template
-      state: absent
-
+      state: present
+    - role: virt/ovirt/modify_template

@@ -33,5 +33,3 @@ Returned vars:
 | Var name         | Purpose       | Type            |
 | ---------------- | ------------- | --------------- |
 | More than 3 vars | Why it's used | Where it's used |
-
-

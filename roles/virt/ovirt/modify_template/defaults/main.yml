@@ -1,0 +1,11 @@
+ovirt_nic_network: "virtual"
+ovirt_template_packages:
+  - "vim"
+  - "htop"
+  - "qemu-guest-agent"
+  - "freeipa-client"
+ovirt_template_enabled_services:
+  - "qemu-guest-agent"
+ovirt_template_selinux_disabled: True
+ovirt_template_upgrade_all: True
+

@@ -1,0 +1,22 @@
+{% if ovirt_template_upgrade_all %}
+package_update: true
+package_upgrade: true
+{% endif %}
+packages:
+{% for package in ovirt_template_packages %}
+ - {{ package }}
+{% endfor %}
+runcmd:
+{% if ovirt_template_selinux_disabled %}
+ - sed -i 's/enforcing/disabled/g' /etc/selinux/config /etc/selinux/config
+{% endif %}
+ - rm -rf /var/lib/cloud/*
+{% for unit in ovirt_template_enabled_services %}
+ - systemctl enable {{ unit }}
+{% endfor %}
+power_state:
+ delay: "0"
+ mode: poweroff
+ message: Bye Bye
+ timeout: 30
+ condition: True
