@@ -108,8 +108,6 @@ After this has completed, it will create a subversion of the template with all t
 
 Creates and deletes virtual machines.
 
-
-
 Vars used: `less`,`than`,`three`
 
 Vars used:
