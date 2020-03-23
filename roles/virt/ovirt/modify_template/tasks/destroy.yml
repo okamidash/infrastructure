@@ -1,6 +1,0 @@
----
-- ovirt_template:
-    auth: "{{ ovirt_auth }}"
-    state: absent
-    name: "{{ ovirt_base_template_name }}"
-

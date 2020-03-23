@@ -88,21 +88,25 @@ By default, this will install the following packages:
 
 Default vars:
 
-| Var Name                        | Purpose                                           | Type    | Default                                  |
-| ------------------------------- | ------------------------------------------------- | ------- | ---------------------------------------- |
-| ovirt_nic_network               | The name of the network to create the template on | string  | "virtual"                                |
-| ovirt_template_packages         | List of packages to install onto template         | list    | vim,htop,qemu-guest-agent,freeipa-client |
-| ovirt_template_enabled_services | List of systemd units to enable at boot           | list    | qemu-guest-agent                         |
-| ovirt_template_selinux_disabled | Disable selinux                                   | Boolean | True                                     |
-| ovirt_template_upgrade_all      | Upgrade all packages                              | Boolean | True                                     |
+| Var Name                        | Purpose                                           | Type    | Default                                                |
+| ------------------------------- | ------------------------------------------------- | ------- | ------------------------------------------------------ |
+| ovirt_base_template_name        | Name of template to load and then save to.        | string  | "base_image"                                           |
+| ovirt_nic_network               | The name of the network to create the template on | string  | "virtual"                                              |
+| ovirt_template_packages         | List of packages to install onto template         | list    | vim,htop,qemu-guest-agent,freeipa-client,dnf-automatic |
+| ovirt_template_enabled_services | List of systemd units to enable at boot           | list    | qemu-guest-agent,dnf-automatic-install.timer           |
+| ovirt_template_selinux_disabled | Disable selinux                                   | Boolean | True                                                   |
+| ovirt_template_upgrade_all      | Upgrade all packages                              | Boolean | True                                                   |
 
 Vars used:
 
-| Var name                 | Purpose                                    | Defined where            |
-| ------------------------ | ------------------------------------------ | ------------------------ |
-| ovirt_auth               | Ovirt Authentication                       | From auth                |
-| ovirt_base_template_name | Name of template to load and then save to. | Defaults of role         |
-| ovirt_cluster_name       | The Cluster to work on.                    | group_vars/all/ovirt.yml |
+| Var name           | Purpose                 | Defined where            |
+| ------------------ | ----------------------- | ------------------------ |
+| ovirt_auth         | Ovirt Authentication    | From auth                |
+| ovirt_cluster_name | The Cluster to work on. | group_vars/all/ovirt.yml |
+
+After this has completed, it will create a subversion of the template with all the intalled packages and modifications.
+
+
 
 
 

@@ -1,9 +1,89 @@
 ---
-- name: "Modify oVirt template for use as a system"
-  include_tasks: setup.yml
-  when: state|default('present') == 'present'
+- name: "Create ovirt VM and modify template"
+  ovirt_vm:
+    auth: "{{ ovirt_auth }}"
+    state: present
+    name: "{{ ovirt_base_template_name }}"
+    cpu_cores: 4
+    graphical_console:
+      headless_mode: "true"
+    template: "{{ ovirt_base_template_name }}"
+    cluster: "{{ ovirt_cluster_name }}"
+    type: "server"
+    operating_system: "other_linux"
+    serial_console: "yes"
+    nics:
+      - interface: "virtio"
+        name: "{{ ovirt_nic_network }}"
+        profile_name: "{{ ovirt_nic_network }}"
+  register: ovirt_created_vm
 
-- name: "Remove modified oVirt template"
-  include_tasks: destroy.yml
-  when: state|default('present') == 'absent'
+- name: "Start ovirt VM"
+  ovirt_vm:
+    auth: "{{ ovirt_auth }}"
+    cloud_init:
+      custom_script: |
+        {% if ovirt_template_upgrade_all %}
+        package_update: true
+        package_upgrade: true
+        {% endif %}
+        packages:
+        {% for package in ovirt_template_packages %}
+         - {{ package }}
+        {% endfor %}
+        runcmd:
+        {% if ovirt_template_selinux_disabled %}
+         - sed -i 's/enforcing/disabled/g' /etc/selinux/config /etc/selinux/config
+        {% endif %}
+         - rm -rf /var/lib/cloud/*
+        {% for unit in ovirt_template_enabled_services %}
+         - systemctl enable {{ unit }}
+        {% endfor %}
+        power_state:
+         delay: "0"
+         mode: poweroff
+         message: Bye Bye
+         timeout: 30
+         condition: True
+    state: "running"
+    name: "{{ ovirt_base_template_name }}"
 
+- name: "Wait for vm to install packages and shutdown"
+  ovirt_vm_info:
+    auth: "{{ ovirt_auth }}"
+    pattern: name="{{ ovirt_base_template_name }}"
+  register: base_image
+  until: base_image.ovirt_vms[0].status != "up"
+  retries: 20
+  delay: 30
+
+- name: "Ensure vm is shutdown"
+  ovirt_vm:
+    auth: "{{ ovirt_auth }}"
+    state: stopped
+    name: "{{ ovirt_base_template_name }}"
+
+- name: "Remove nic from vm"
+  ovirt_nic:
+    auth: "{{ ovirt_auth }}"
+    state: absent
+    vm: "{{ ovirt_base_template_name }}"
+    name: "{{ ovirt_nic_network }}"
+
+- name: "Update template {{ ovirt_base_template_name }} from created vm"
+  ovirt_template:
+    auth: "{{ ovirt_auth }}"
+    name: "{{ ovirt_base_template_name }}"
+    seal: "yes"
+    cluster: "{{ ovirt_cluster_name }}"
+    vm: "{{ ovirt_base_template_name }}"
+    cloud_init:
+    nics:
+    version:
+      name: "subversion"
+
+- name: "Remove vm from system"
+  ovirt_vm:
+    auth: "{{ ovirt_auth }}"
+    name: "{{ ovirt_base_template_name }}"
+    state: absent
