@@ -116,15 +116,33 @@ Unless specified otherwise, virtual machine will be created from the template na
 
 
 
-Vars used: `less`,`than`,`three`
+This will create a virtual machine and use the first 
+
+States: `present`,`absent`,`started`,`stopped`
 
 Vars used:
 
-| Var name         | Purpose       | Defined where   |
-| ---------------- | ------------- | --------------- |
-| More than 3 vars | Why it's used | Where it's used |
+| Var name           | Purpose                   | Defined where               |
+| ------------------ | ------------------------- | --------------------------- |
+| ovirt_auth         | Ovirt Authentication      | From auth                   |
+| inventory_hostname | Virtual machine name      | magic var                   |
+| ovirt_cluster_name | Cluster to create vm in   | group_vars/all/ovirt.yml    |
+| ssh_keys           | Add an initial admin user | group_vars/all/ssh_keys.yml |
 
-States: `present`,`absent`
+Default vars:
+
+| Var Name                        | Purpose                                                  | Type    | Default                                                |
+| ------------------------------- | -------------------------------------------------------- | ------- | ------------------------------------------------------ |
+| ovirt_base_template_name        | Name of template to create vm from                       | string  | "base_image"                                           |
+| ovirt_vm_cores                  | The number of cores to create for the vm                 | int     | "4"                                                    |
+| ovirt_vm_ram                    | The amount of ram to create for the virtual machine (MB) | int     | vim,htop,qemu-guest-agent,freeipa-client,dnf-automatic |
+| ovirt_template_enabled_services | List of systemd units to enable at boot                  | list    | qemu-guest-agent,dnf-automatic-install.timer           |
+| ovirt_template_selinux_disabled | Disable selinux                                          | Boolean | True                                                   |
+| ovirt_template_upgrade_all      | Upgrade all packages                                     | Boolean | True                                                   |
+
+
+
+
 
 Returned vars: `less`,`than`,`three`
 
