@@ -1,9 +1,17 @@
 ---
-- name: "Import ovirt template for use"
+- name: "Create virtual machine on ovirt"
   include_tasks: setup.yml
   when: state|default('present') == 'present'
 
-- name: "Delete imported ovirt template"
+- name: "Start virtual machine on ovirt"
+  include_tasks: start.yml
+  when: state|default('present') == 'started'
+
+- name: "Stop virtual machine on ovirt"
+  include_tasks: setup.yml
+  when: state|default('present') == 'stopped'
+
+- name: "Remove virtual machine on ovirt"
   include_tasks: destroy.yml
   when: state|default('present') == 'absent'
 

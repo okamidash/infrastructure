@@ -7,11 +7,15 @@ These are the virtualization roles.
 # Folder structure
 
 ```
-roles/virt
+roles/virt/
 └── ovirt
-    ├── auth
-    ├── get_ca
-    └── networks
+    ├── auth
+    ├── get_ca
+    ├── import_template
+    ├── modify_template
+    ├── networks
+    └── virtual_machine
+
 ```
 
 ### ovirt/get_ca
@@ -106,7 +110,11 @@ After this has completed, it will create a subversion of the template with all t
 
 ### ovirt/virtual_machine
 
-Creates and deletes virtual machines.
+Role to handle the creation, deletion, starting and stopping of virtual machines.
+
+Unless specified otherwise, virtual machine will be created from the template name defined with `ovirt_base_template_name`. 
+
+
 
 Vars used: `less`,`than`,`three`
 

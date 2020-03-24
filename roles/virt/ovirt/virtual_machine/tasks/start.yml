@@ -1,0 +1,11 @@
+---
+- name: "Start ovirt VM"
+  ovirt_vm:
+    auth: "{{ ovirt_auth }}"
+    state: "running"
+    name: "{{ inventory_hostname }}"
+    cloud_init:
+      host_name: "{{ inventory_hostname }}"
+      authorized_ssh_keys: "{{ ssh_keys[ovirt_vm_admin_user] }}"
+      user_name: "{{ ovirt_vm_admin_user }}"
+

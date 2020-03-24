@@ -1,9 +1,21 @@
 ---
-- ovirt_template:
+- name: "Create ovirt vm {{ inventory_hostname }}"
+  ovirt_vm:
     auth: "{{ ovirt_auth }}"
-    state: imported
-    name: "{{ ovirt_base_template_name }}"
-    image_disk: "{{ ovirt_template_import_image }}"
-    image_provider: "ovirt-image-repository"
-    storage_domain: "{{ ovirt_storage_domain }}"
+    state: "present"
+    name: "{{ inventory_hostname }}"
+    template: "{{ ovirt_base_template_name }}"
     cluster: "{{ ovirt_cluster_name }}"
+    memory: "{{ ovirt_vm_ram }}MiB"
+    high_availability: "{{ ovirt_vm_ha }}"
+
+- name: "Add nics to {{ inventory_hostname }}"
+  ovirt_nic:
+    auth: "{{ ovirt_auth }}"
+    vm: "{{ inventory_hostname }}"
+    name: "{{ item }}"
+    profile: "{{ item }}"
+    network: "{{ item }}"
+    interface: "virtio"
+    state: "present"
+  with_list: "{{ ovirt_vm_networks }}"

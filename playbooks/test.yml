@@ -1,12 +1,13 @@
 ---
 - name: "Deploy ovirt networks"
-  hosts: localhost
+  hosts: testvm.vm.oxide.one
   gather_facts: no
-  collections:
-    - ovirt.ovirt_collection
   roles:
     - role: virt/ovirt/auth
+      delegate_to: 127.0.0.1
+    - role: virt/ovirt/virtual_machine
       state: present
-    - role: virt/ovirt/import_template
-      state: present
-    - role: virt/ovirt/modify_template
+      delegate_to: 127.0.0.1
+    - role: virt/ovirt/virtual_machine
+      state: started
+      delegate_to: 127.0.0.1
