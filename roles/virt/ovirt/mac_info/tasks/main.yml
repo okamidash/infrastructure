@@ -1,0 +1,42 @@
+---
+
+- ovirt_nic_info:
+    auth: "{{ ovirt_auth }}"
+    vm: "{{ inventory_hostname }}"
+  register: result
+  delegate_to: "127.0.0.1"
+- set_fact:
+    networks: |
+      {% for network,vals in networks.items() %}
+      {{ network }}:
+        gateway: "{{ vals.gateway }}"
+        managed_by: "{{ vals.managed_by }}"
+        subdomain: "{{ vals.subdomain }}"
+      {% if vals.vlan_id is defined %}
+        vlan_id: "{{ vals.vlan_id }}"
+      {% endif %}
+      {% if vals.static_mappings is defined %}
+        static_mappings:
+      {% for host,vals2 in vals.static_mappings.items() %}
+      {% if inventory_hostname_short == host %}
+      {% for nic in result.ovirt_nics %}
+      {% if nic.name == network %}
+          {{ host }}:
+            mac: {{ nic.mac.address }}
+            ip: {{ vals2.ip }}
+      {% endif %}
+      {% endfor %}
+      {% else %}
+          {{ host }}:
+            mac: {{ vals2.mac }}
+            ip: {{ vals2.ip }}
+      {% endif %}
+      {% endfor %}
+      {% endif %}
+      {% endfor %}
+  delegate_to: "127.0.0.1"
+
+
+- set_fact: networks="{{ networks|from_yaml }}"
+  delegate_to: "127.0.0.1"
+

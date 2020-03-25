@@ -1,0 +1,7 @@
+ovirt_base_template_name: "base_image"
+ovirt_vm_cores: 4
+ovirt_vm_ram: 2048
+ovirt_vm_networks:
+  - "virtual"
+ovirt_vm_admin_user: "oxide"
+ovirt_vm_ha: "no"

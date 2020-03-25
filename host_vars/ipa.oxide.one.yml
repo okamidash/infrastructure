@@ -1,0 +1,7 @@
+ovirt_vm_networks:
+  - "utility"
+ovirt_vm_ha: "yes"
+ovirt_vm_ram: 8192
+ovirt_vm_cores: 8
+#ansible_host: "10.0.5.2"
+ansible_user: "oxide"

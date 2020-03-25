@@ -3,10 +3,9 @@
 {% elif state|default('present') == 'absent' %}
 {% set action = 'delete' %}
 {% endif %}
-
 {% for network in networks.items() %}
 {% set manager = network[1].managed_by %}
-{% if manager in group_names %}
+{% if manager in hostvars[ansible_host].group_names %}
 {% set gateway = network[1].gateway %}
 {% set subnet = gateway | ipaddr('host/prefix') | ipaddr('subnet') %}
 {% set address = gateway | ipaddr('address') %}
@@ -16,8 +15,10 @@
 {% set prefix = action + " service dhcp-server shared-network-name " + network[0] + " subnet " + subnet %}
 {% if network[1].static_mappings is defined %}
 {% for static_mapping in network[1].static_mappings.items() %}
+{% if static_mapping[1].mac is defined %}
 {{ prefix }} static-mapping {{ static_mapping[0] }}.{{ domain_name }} mac-address "{{ static_mapping[1].mac }}"
 {{ prefix }} static-mapping {{ static_mapping[0] }}.{{ domain_name }} ip-address "{{ static_mapping[1].ip }}"
+{% endif %}
 {% endfor %}
 {% endif %}
 {% endif %}

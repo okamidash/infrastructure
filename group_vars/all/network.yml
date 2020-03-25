@@ -1,4 +1,4 @@
-dns_server: 10.0.0.1
+dns_server: 10.0.5.2
 
 dhcp_range_start: 50
 dhcp_range_end:   200
@@ -36,6 +36,8 @@ networks:
     subdomain:  "nix"
     vlan_id:    "5"
     static_mappings:
+      ipa:
+        ip:     "10.0.5.2"
       nas:
         mac:    "56:6f:7b:93:00:00"
         ip:     "10.0.5.4"

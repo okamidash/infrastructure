@@ -1,5 +1,6 @@
 ---
 - name: "Start ovirt VM"
+  delegate_to: "127.0.0.1"
   ovirt_vm:
     auth: "{{ ovirt_auth }}"
     state: "running"
@@ -8,4 +9,3 @@
       host_name: "{{ inventory_hostname }}"
       authorized_ssh_keys: "{{ ssh_keys[ovirt_vm_admin_user] }}"
       user_name: "{{ ovirt_vm_admin_user }}"
-

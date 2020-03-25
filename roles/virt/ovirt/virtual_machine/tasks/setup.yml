@@ -1,5 +1,6 @@
 ---
 - name: "Create ovirt vm {{ inventory_hostname }}"
+  delegate_to: "127.0.0.1"
   ovirt_vm:
     auth: "{{ ovirt_auth }}"
     state: "present"
@@ -10,6 +11,7 @@
     high_availability: "{{ ovirt_vm_ha }}"
 
 - name: "Add nics to {{ inventory_hostname }}"
+  delegate_to: "127.0.0.1"
   ovirt_nic:
     auth: "{{ ovirt_auth }}"
     vm: "{{ inventory_hostname }}"

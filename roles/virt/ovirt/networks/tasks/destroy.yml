@@ -12,4 +12,5 @@
         assigned: yes
   when: item.value.vlan_id is defined
   with_dict: "{{ networks }}"
+  delegate_to: "127.0.0.1"
 

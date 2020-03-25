@@ -7,3 +7,4 @@
     image_provider: "ovirt-image-repository"
     storage_domain: "{{ ovirt_storage_domain }}"
     cluster: "{{ ovirt_cluster_name }}"
+  delegate_to: "127.0.0.1"

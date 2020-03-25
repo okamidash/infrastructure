@@ -15,7 +15,6 @@ roles/virt/
     ├── modify_template
     ├── networks
     └── virtual_machine
-
 ```
 
 ### ovirt/get_ca
@@ -114,9 +113,7 @@ Role to handle the creation, deletion, starting and stopping of virtual machines
 
 Unless specified otherwise, virtual machine will be created from the template name defined with `ovirt_base_template_name`. 
 
-
-
-This will create a virtual machine and use the first 
+This will create a virtual machine and use the first user:ssh_key pair in the `ssh_keys` list to initiate the first user. The root account will not be given an ssh key or password.
 
 States: `present`,`absent`,`started`,`stopped`
 
@@ -131,18 +128,14 @@ Vars used:
 
 Default vars:
 
-| Var Name                        | Purpose                                                  | Type    | Default                                                |
-| ------------------------------- | -------------------------------------------------------- | ------- | ------------------------------------------------------ |
-| ovirt_base_template_name        | Name of template to create vm from                       | string  | "base_image"                                           |
-| ovirt_vm_cores                  | The number of cores to create for the vm                 | int     | "4"                                                    |
-| ovirt_vm_ram                    | The amount of ram to create for the virtual machine (MB) | int     | vim,htop,qemu-guest-agent,freeipa-client,dnf-automatic |
-| ovirt_template_enabled_services | List of systemd units to enable at boot                  | list    | qemu-guest-agent,dnf-automatic-install.timer           |
-| ovirt_template_selinux_disabled | Disable selinux                                          | Boolean | True                                                   |
-| ovirt_template_upgrade_all      | Upgrade all packages                                     | Boolean | True                                                   |
-
-
-
-
+| Var Name                 | Purpose                                                           | Type   | Default                                                |
+| ------------------------ | ----------------------------------------------------------------- | ------ | ------------------------------------------------------ |
+| ovirt_base_template_name | Name of template to create vm from                                | string | "base_image"                                           |
+| ovirt_vm_cores           | The number of cores to create for the vm                          | int    | "4"                                                    |
+| ovirt_vm_ram             | The amount of ram to create for the virtual machine (MB)          | int    | vim,htop,qemu-guest-agent,freeipa-client,dnf-automatic |
+| ovirt_vm_admin_user      | User and ssh keypair to make as first user                        | string | oxide                                                  |
+| ovirt_vm_networks        | Networks to create on host (titles of networks in `networks` var) | list   | virtual                                                |
+| ovirt_vm_ha              | Enable High availability on vm                                    | string | no                                                     |
 
 Returned vars: `less`,`than`,`three`
 

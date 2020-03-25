@@ -17,6 +17,7 @@
         name: "{{ ovirt_nic_network }}"
         profile_name: "{{ ovirt_nic_network }}"
   register: ovirt_created_vm
+  delegate_to: "127.0.0.1"
 
 - name: "Start ovirt VM"
   ovirt_vm:
@@ -47,6 +48,7 @@
          condition: True
     state: "running"
     name: "{{ ovirt_base_template_name }}"
+  delegate_to: "127.0.0.1"
 
 - name: "Wait for vm to install packages and shutdown"
   ovirt_vm_info:
@@ -55,6 +57,7 @@
   register: base_image
   until: base_image.ovirt_vms[0].status != "up"
   retries: 20
+  delegate_to: "127.0.0.1"
   delay: 30
 
 - name: "Ensure vm is shutdown"
@@ -62,6 +65,7 @@
     auth: "{{ ovirt_auth }}"
     state: stopped
     name: "{{ ovirt_base_template_name }}"
+  delegate_to: "127.0.0.1"
 
 - name: "Remove nic from vm"
   ovirt_nic:
@@ -69,6 +73,7 @@
     state: absent
     vm: "{{ ovirt_base_template_name }}"
     name: "{{ ovirt_nic_network }}"
+  delegate_to: "127.0.0.1"
 
 - name: "Update template {{ ovirt_base_template_name }} from created vm"
   ovirt_template:
@@ -79,9 +84,11 @@
     vm: "{{ ovirt_base_template_name }}"
     version:
       name: "subversion"
+  delegate_to: "127.0.0.1"
 
 - name: "Remove vm from system"
   ovirt_vm:
     auth: "{{ ovirt_auth }}"
     name: "{{ ovirt_base_template_name }}"
     state: absent
+  delegate_to: "127.0.0.1"

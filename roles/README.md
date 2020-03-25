@@ -26,5 +26,3 @@ Network related modules for setting up network architecture (wireguard, vyos, DN
 ### Virt
 
 Virtualization related modules for setting up virt stuff. 
-
-

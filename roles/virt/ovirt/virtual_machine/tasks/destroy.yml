@@ -1,6 +1,6 @@
 ---
-- ovirt_template:
+- ovirt_vm:
     auth: "{{ ovirt_auth }}"
     state: absent
-    name: "{{ ovirt_base_template_name }}"
-
+    name: "{{ inventory_hostname }}"
+  delegate_to: "127.0.0.1"

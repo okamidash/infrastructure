@@ -2,6 +2,8 @@
 - name: "Deploy ovirt Virtual Machine"
   hosts: ipa.oxide.one
   gather_facts: no
+  collections:
+    - freeipa.ansible_freeipa
   roles:
     - role: virt/ovirt/auth
     - role: virt/ovirt/virtual_machine
@@ -11,5 +13,9 @@
       delegate_to: "solar.dhcp.oxide.one"
     - role: virt/ovirt/virtual_machine
       state: started
+    - role: ipaserver
+      state: present
+      become: true
+      become_method: sudo
 #    - role: virt/ovirt/virtual_machine
 #      state: absent
