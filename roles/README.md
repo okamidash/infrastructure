@@ -9,6 +9,9 @@ These are my roles within my infrastructure. As it currently stands, there are 3
 ```
 roles/
 ├── app
+│   └── freeipa
+├── common
+│   └── acme
 ├── net
 │   └── vyos
 └── virt
@@ -18,6 +21,8 @@ roles/
 ### App
 
 Application related roles. These are the roles to deploy applications. Commonly associated with the virt moduels.
+
+### 
 
 ### Net
 

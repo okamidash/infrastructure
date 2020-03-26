@@ -1,0 +1,12 @@
+---
+- name: "Preliminary checks for acme.sh"
+  include_tasks: check.yml
+  when: state|default('present') == 'present'
+
+#- name: "Download and install acme.sh"
+#  include_tasks: setup.yml
+#  when: state|default('present') == 'present'
+
+#- name: "Get certs for domains"
+#  include_tasks: certs.yml
+#  when: state|default('present') == 'present'

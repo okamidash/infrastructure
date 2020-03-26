@@ -3,13 +3,4 @@
   hosts: ipa.oxide.one
   gather_facts: no
   roles:
-    - role: virt/ovirt/auth
-    - role: virt/ovirt/virtual_machine
-      state: present
-    - role: virt/ovirt/mac_info
-    - role: net/vyos/static_dhcp
-      delegate_to: "solar.dhcp.oxide.one"
-    - role: virt/ovirt/virtual_machine
-      state: started
-#    - role: virt/ovirt/virtual_machine
-#      state: absent
+    - role: common/acme

@@ -1,0 +1,7 @@
+---
+
+- name: "Check if Acme.sh is installed"
+  command: "whoami"
+  register: result
+
+- debug: msg="{{ result }}"
