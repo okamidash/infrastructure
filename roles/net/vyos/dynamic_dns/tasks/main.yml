@@ -1,0 +1,14 @@
+---
+- set_fact:
+    ipaserver: "ipa.{{ domain }}"
+- set_fact: rndc_key="{{ hostvars[ipaserver].rndc_key }}"
+- set_fact: rndc_secret="{{ rndc_key | regex_search('(?<=secret )(.*?)(?=;)') }}"
+- set_fact: rndc_algorithm="{{ rndc_key | regex_search('(?<=algorithm )(.*?)(?=;)') }}"
+
+- name: "Initial setup of vyos Networks"
+#  template: src=setup.j2 dest=/tmp/test
+#  delegate_to: localhost
+  vyos_config:
+    src: setup.j2
+    save: yes
+

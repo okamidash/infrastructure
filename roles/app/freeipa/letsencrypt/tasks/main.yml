@@ -1,5 +1,29 @@
 ---
-- name: "Get SSL Certificate and install to Letsencrypt"
-  include_role: common/acme
-  
+#- name: "Get SSL Certificates"
+#  include_role: common/acme
+- name: "Download Letsencrypt CA Pem files"
+  get_url:
+    url: "{{ item }}"
+    dest: "/tmp/"
+  with_list:
+    - "https://letsencrypt.org/certs/isrgrootx1.pem.txt"
+    - "https://letsencrypt.org/certs/letsencryptauthorityx3.pem.txt"
+
+- name: "Install Letsencrypt Certificate Authorities"
+  command: "ipa-cacert-manage install /tmp/{{ item }}"
+  become: yes
+  with_list:
+    - "isrgrootx1.pem.txt"
+    - "letsencryptauthorityx3.pem.txt"
+
+- debug: msg="Please run ipa-certupdate on the host before continuing"
+
+- pause:
+    minutes: 2
+
+- name: "Install https certificates"
+  command: "ipa-server-certinstall -w -d {{ acme_default_user_homedir }}/certs/{{ inventory_hostname }}/fullchain.cer {{ acme_default_user_homedir }}/certs/{{ inventory_hostname }}/{{ inventory_hostname }}.key --dirman-password='{{ freeipa_admin_password }}' --pin=''"
+  become: yes
+
+- debug: msg="Finished! Please run ipactl restart on the target."
 

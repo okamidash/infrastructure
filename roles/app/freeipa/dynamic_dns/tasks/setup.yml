@@ -1,0 +1,24 @@
+---
+
+- name: "Ensure 'include /etc/rndc.key' exists in named.conf"
+  lineinfile:
+    path: /etc/named.conf
+    insertbefore: "logging {"
+    state: present
+    line: include "/etc/rndc.key";
+  become: yes
+
+- name: "Restart Named"
+  systemd:
+    state: restarted
+    name: named-pkcs11
+  become: yes
+
+- name: "Store the contents of /etc/rndc.key as a var"
+  shell: "cat /etc/rndc.key"
+  register: cmdout
+  become: yes
+
+- set_fact: rndc_key="{{ cmdout.stdout }}"
+- set_fact: rndc_secret="{{ rndc_key | regex_search('(?<=secret )(.*?)(?=;)') }}"
+- set_fact: rndc_algorithm="{{ rndc_key | regex_search('(?<=algorithm )(.*?)(?=;)') }}"

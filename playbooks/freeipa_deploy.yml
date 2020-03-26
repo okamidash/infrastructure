@@ -17,5 +17,5 @@
       state: present
       become: true
       become_method: sudo
-#    - role: virt/ovirt/virtual_machine
-#      state: absent
+    - role: virt/ovirt/virtual_machine
+      state: absent

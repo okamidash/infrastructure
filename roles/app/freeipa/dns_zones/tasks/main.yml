@@ -1,0 +1,9 @@
+---
+- name: "Create FreeIPA DNS zones and ARPA reverse zones"
+  include_tasks: setup.yml
+  when: state|default('present') == 'present'
+
+- name: "Delete FreeIPA DNS zones and ARPA reverse zones"
+  include_tasks: destroy.yml
+  when: state|default('present') == 'absent'
+

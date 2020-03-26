@@ -71,8 +71,18 @@ Expects a MAC address to exist for each host or it will not create the mapping.
 
 States: `present,``absent`.
 
+### vyos/dynamic_dns
 
+Used in conjunction with `apps/freeipa/dynamic_dns`. 
 
+Pulls the rndc_key values from the host `ipa.{{ domain }}` and sets a series of global options.
 
+States: `present`,`absent`.
 
+Vars used:
 
+| Var name   | Purpose                                          | Defined where                |
+| ---------- | ------------------------------------------------ | ---------------------------- |
+| networks   | Find networks in scope to create DNS service on. | group_vars/all/networks.yml  |
+| dns_server | Sets the DNS server to forward dns requests to   | group_vars/all/networks.yml  |
+| rndc_key   | To set the RNDC keys n stuff                     | Pulled from ipa.{{ domain }} |

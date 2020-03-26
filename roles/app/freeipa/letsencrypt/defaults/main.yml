@@ -1,0 +1,2 @@
+acme_default_user: "web"
+acme_default_user_homedir: "/home/{{ acme_default_user }}"

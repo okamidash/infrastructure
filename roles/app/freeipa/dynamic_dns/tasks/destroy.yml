@@ -1,0 +1,9 @@
+---
+- name: "Ensure 'include /etc/rndc.key' exists in named.conf"
+  lineinfile:
+    path: /etc/named.conf
+    insertbefore: "logging {"
+    state: absent
+    line: include "/etc/rndc.key";
+  become: yes
+

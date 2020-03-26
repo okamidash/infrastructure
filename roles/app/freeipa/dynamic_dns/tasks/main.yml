@@ -1,0 +1,9 @@
+---
+- name: "Setup FreeIPA Dynamic DNS"
+  include_tasks: setup.yml
+  when: state|default('present') == 'present'
+
+- name: "Delete FreeIPA Dynamic DNS"
+  include_tasks: destroy.yml
+  when: state|default('present') == 'absent'
+

@@ -1,9 +1,14 @@
 ---
-- name: "Deploy ovirt Virtual Machine"
+- name: "Deploy Dynamic DNS"
   hosts: ipa.oxide.one
   gather_facts: no
   roles:
-    - role: common/acme
-      state: present
 #    - role: common/acme
-#      state: absent
+#    - role: app/freeipa/letsencrypt
+#    - role: app/freeipa/dns_zones
+    - role: app/freeipa/dynamic_dns
+- name: "Deploy Dynamic DNS onto solar"
+  hosts: solar
+  gather_facts: no
+  roles:
+    - role: net/vyos/dynamic_dns

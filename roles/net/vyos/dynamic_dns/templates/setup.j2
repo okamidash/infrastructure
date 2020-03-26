@@ -1,0 +1,20 @@
+{% if state|default('present') == 'present' %}
+{% set action = 'set' %}
+{% elif state|default('present') == 'absent' %}
+{% set action = 'delete' %}
+{% endif %}
+
+{{ action }} service dhcp-server host-decl-name
+{{ action }} service dhcp-server dynamic-dns-update
+{{ action }} service dhcp-server global-parameters 'key rndc-key { algorithm {{ rndc_algorithm }}; secret {{ rndc_secret.replace('"','') }}; };'
+{% for network in networks.items() %}
+{% set manager = network[1].managed_by %}
+{% if manager in hostvars[ansible_host].group_names %}
+{% set domain_name = network[1].subdomain + "." + domain %}
+{% set arpa = (network[1].gateway | ipaddr('subnet') | ipaddr('revdns'))[2:] %}
+{% set prefix = action + ' service dhcp-server global-parameters "zone' %}
+{{ prefix }} {{ domain_name }} { primary {{ dns_server }}; key rndc-key; }"
+{{ prefix }} {{ arpa }} { primary {{ dns_server }}; key rndc-key; }"
+{% endif %}
+{% endfor %}
+
