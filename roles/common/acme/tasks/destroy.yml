@@ -1,0 +1,8 @@
+---
+- name: "Remove user {{ acme_default_user }}"
+  user:
+    name: "{{ acme_default_user }}"
+    state: absent
+    remove: yes
+    force: yes
+  become: yes

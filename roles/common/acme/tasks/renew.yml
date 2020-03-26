@@ -1,0 +1,27 @@
+---
+- name: "Ensure certs folder is present"
+  file:
+    path: "{{ acme_default_user_homedir }}"
+    state: directory
+    owner: "{{ acme_default_user }}"
+    group: "{{ acme_default_user }}"
+  become: yes
+
+- name: "Get certificates using cloudflare and acme.sh"
+  command: "{{ acme_default_user_homedir }}/.acme.sh/acme.sh --renew-all --force"
+  environment:
+    CF_Key: "{{ cloudflare_apikey }}"
+    CF_Email: "{{ cloudflare_email }}"
+  become: yes
+  become_user: "{{ acme_default_user }}"
+  become_method: sudo
+  register: acme_output
+
+- name: "Symlink files from acme.sh folder to certs folder"
+  copy:
+    src: "{{ acme_default_user_homedir }}/.acme.sh/{{ inventory_hostname }}"
+    dest: "{{ acme_default_user_homedir }}/certs"
+    remote_src: yes
+  become: yes
+  become_user: "{{ acme_default_user }}"
+

@@ -1,7 +1,30 @@
 ---
+- name: "Ensure that necessary packages are installed"
+  dnf:
+    name:
+      - anacron
+      - wget
+    state: present
+  become: yes
 
-- name: "Check if Acme.sh is installed"
-  command: "whoami"
-  register: result
+- name: "Make sure that {{ acme_default_user }} user is created"
+  become: yes
+  user:
+    name: "{{ acme_default_user }}"
+    home: "{{ acme_default_user_homedir }}"
+    createhome: yes
+    state: present
+    shell: /sbin/nologin
+    system: yes
 
-- debug: msg="{{ result }}"
+- name: "Download acme.sh"
+  get_url:
+    url: https://get.acme.sh
+    dest: /tmp/acme.sh
+    mode: '0777'
+
+- name: "Install acme.sh"
+  command: "/tmp/acme.sh --install"
+  become: yes
+  become_user: "{{ acme_default_user }}"
+  register: output

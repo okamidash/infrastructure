@@ -4,3 +4,6 @@
   gather_facts: no
   roles:
     - role: common/acme
+      state: present
+#    - role: common/acme
+#      state: absent
