@@ -1,11 +1,11 @@
 ---
-- name: "Deploy Dynamic DNS"
+- name: "Deploy Dynamic DNS and Letsencrypt certs for FreeIPA"
   hosts: ipa.oxide.one
   gather_facts: no
   roles:
-#    - role: common/acme
-#    - role: app/freeipa/letsencrypt
-#    - role: app/freeipa/dns_zones
+    - role: common/acme
+    - role: app/freeipa/letsencrypt
+    - role: app/freeipa/dns_zones
     - role: app/freeipa/dynamic_dns
 - name: "Deploy Dynamic DNS onto solar"
   hosts: solar

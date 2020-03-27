@@ -1,7 +1,7 @@
 ---
 - set_fact:
     ipaserver: "ipa.{{ domain }}"
-- set_fact: rndc_key="{{ hostvars[ipaserver].rndc_key }}"
+- set_fact: rndc_key="{{ hostvars[ipahost].rndc_key }}"
 - set_fact: rndc_secret="{{ rndc_key | regex_search('(?<=secret )(.*?)(?=;)') }}"
 - set_fact: rndc_algorithm="{{ rndc_key | regex_search('(?<=algorithm )(.*?)(?=;)') }}"
 

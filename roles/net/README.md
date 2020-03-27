@@ -86,3 +86,11 @@ Vars used:
 | networks   | Find networks in scope to create DNS service on. | group_vars/all/networks.yml  |
 | dns_server | Sets the DNS server to forward dns requests to   | group_vars/all/networks.yml  |
 | rndc_key   | To set the RNDC keys n stuff                     | Pulled from ipa.{{ domain }} |
+
+Defaults:
+
+| Var Name     | Purpose                                                 | Type   | Default          |
+| ------------ | ------------------------------------------------------- | ------ | ---------------- |
+| freeipa_host | Accessing the hostvars for FreeIPA to get the RNDC key. | string | ipa.{{ domain }} |
+
+
