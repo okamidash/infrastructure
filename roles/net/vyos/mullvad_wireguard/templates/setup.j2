@@ -3,14 +3,35 @@
 {% elif state|default('present') == 'absent' %}
 {% set action = 'delete' %}
 {% endif %}
-{{ action }} system host-name {{ inventory_hostname }}
-{{ action }} system domain-name {{ domain }}
-{% for user in ssh_keys %}
-{% set key_type = ssh_keys[user].split(' ')[0] %}
-{% set key = ssh_keys[user].split(' ')[1] %}
-{{ action }} system login user vyos authentication public-keys "{{ user }}" type "{{ key_type }}"
-{{ action }} system login user vyos authentication public-keys "{{ user }}" key "{{ key }}"
-{% if action == 'delete' %}
-{{ action }} system login user vyos authentication public-keys "{{ user }}"
+set system name-server {{ dns_server }}
+{% for network in vm_networks %}
+{% if network == mullvad_network %}
+{% set eth_intf = 'eth' + (loop.index0 | string ) %}
+{% set prefix = action + " interfaces wireguard wg01" %}
+{% set zeroed_network = (networks[mullvad_network]['gateway'] | ipmath(-1) | string) + "/" + (networks[mullvad_network]['gateway'] | ipaddr('prefix') | string) %}
+{% set wg_address_range = networks[mullvad_network]['gateway'] | ipaddr('range_usable') %}
+{{ action }} interfaces ethernet eth1 policy route wireguard
+{{ prefix }} address '{{ mullvad_ip }}'
+{{ prefix }} description 'tunnel to {{ mullvad_endpoint }}'
+{{ prefix }} peer {{ mullvad_endpoint }} allowed-ips '0.0.0.0/0'
+{{ prefix }} peer {{ mullvad_endpoint }} endpoint '{{ mullvad_endpoint }}:51820'
+{{ prefix }} peer {{ mullvad_endpoint }} pubkey '{{ mullvad_endpoint_pubkey }}'
+
+{# NAT rules #}
+{% set prefix = action + " nat source rule 100" %}
+{{ prefix }} outbound-interface wg01
+{{ prefix }} source address {{ networks[mullvad_network]['gateway'] | ipmath(-1) }}/{{ networks[mullvad_network]['gateway'] | ipaddr('prefix') }}
+{{ prefix }} translation address 'masquerade'
+
+{# Create Policy tables #}
+{{ action }} policy route wireguard rule 9 destination address 10.0.0.0-10.0.7.255
+{{ action }} policy route wireguard rule 9 set table main
+{{ action }} policy route wireguard rule 9 source address {{ zeroed_network }}
+{{ action }} policy route wireguard rule 10 set table 10
+{{ action }} policy route wireguard rule 10 source address {{ zeroed_network }}
+
+{# Set Static routing tables #}
+{{ action }} protocols static table 10 interface-route 0.0.0.0/0 next-hop-interface wg01
+
 {% endif %}
 {% endfor %}

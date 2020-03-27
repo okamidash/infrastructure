@@ -1,8 +1,8 @@
 ---
-- name: "Deploy Lunar"
-  hosts: lunar
-  gather_facts: no
-  roles:
+#- name: "Deploy Lunar"
+#  hosts: lunar
+#  gather_facts: no
+#  roles:
 #    - role: virt/ovirt/virtual_machine
 #      state: present
 #    - role: virt/ovirt/mac_info
@@ -10,20 +10,21 @@
 #      delegate_to: "solar.dhcp.oxide.one"
 #    - role: virt/ovirt/virtual_machine
 #      state: started
-#     - role: net/vyos/init
-#       state: present
-    - role: net/vyos/virt_network
-    - role: net/vyos/dhcp
-    - role: net/vyos/dns
+#    - role: net/vyos/init
+#      state: present
+#    - role: net/vyos/virt_network
+#    - role: net/vyos/dhcp
+#    - role: net/vyos/dns
 
-- name: "Deploy Dynamic DNS and Letsencrypt certs for FreeIPA"
-  hosts: ipa.oxide.one
-  gather_facts: no
-  roles:
-    - role: app/freeipa/dynamic_dns
-- name: "Deploy Dynamic DNS onto solar"
+#- name: "Deploy Dynamic DNS and Letsencrypt certs for FreeIPA"
+#  hosts: ipa.oxide.one
+#  gather_facts: no
+#  roles:
+#    - role: app/freeipa/dynamic_dns
+- name: "Deploy Dynamic DNS and wireguard onto Lunar"
   hosts: lunar
   gather_facts: no
   roles:
-    - role: net/vyos/dynamic_dns
+#    - role: net/vyos/dynamic_dns
+    - role: net/vyos/mullvad_wireguard
 

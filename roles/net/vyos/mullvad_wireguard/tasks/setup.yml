@@ -25,8 +25,6 @@
 - set_fact: mullvad_ip="{{ (mullvad_return.split(','))[0] }}"
 - debug: msg="{{ mullvad_ip }}"
 - name: "Template out file for Luna"
-#  template: src="setup_lunar.j2" dest="/tmp/{{ inventory_hostname }}"
-#  delegate_to: localhost
   vyos_config:
-    src: setup_lunar.j2
+    src: setup.j2
     save: yes

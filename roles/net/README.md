@@ -121,4 +121,28 @@ Defaults:
 
 Creates and deletes a wireguard VPN network through mullvad.
 
- All internet bound traffic exits the network at a mullvad endpoint.
+All internet bound traffic exits the network at a mullvad endpoint.
+
+Posts a wireguard key to mullvad, and is returned an IP address. 
+
+States: `present`,`absent`.
+
+Vars used:
+
+| Var name           | Purpose                                                                | Defined where               |
+| ------------------ | ---------------------------------------------------------------------- | --------------------------- |
+| networks           | Find networks in scope to create DNS service on.                       | group_vars/all/networks.yml |
+| mullvad_account_id | Get the mullvad Account ID and posts it to the API for a wireguard key | group_vars/all/secrets.yml  |
+
+Defaults:
+
+| Var Name                | Purpose                                         | Type   | Default                   |
+| ----------------------- | ----------------------------------------------- | ------ | ------------------------- |
+| vm_networks             | Get the list of networks to work on.            | list   | None                      |
+| mullvad_network         | The network to create the ethernet interface on | string | wireguard                 |
+| mullvad_endpoint        | The VPN server for mullvad to connect on        | string | gb4-wireguard.mullvad.net |
+| mullvad_endpoint_pubkey | The public key of the VPN server                | string | *omitted for formatting*  |
+
+
+
+
