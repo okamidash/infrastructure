@@ -1,4 +1,8 @@
 ---
+- include_role:
+    name: virt/ovirt/auth
+  when: ovirt_auth is not defined
+
 - name: "Create ovirt networks"
   include_tasks: setup.yml
   when: state|default('present') == 'present'

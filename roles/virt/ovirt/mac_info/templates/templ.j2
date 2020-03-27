@@ -1,16 +1,3 @@
----
-- include_role:
-    name: virt/ovirt/auth
-  when: ovirt_auth is not defined
-
-- ovirt_nic_info:
-    auth: "{{ ovirt_auth }}"
-    vm: "{{ inventory_hostname }}"
-  register: result
-  delegate_to: "127.0.0.1"
-
-- set_fact:
-    networks: |
       {# Iterate through all of the networks in group_vars/all/networks.yml #}
       {% for network,network_vals in networks.items() %}
       {{ network }}:
@@ -25,8 +12,10 @@
       {% if network_vals.static_mappings is defined %}
         static_mappings:
       {% for host,mapping_info in network_vals.static_mappings.items() %}
+{{ host }}
       {% if inventory_hostname_short == host %}
       {% for nic in result.ovirt_nics %}
+sailor
       {% if nic.name == network %}
           {{ host }}:
             mac: {{ nic.mac.address }}
@@ -34,16 +23,13 @@
       {% endif %}
       {% endfor %}
       {% else %}
-      {% if mapping_info.mac is defined %}
-          {{ host }}:
+      {{ mapping_info }}
+      {#    {{ host }}:
             mac: {{ mapping_info.mac }}
             ip: {{ mapping_info.ip }}
-      {% endif %}
-      {% endif %}
-      {% endfor %}
+      #}
       {% endif %}
       {% endfor %}
-  delegate_to: "127.0.0.1"
+      {% endif %}
+      {% endfor %}
 
-- set_fact: networks="{{ networks|from_yaml }}"
-  delegate_to: "127.0.0.1"

@@ -1,0 +1,3 @@
+ovirt_vm_networks:
+  - "utility"
+  - "wireguard"

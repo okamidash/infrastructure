@@ -36,6 +36,8 @@ networks:
     subdomain:  "nix"
     vlan_id:    "5"
     static_mappings:
+      lunar:
+        ip:     "10.0.5.10"
       ipa:
         ip:     "10.0.5.2"
       nas:

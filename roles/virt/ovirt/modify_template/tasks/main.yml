@@ -1,4 +1,8 @@
 ---
+- include_role:
+    name: virt/ovirt/auth
+  when: ovirt_auth is not defined
+
 - name: "Create ovirt VM and modify template"
   ovirt_vm:
     auth: "{{ ovirt_auth }}"
