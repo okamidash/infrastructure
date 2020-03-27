@@ -5,9 +5,7 @@ Application specific functions.
 ---
 
 ```
-roles/app
-└── freeipa
-    └── letsencrypt
+
 ```
 
 ### freeipa/letsencrypt

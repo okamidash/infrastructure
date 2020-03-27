@@ -7,13 +7,7 @@ This folder covers the roles related to network operations. Primarily this will 
 # FOLDER STRUCTURE
 
 ```
-roles/net
-└── vyos
-    ├── dhcp
-    ├── dns
-    ├── init
-    ├── phys_network
-    └── static_dhcp
+
 ```
 
 ### vyos/dhcp
