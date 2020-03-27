@@ -5,7 +5,11 @@ Application specific functions.
 ---
 
 ```
-
+roles/app
+└── freeipa
+    ├── dns_zones
+    ├── dynamic_dns
+    └── letsencrypt
 ```
 
 ### freeipa/letsencrypt

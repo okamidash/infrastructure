@@ -7,7 +7,15 @@ These are the virtualization roles.
 # Folder structure
 
 ```
-
+roles/virt
+└── ovirt
+    ├── auth
+    ├── get_ca
+    ├── import_template
+    ├── mac_info
+    ├── modify_template
+    ├── networks
+    └── virtual_machine
 ```
 
 ### ovirt/get_ca

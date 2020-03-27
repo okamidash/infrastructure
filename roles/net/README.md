@@ -7,7 +7,14 @@ This folder covers the roles related to network operations. Primarily this will 
 # FOLDER STRUCTURE
 
 ```
-
+roles/net
+└── vyos
+    ├── dhcp
+    ├── dns
+    ├── dynamic_dns
+    ├── init
+    ├── phys_network
+    └── static_dhcp
 ```
 
 ### vyos/dhcp
@@ -86,5 +93,3 @@ Defaults:
 | Var Name     | Purpose                                                 | Type   | Default          |
 | ------------ | ------------------------------------------------------- | ------ | ---------------- |
 | freeipa_host | Accessing the hostvars for FreeIPA to get the RNDC key. | string | ipa.{{ domain }} |
-
-
