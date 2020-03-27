@@ -1,0 +1,8 @@
+---
+- name: "Setup Mullvad VPN Wireguard network"
+  include_tasks: setup.yml
+  when: state|default('present') == 'present'
+
+- name: "Delete Mullvad VPN Wireguard network"
+  include_tasks: destroy.yml
+  when: state|default('present') == 'absent'

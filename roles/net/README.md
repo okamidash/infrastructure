@@ -93,3 +93,32 @@ Defaults:
 | Var Name     | Purpose                                                 | Type   | Default          |
 | ------------ | ------------------------------------------------------- | ------ | ---------------- |
 | freeipa_host | Accessing the hostvars for FreeIPA to get the RNDC key. | string | ipa.{{ domain }} |
+
+### vyos/virt_network
+
+Sets up virtual network interfaces on VyOS. 
+
+Iterates through a list of networks in `networks` and assumes management of the network if it is in the group specificed in `managed_by` for each network. I.e, if `managed_by` is `lunar` and the host is in the `lunar` group, it will assume management.
+
+This role requires a list called `vm_networks`. This is a list of network names. This list will be iterated over to set the interfaces. Eth0 will correspond with the first item on the list. 
+
+States: `present`,`absent`.
+
+Vars used:
+
+| Var name    | Purpose                                          | Defined where               |
+| ----------- | ------------------------------------------------ | --------------------------- |
+| networks    | Find networks in scope to create DNS service on. | group_vars/all/networks.yml |
+| group_names | Get the list of groups to check if managing.     | magic var                   |
+
+Defaults:
+
+| Var Name    | Purpose                              | Type | Default |
+| ----------- | ------------------------------------ | ---- | ------- |
+| vm_networks | Get the list of networks to work on. | list | None    |
+
+### vyos/mullvad_wireguard
+
+Creates and deletes a wireguard VPN network through mullvad.
+
+ All internet bound traffic exits the network at a mullvad endpoint.

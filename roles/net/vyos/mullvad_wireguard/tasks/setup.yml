@@ -1,0 +1,32 @@
+---
+- name: "Login to vyos machine and generate default wireguard key"
+  vyos_command:
+    commands:
+        - "configure"
+        - "run generate wireguard default-keypair"
+        - "run show wireguard keypairs pubkey default > wgpubkey"
+        - "save"
+        - "exit"
+
+- name: "Print Wireguard key"
+  vyos_command:
+    commands:
+        - "cat wgpubkey"
+  register: wgpubkey
+
+- set_fact: wgpubkey="{{ wgpubkey.stdout_lines[0] }}"
+- name: "Send Wireguard pubkey to Mullvad"
+  command:
+    cmd: "curl 'https://api.mullvad.net/wg/' -d account={{ mullvad_account_id }} --data-urlencode pubkey={{ wgpubkey[0] }}"
+    warn: false
+  register: mullvad_return
+
+- set_fact: mullvad_return="{{ mullvad_return.stdout_lines[0] }}"
+- set_fact: mullvad_ip="{{ (mullvad_return.split(','))[0] }}"
+- debug: msg="{{ mullvad_ip }}"
+- name: "Template out file for Luna"
+#  template: src="setup_lunar.j2" dest="/tmp/{{ inventory_hostname }}"
+#  delegate_to: localhost
+  vyos_config:
+    src: setup_lunar.j2
+    save: yes

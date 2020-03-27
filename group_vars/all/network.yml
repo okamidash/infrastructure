@@ -45,7 +45,7 @@ networks:
         ip:     "10.0.5.4"
   zoned:
     gateway:    "10.0.6.1/24"
-    managed_by: "lunar"
+    managed_by: "flare"
     subdomain:  "zone"
     vlan_id:    "6"
   kube:
@@ -55,7 +55,6 @@ networks:
     vlan_id:    "7"
   wireguard:
     gateway:    "10.0.8.1/24"
-    managed_by: "flare"
+    managed_by: "lunar"
     subdomain:  "wg"
     vlan_id:    "8"
-

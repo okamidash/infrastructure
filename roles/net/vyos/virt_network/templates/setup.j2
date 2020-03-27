@@ -1,0 +1,17 @@
+{% if state|default('present') == 'present' %}
+{% set action = 'set' %}
+{% elif state|default('present') == 'absent' %}
+{% set action = 'delete' %}
+{% endif %}
+{% for network in vm_networks %}
+{% set manager = networks[network].managed_by %}
+{% if manager in group_names %}
+{% set address = networks[network].gateway %}
+{% set description = networks[network].subdomain %}
+{{ action }} interfaces ethernet eth{{ loop.index0 }} address "{{ address }}"
+{{ action }} interfaces ethernet eth{{ loop.index0 }} description "{{ description }}"
+{% if action == 'delete' %}
+{{ action }} interfaces ethernet eth{{ loop.index0 }}
+{% endif %}
+{% endif %}
+{% endfor %}

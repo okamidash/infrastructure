@@ -1,3 +1,5 @@
 ovirt_vm_networks:
   - "utility"
   - "wireguard"
+ovirt_base_template_name: "vyos"
+vm_networks: "{{ ovirt_vm_networks }}"

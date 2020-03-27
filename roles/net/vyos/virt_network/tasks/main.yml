@@ -1,7 +1,7 @@
 ---
-- name: "Creation of static DHCP mappings for VyOS"
+- name: "Initial setup of vyos"
 #  template: src=setup.j2 dest=/tmp/test
-#  delegate_to: localhost
+#  delegate_to: 127.0.0.1
   vyos_config:
     src: setup.j2
     save: yes
