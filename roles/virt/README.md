@@ -133,7 +133,7 @@ Default vars:
 | ------------------------ | ----------------------------------------------------------------- | ------ | ------------------------------------------------------ |
 | ovirt_base_template_name | Name of template to create vm from                                | string | "base_image"                                           |
 | ovirt_vm_cores           | The number of cores to create for the vm                          | int    | "4"                                                    |
-| ovirt_vm_ram             | The amount of ram to create for the virtual machine (MB)          | int    | vim,htop,qemu-guest-agent,freeipa-client,dnf-automatic |
+| ovirt_vm_ram             | The amount of ram to create for the virtual machine (MB)          | int    | 2048                                                   |
 | ovirt_vm_admin_user      | User and ssh keypair to make as first user                        | string | oxide                                                  |
 | ovirt_vm_networks        | Networks to create on host (titles of networks in `networks` var) | list   | virtual                                                |
 | ovirt_vm_ha              | Enable High availability on vm                                    | string | no                                                     |

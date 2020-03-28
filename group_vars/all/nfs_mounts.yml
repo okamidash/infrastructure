@@ -1,0 +1,5 @@
+nfs_mounts:
+  downloads:
+    host: nas.nix.oxide.one
+    path: "/mnt/standard/downloads"
+

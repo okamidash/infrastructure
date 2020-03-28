@@ -58,3 +58,6 @@ networks:
     managed_by: "lunar"
     subdomain:  "wg"
     vlan_id:    "8"
+    static_mappings:
+      torrent:
+        ip:     "10.0.8.10"

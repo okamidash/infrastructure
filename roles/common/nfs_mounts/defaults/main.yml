@@ -1,0 +1,3 @@
+---
+default_storage_mountpoint: "/storage"
+nfs_mount_options: "defaults,timeo=900,retrans=5,_netdev"

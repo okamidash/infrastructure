@@ -1,0 +1,9 @@
+---
+- name: "Configure and setup NFS mounts"
+  include_tasks: setup.yml
+  when: state|default('present') == 'present'
+
+- name: "Remove NFS mounts"
+  include_tasks: destroy.yml
+  when: state|default('present') == 'absent'
+

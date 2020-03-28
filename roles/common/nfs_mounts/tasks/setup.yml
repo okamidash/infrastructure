@@ -1,0 +1,58 @@
+---
+- name: "Ensure that nfs-utils is installed"
+  dnf:
+    name: nfs-utils
+    state: present
+
+- name: "Ensure that the folder {{ default_storage_mountpoint }} exists"
+  file:
+    path: "{{ default_storage_mountpoint }}"
+    state: directory
+    mode: '0755'
+
+- name: "Ensure that the folder {{ default_storage_mountpoint }}/nfs exists"
+  file:
+    path: "{{ default_storage_mountpoint }}/nfs"
+    state: directory
+    mode: '0755'
+
+- name: "Mount all filesystems"
+  block:
+    - name: "Mount all filesystems"
+      file:
+        path: "{{ default_storage_mountpoint }}/nfs/{{ item.key }}"
+        state: directory
+        mode: '0755'
+      with_dict: "{{ nfs_mounts }}"
+    - mount:
+        path: "{{ default_storage_mountpoint }}/nfs/{{ item.key }}"
+        src: "{{ item.value.host }}:{{ item.value.path }}"
+        opts: "{{ nfs_mount_options }}"
+        fstype: nfs
+        state: present
+      with_dict: "{{ nfs_mounts }}"
+    - command:
+        cmd: mount "{{ item.value.host }}:{{ item.value.path }}"
+        warn: no
+      become: yes
+      with_dict: "{{ nfs_mounts }}"
+  when: nfs_mount is not defined
+
+- name: "Mount just one filesystem"
+  block:
+    - name: "Mount single filesystem {{ nfs_mount }}"
+      file:
+        path: "{{ default_storage_mountpoint }}/nfs/{{ nfs_mount }}"
+        state: directory
+        mode: '0755'
+    - mount:
+        path: "{{ default_storage_mountpoint }}/nfs/{{ nfs_mount }}"
+        src: "{{ nfs_mounts[nfs_mount].host }}:{{ nfs_mounts[nfs_mount].path }}"
+        opts: "{{ nfs_mount_options }}"
+        fstype: nfs
+        state: present
+    - command:
+        cmd: mount "{{ nfs_mounts[nfs_mount].host }}:{{ nfs_mounts[nfs_mount].path }}"
+        warn: no
+      become: yes
+  when: nfs_mount is defined

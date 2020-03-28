@@ -1,0 +1,9 @@
+---
+- name: "Install Docker"
+  include_tasks: setup.yml
+  when: state|default('present') == 'present'
+
+- name: "Uninstall Docker"
+  include_tasks: destroy.yml
+  when: state|default('present') == 'absent'
+

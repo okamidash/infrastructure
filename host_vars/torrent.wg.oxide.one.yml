@@ -1,0 +1,4 @@
+ovirt_vm_networks:
+  - "wireguard"
+ovirt_vm_cores: 8
+ovirt_vm_ram: 8192

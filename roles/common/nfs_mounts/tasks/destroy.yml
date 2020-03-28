@@ -1,0 +1,30 @@
+- name: "Mount all filesystems"
+  block:
+    - mount:
+        path: "{{ default_storage_mountpoint }}/nfs/{{ item.key }}"
+        src: "{{ item.value.host }}:{{ item.value.path }}"
+        opts: "{{ nfs_mount_options }}"
+        fstype: nfs
+        state: absent
+      with_dict: "{{ nfs_mounts }}"
+    - name: "Mount all filesystems"
+      file:
+        path: "{{ default_storage_mountpoint }}/nfs/{{ item.key }}"
+        state: absent
+      with_dict: "{{ nfs_mounts }}"
+  when: nfs_mount is not defined
+
+- name: "Mount just one filesystem"
+  block:
+    - mount:
+        path: "{{ default_storage_mountpoint }}/nfs/{{ nfs_mount }}"
+        src: "{{ nfs_mounts[nfs_mount].host }}:{{ nfs_mounts[nfs_mount].path }}"
+        opts: "{{ nfs_mount_options }}"
+        fstype: nfs
+        state: absent
+    - name: "Mount single filesystem {{ nfs_mount }}"
+      file:
+        path: "{{ default_storage_mountpoint }}/nfs/{{ nfs_mount }}"
+        state: absent
+  when: nfs_mount is defined
+

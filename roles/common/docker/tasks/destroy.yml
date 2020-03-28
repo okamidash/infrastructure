@@ -1,0 +1,27 @@
+---
+
+- name: "Remove docker"
+  dnf:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: absent
+
+- name: "Remove the docker repo"
+  yum_repository:
+    name: "{{ item }}"
+    state: absent
+  with_list:
+    - docker-ce-stable
+    - docker-ce-stable-debuginfo
+    - docker-ce-stable-source
+    - docker-ce-edge
+    - docker-ce-edge-debuginfo
+    - docker-ce-edge-source
+    - docker-ce-test
+    - docker-ce-test-debuginfo
+    - docker-ce-test-source
+    - docker-ce-nightly
+    - docker-ce-nightly-debuginfo
+    - docker-ce-nightly-source

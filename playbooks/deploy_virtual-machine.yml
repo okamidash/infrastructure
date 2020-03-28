@@ -1,0 +1,10 @@
+---
+- name: "Deploy Virtual Machine"
+  hosts: lunar
+  gather_facts: no
+  roles:
+    - role: virt/ovirt/virtual_machine
+      state: present
+    - role: virt/ovirt/virtual_machine
+      state: started
+
