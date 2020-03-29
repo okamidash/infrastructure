@@ -31,11 +31,12 @@ Vars used:
 
 Defaults:
 
-| Var Name                  | Purpose                                                                   | Type   | Default                  |
-| ------------------------- | ------------------------------------------------------------------------- | ------ | ------------------------ |
-| acme_default_user         | User under which acme.sh will be installed for, along with cert location. | string | web                      |
-| acme_default_user_homedir | Default home dir location for the acme default user                       | string | /home/web                |
-| acme_domains              | List of domains to request certificates from                              | list   | {{ inventory_hostname_}} |
+| Var Name                  | Purpose                                                                   | Type   | Default                                                             |
+| ------------------------- | ------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------- |
+| acme_default_user         | User under which acme.sh will be installed for, along with cert location. | string | web                                                                 |
+| acme_default_user_homedir | Default home dir location for the acme default user                       | string | /home/web                                                           |
+| acme_domains              | List of domains to request certificates from                              | list   | {{ inventory_hostname_}}                                            |
+| acme_default_command      | The command to run for acme                                               | string | --issue --force --dns dns_cf -d {{ acme_domains \| join (' -d ') }} |
 
 ### docker
 

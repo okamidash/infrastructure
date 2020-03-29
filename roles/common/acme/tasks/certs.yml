@@ -8,7 +8,7 @@
   become: yes
 
 - name: "Get certificates using cloudflare and acme.sh"
-  command: "{{ acme_default_user_homedir }}/.acme.sh/acme.sh --issue --force --dns dns_cf -d {{ acme_domains | join (' -d ') }}"
+  command: "{{ acme_default_user_homedir }}/.acme.sh/acme.sh {{ acme_default_command }}"
   environment:
     CF_Key: "{{ cloudflare_apikey }}"
     CF_Email: "{{ cloudflare_email }}"

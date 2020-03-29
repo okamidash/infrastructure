@@ -2,3 +2,5 @@ acme_default_user: "web"
 acme_default_user_homedir: "/home/{{ acme_default_user }}"
 acme_domains:
   - "{{ inventory_hostname }}"
+acme_default_command: "--issue --force --dns dns_cf -d {{ acme_domains | join (' -d ') }}"
+
