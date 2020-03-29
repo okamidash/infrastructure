@@ -1,15 +1,11 @@
 ---
-- import_role: name=common/docker
-  state: present
-  become: yes
+#- import_role:
+#    name: common/docker
+#  become: yes
 
-- import_role: name=common/nfs_mounts
-  state: present
-  become: yes
-
-- import_role: name=common/acme
-  state: present
-  become: yes
+#- import_role:
+#    name: common/nfs_mounts
+#  become: yes
 
 - name: "Template out Docker-compose file"
   template:

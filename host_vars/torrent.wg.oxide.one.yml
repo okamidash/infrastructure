@@ -3,13 +3,39 @@ ovirt_vm_networks:
 ovirt_vm_cores: 8
 ovirt_vm_ram: 8192
 ovirt_vm_disk_size: 12
-acme_domains:
-  - "{{ inventory_hostname }}"
-  - "*.media.oxide.one"
+media_subdomain: "media"
 nginx_proxy_hosts:
-  ombi:
-    domain: "request.media.oxide.one"
+  jackett:
+    domain: "jackett.{{ media_subdomain }}.{{ domain }}"
     target: "http://localhost:9117"
-  plex:
-    domain: "torrent.media.oxide.one"
-    target: "http://localhost:9124"
+    include_meta: False
+    proxy_headers:
+      - "proxy_http_version 1.1"
+      - "proxy_set_header   Upgrade $http_upgrade"
+      - "proxy_set_header   Connection keep-alive"
+      - "proxy_cache_bypass $http_upgrade"
+      - "proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for"
+      - "proxy_set_header   X-Forwarded-Proto $scheme"
+      - "proxy_set_header   X-Forwarded-Host $http_host"
+  sonarr:
+    domain: "tv.{{ media_subdomain }}.{{ domain }}"
+    target: "http://localhost:8989"
+    include_meta: False
+  radarr:
+    domain: "movies.{{ media_subdomain }}.{{ domain }}"
+    target: "http://localhost:7878"
+    include_meta: false
+  bazarr:
+    domain: "subtitles.{{ media_subdomain }}.{{ domain }}"
+    target: "http://localhost:6767"
+    include_meta: False
+  ombi:
+    domain: "request.{{ media_subdomain }}.{{ domain }}"
+    target: "http://localhost:3579"
+    include_meta: False
+    proxy_headers:
+      - "# NA"
+  qbittorrent:
+    domain: "torrent.{{ media_subdomain }}.{{ domain }}"
+    target: "http://localhost:8080"
+    include_meta: False

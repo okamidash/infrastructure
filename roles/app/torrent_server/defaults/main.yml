@@ -4,6 +4,7 @@ torrent_server_storage_name: "downloads"
 torrent_server_base_path: "{{ default_storage_mountpoint }}/nfs/{{ torrent_server_storage_name }}"
 torrent_server_paths:
   tv: "{{ torrent_server_base_path }}/tv"
+  anime: "{{ torrent_server_base_path }}/anime"
   movies: "{{ torrent_server_base_path }}/movies"
   downloads: "{{ torrent_server_base_path }}/temp"
   config: "{{ torrent_server_base_path }}/config"
@@ -13,7 +14,7 @@ torrent_server_services:
     paths: ["config"]
   sonarr:
     enabled: true
-    paths: ["config","tv","downloads"]
+    paths: ["config","tv","downloads","anime"]
   radarr:
     enabled: true
     paths: ["config","movies","downloads"]
@@ -22,7 +23,7 @@ torrent_server_services:
     paths: ["config","downloads"]
   bazarr:
     enabled: true
-    paths: ["config","movies","tv"]
+    paths: ["config","movies","tv","anime"]
   qbittorrent:
     enabled: true
     paths: ["config","downloads"]

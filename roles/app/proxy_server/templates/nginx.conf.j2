@@ -1,0 +1,54 @@
+user nginx;
+worker_processes auto;
+worker_cpu_affinity auto;
+worker_rlimit_nofile 65535;
+pcre_jit on;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+
+# Load dynamic modules. See /usr/share/doc/nginx/README.dynamic.
+include /usr/share/nginx/modules/*.conf;
+
+events {
+    worker_connections 65535;
+    multi_accept on;
+    use epoll;
+}
+
+http {
+    # Meta
+    charset utf-8;
+    aio_write on;
+    client_body_buffer_size 10k;
+    client_header_buffer_size 1k;
+    client_max_body_size 4G;
+    log_not_found off;
+    keepalive_timeout   65;
+    sendfile            on;
+    server_tokens       off;
+    tcp_nodelay         on;
+    tcp_nopush          on;
+    types_hash_max_size 4096;
+
+    # MIME Types
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+
+    # logging
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log warn;
+
+    # SSL
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_tickets off;
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    # Mozilla Modern configuration
+    ssl_protocols TLSv1.3;
+
+    include /etc/nginx/conf.d/*.conf;
+
+    {% include './templates/sites.j2' %}
+}
+

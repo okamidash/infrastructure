@@ -11,6 +11,7 @@
   become: yes
   user:
     name: "{{ acme_default_user }}"
+    group: "{{ acme_default_user }}"
     home: "{{ acme_default_user_homedir }}"
     createhome: yes
     state: present
@@ -28,3 +29,9 @@
   become: yes
   become_user: "{{ acme_default_user }}"
   register: output
+
+- name: "Allow Sudo access for acme to reload nginx"
+  template:
+    src: sudoers.j2
+    dest: /etc/sudoers.d/100-acme-nginx
+  become: yes

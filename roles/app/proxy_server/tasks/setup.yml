@@ -1,3 +1,71 @@
 ---
-- template: src=sites.j2 dest=/tmp/test
-  delegate_to: 127.0.0.1
+- name: "Ensure group web exists"
+  group:
+    name: web
+    state: present
+- name: "Install NGINX"
+  dnf:
+    name: "{% if nginx_install_all_modules %}nginx-all-modules{% else %}nginx{% endif %}"
+    state: present
+
+- name: "Create SSL dir for NGINX"
+  file:
+    path: "/etc/nginx/certs"
+    state: directory
+    owner: nginx
+    group: web
+    mode: '0770'
+
+- name: "Create meta_config dir for NGINX"
+  file:
+    path: "/etc/nginx/meta_config"
+    state: directory
+    owner: nginx
+    group: web
+    mode: '0775'
+
+- name: "Copy meta_config files over"
+  copy:
+    src: "files/{{ item }}"
+    dest: "/etc/nginx/meta_config/{{ item }}"
+    owner: nginx
+    group: web
+    mode: '0755'
+  with_list:
+    - "general.conf"
+    - "proxy.conf"
+    - "ssl.conf"
+
+- template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: "Create list of acme domains from nginx_proxy_hosts"
+  set_fact:
+    acme_domains: |
+      - "{{ inventory_hostname }}"
+      {% for name,opts in nginx_proxy_hosts.items() %}
+      - "{{ opts.domain }}"
+      {% endfor %}
+    ssl_dir: "/etc/nginx/certs"
+- name: "Convert to yaml"
+  set_fact: acme_domains="{{ acme_domains | from_yaml }}"
+- name: "Convert to yaml and set acme.sh command"
+  set_fact:
+    acme_default_command: >
+      --issue --force --dns dns_cf -d {{ acme_domains | join (' -d ') }}
+      --key-file {{ ssl_dir }}/privkey.pem --fullchain-file {{ ssl_dir }}/fullchain.pem
+      --reloadcmd 'sudo service nginx force-reload'
+
+- name: "Import role acme.sh"
+  include_role:
+    name: common/acme
+
+- name: "Enable NGINX"
+  systemd:
+    name: nginx
+    enabled: yes
+    state: started

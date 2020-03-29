@@ -126,8 +126,6 @@ torrent_server_services:
     paths: ["config","downloads"]
 ```
 
-
-
 Defaults:
 
 | Var Name                    | Purpose                                                            | Type   | Default   |
@@ -137,7 +135,7 @@ Defaults:
 
 When all vars are left to their default, this configuration will install and mount a NFS share from nas.nix.oxide.one to /storage/nfs/downloads, and will expect the following dirs to exist: `[tv,movies,temp,config]`. 
 
-### nginx_proxy
+### proxy_server
 
 Installs NGINX and configures it for use as a simple proxy server. This will overwrite the 
 
@@ -151,21 +149,23 @@ nginx_proxy_hosts:
         https:         true | false
         https_only:    true | false
         target:        "https://google.com"
+        include_meta:  true | false
         extra_headers:
             - "client_max_body_size 0"
         proxy_headers:
             - "proxy_no_cache 1"
 ```
 
-| Name          | Purpose                                                  | Type            | Optional | Default |
-| ------------- | -------------------------------------------------------- | --------------- | -------- | ------- |
-| domain        | Value for `server_name`                                  | string          | no       | None    |
-| type          | Whether to proxy, or redirect to target                  | string          | yes      | proxy   |
-| https         | Whether to enable https on this domain                   | bool            | yes      | true    |
-| https_only    | Whether to redirect all http connections to https        | bool            | yes      | true    |
-| target        | Target for redirect or proxy                             | string          | no       | None    |
-| extra_headers | Whether to place extra options within the `server` block | list of strings | yes      | None    |
-| proxy_headers | Whether to place extra options in the `proxy` block      | list of strings | yes      | None    |
+| Name          | Purpose                                                                 | Type            | Optional | Default |
+| ------------- | ----------------------------------------------------------------------- | --------------- | -------- | ------- |
+| domain        | Value for `server_name`                                                 | string          | no       | None    |
+| type          | Whether to proxy, or redirect to target                                 | string          | yes      | proxy   |
+| https         | Whether to enable https on this domain                                  | bool            | yes      | true    |
+| https_only    | Whether to redirect all http connections to https                       | bool            | yes      | true    |
+| target        | Target for redirect or proxy                                            | string          | no       | None    |
+| include_meta  | Whether to include the general.conf settings (check files/general.conf) | bool            | yes      | true    |
+| extra_headers | Whether to place extra options within the `server` block                | list of strings | yes      | None    |
+| proxy_headers | Whether to place extra options in the `proxy` block                     | list of strings | yes      | None    |
 
 **type**: Whether to redirect to, or proxy to the host. 
 
@@ -183,5 +183,3 @@ Defaults:
 | --------------------------- | ------------------------------------------------------------------ | ------ | --------- |
 | default_storage_mountpoint  | The default storage mountpoint under which NFS shares are accessed | string | /storage  |
 | torrent_server_storage_name | Name of the NFS share that is mounted.                             | string | downloads |
-
-

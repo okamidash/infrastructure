@@ -1,9 +1,9 @@
 ---
-#- name: "Deploy Virtual Machine"
-#  hosts: torrent.wg.oxide.one
-#  gather_facts: no
-#  become: no
-#  roles:
+- name: "Deploy Virtual Machine"
+  hosts: torrent.wg.oxide.one
+  gather_facts: no
+  become: no
+  roles:
 #    - role: virt/ovirt/virtual_machine
 #      state: present
 #    - role: virt/ovirt/mac_info
@@ -16,6 +16,6 @@
   hosts: torrent.wg.oxide.one
   become: true
   roles:
-#    - role: app/torrent_server
-    - role: app/proxy_server
+    - role: app/torrent_server
+#    - role: app/proxy_server
 

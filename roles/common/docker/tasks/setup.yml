@@ -28,3 +28,6 @@
   systemd:
     name: docker
     enabled: yes
+
+- name: "Reboot docker to allow for updates"
+  reboot:

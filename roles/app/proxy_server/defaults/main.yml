@@ -2,4 +2,4 @@ nginx_proxy_opts:
   type:   "proxy"
   https:  True
   https_only: True
-
+nginx_install_all_modules: True
