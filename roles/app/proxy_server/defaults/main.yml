@@ -1,0 +1,5 @@
+nginx_proxy_opts:
+  type:   "proxy"
+  https:  True
+  https_only: True
+

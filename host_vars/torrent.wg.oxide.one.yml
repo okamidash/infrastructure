@@ -2,3 +2,14 @@ ovirt_vm_networks:
   - "wireguard"
 ovirt_vm_cores: 8
 ovirt_vm_ram: 8192
+ovirt_vm_disk_size: 12
+acme_domains:
+  - "{{ inventory_hostname }}"
+  - "*.media.oxide.one"
+nginx_proxy_hosts:
+  ombi:
+    domain: "request.media.oxide.one"
+    target: "http://localhost:9117"
+  plex:
+    domain: "torrent.media.oxide.one"
+    target: "http://localhost:9124"

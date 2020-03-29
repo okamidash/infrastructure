@@ -68,7 +68,3 @@ Defaults:
 | -------------------------- | ----------------------------------------------------------------- | ------ | ------------------------------------ |
 | default_storage_mountpoint | The directory under which the storage mountpoints will be created | string | /storage                             |
 | nfs_mount_options          | The default NFS mounting options                                  | string | defaults,timeo=900,retrans=5,_netdev |
-
-
-
-

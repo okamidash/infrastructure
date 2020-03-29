@@ -1,0 +1,9 @@
+---
+- name: "Setup server as Torrent server"
+  include_tasks: setup.yml
+  when: state|default('present') == 'present'
+
+- name: "Delete Docker deployment"
+  include_tasks: destroy.yml
+  when: state|default('present') == 'absent'
+

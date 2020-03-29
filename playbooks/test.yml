@@ -1,20 +1,21 @@
 ---
-- name: "Deploy Virtual Machine"
-  hosts: torrent.wg.oxide.one
-  gather_facts: no
-  roles:
-    #- role: virt/ovirt/virtual_machine
-      #state: present
-    #- role: virt/ovirt/mac_info
-    #- role: net/vyos/static_dhcp
-      #delegate_to: "lunar.nix.oxide.one"
-    #- role: virt/ovirt/virtual_machine
-      #state: started
+#- name: "Deploy Virtual Machine"
+#  hosts: torrent.wg.oxide.one
+#  gather_facts: no
+#  become: no
+#  roles:
+#    - role: virt/ovirt/virtual_machine
+#      state: present
+#    - role: virt/ovirt/mac_info
+#    - role: net/vyos/static_dhcp
+#      delegate_to: "lunar.nix.oxide.one"
+#    - role: virt/ovirt/virtual_machine
+#      state: started
 
 - name: "Install docker and setup packages"
   hosts: torrent.wg.oxide.one
+  become: true
   roles:
-#    - role: common/docker
-#      state: present
-    - role: common/nfs_mounts
-      state: present
+#    - role: app/torrent_server
+    - role: app/proxy_server
+

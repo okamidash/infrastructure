@@ -5,3 +5,4 @@ ovirt_vm_networks:
   - "virtual"
 ovirt_vm_admin_user: "oxide"
 ovirt_vm_ha: "no"
+ovirt_vm_disk_size: 4

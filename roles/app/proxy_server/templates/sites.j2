@@ -1,0 +1,66 @@
+{% for site,opts in nginx_proxy_hosts.items() %}
+{% set domain = opts.domain | mandatory %}
+{% set target = opts.target | mandatory %}
+{# Default settings - type #}
+{% if opts.type is defined %}
+{% set type = opts.type %}
+{% else %}
+{% set type = nginx_proxy_opts['type'] %}
+{% endif %}
+{# Default settings - https #}
+{% if opts.https is defined %}
+{% set https_enabled = opts.https %}
+{% else %}
+{% set https_enabled = nginx_proxy_opts['https'] %}
+{% endif %}
+{# Default settings - https only #}
+{% if opts.https_only is defined %}
+{% set https_only = opts.https_only %}
+{% else %}
+{% set https_only = nginx_proxy_opts['https_only'] %}
+{% endif %}
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# {{ site }} || domain: {{ domain }} - type: {{ type }}
+{# HTTPS Only redirections #}
+{% if https_only %}
+server {
+    listen 80;
+    listen [::]:80;
+    server_name {{ domain }};
+    return 301 https://{{ domain }}$request_uri;
+}
+{% endif %}
+server {
+    server_name {{ domain }};
+{% if https_enabled %}
+    listen 443 ssl http2;
+    include conf/ssl.conf;
+{% else %}
+    listen 80;
+{% endif %}
+{% if opts.extra_headers is defined %}
+{% for header in opts.extra_headers %}
+    {{ header }};
+{% endfor %}
+{% endif %}
+{# Proxying #}
+{% if type == "proxy" %}
+    location ~ / {
+        proxy_pass {{ target }};
+{% if opts.proxy_headers is defined %}
+{% for header in opts.proxy_headers %}
+        {{ header }};
+{% endfor %}
+{% endif %}
+{% endif %}
+{# Redirection #}
+{% if type == "redirect" %}
+    return 301 {{ target }};
+{% endif %}
+
+    }
+
+}
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+{% endfor %}
+

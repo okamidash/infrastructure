@@ -1,0 +1,28 @@
+---
+default_storage_mountpoint: "/storage"
+torrent_server_storage_name: "downloads"
+torrent_server_base_path: "{{ default_storage_mountpoint }}/nfs/{{ torrent_server_storage_name }}"
+torrent_server_paths:
+  tv: "{{ torrent_server_base_path }}/tv"
+  movies: "{{ torrent_server_base_path }}/movies"
+  downloads: "{{ torrent_server_base_path }}/temp"
+  config: "{{ torrent_server_base_path }}/config"
+torrent_server_services:
+  ombi:
+    enabled: true
+    paths: ["config"]
+  sonarr:
+    enabled: true
+    paths: ["config","tv","downloads"]
+  radarr:
+    enabled: true
+    paths: ["config","movies","downloads"]
+  jackett:
+    enabled: true
+    paths: ["config","downloads"]
+  bazarr:
+    enabled: true
+    paths: ["config","movies","tv"]
+  qbittorrent:
+    enabled: true
+    paths: ["config","downloads"]

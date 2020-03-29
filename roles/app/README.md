@@ -65,3 +65,123 @@ Returned vars:
 | rndc_key       | Full Key for Dynamic DNS   | String |
 | rndc_secret    | Secret part of Rndc key    | String |
 | rndc_algorithm | Algorithm for the Rndc key | String |
+
+### torrent_server
+
+This role Installs docker, configures SSL certificates
+
+Sets up a torrent server with the following services (by default):
+
+- sonarr
+
+- radarr
+
+- bazarr
+
+- jackett
+
+- qbittorrent
+
+- ombi
+
+Assumes all config and storage is on NFS, and relative to the NFS storage root.
+
+There are two dicts used here to define docker services: `torrent_server_paths` and `torrent_server_services`.
+
+**torrent_server_base_path**
+
+`{{ default_storage_mountpoint }}/nfs/{{ torrent_server_storage_name }}`
+
+**torrent_server_paths (default)**
+
+```yaml
+torrent_server_paths:
+  tv: "{{ torrent_server_base_path }}/tv"
+  movies: "{{ torrent_server_base_path }}/movies"
+  downloads: "{{ torrent_server_base_path }}/temp"
+  config: "{{ torrent_server_base_path }}/config"
+```
+
+**torrent_server_services (default)**
+
+```yaml
+torrent_server_services:
+  ombi:
+    enabled: true
+    paths: ["config"]
+  sonarr:
+    enabled: true
+    paths: ["config","tv","downloads"]
+  radarr:
+    enabled: true
+    paths: ["config","movies","downloads"]
+  jackett:
+    enabled: true
+    paths: ["config","downloads"]
+  bazarr:
+    enabled: true
+    paths: ["config","movies","tv"]
+  qbittorrent:
+    enabled: true
+    paths: ["config","downloads"]
+```
+
+
+
+Defaults:
+
+| Var Name                    | Purpose                                                            | Type   | Default   |
+| --------------------------- | ------------------------------------------------------------------ | ------ | --------- |
+| default_storage_mountpoint  | The default storage mountpoint under which NFS shares are accessed | string | /storage  |
+| torrent_server_storage_name | Name of the NFS share that is mounted.                             | string | downloads |
+
+When all vars are left to their default, this configuration will install and mount a NFS share from nas.nix.oxide.one to /storage/nfs/downloads, and will expect the following dirs to exist: `[tv,movies,temp,config]`. 
+
+### nginx_proxy
+
+Installs NGINX and configures it for use as a simple proxy server. This will overwrite the 
+
+Requires a variable called`nginx_proxy_hosts` in the following format:
+
+```yaml
+nginx_proxy_hosts:
+    name:
+        domain:        "*.doubledash.org"
+        type:          proxy | redirect                                
+        https:         true | false
+        https_only:    true | false
+        target:        "https://google.com"
+        extra_headers:
+            - "client_max_body_size 0"
+        proxy_headers:
+            - "proxy_no_cache 1"
+```
+
+| Name          | Purpose                                                  | Type            | Optional | Default |
+| ------------- | -------------------------------------------------------- | --------------- | -------- | ------- |
+| domain        | Value for `server_name`                                  | string          | no       | None    |
+| type          | Whether to proxy, or redirect to target                  | string          | yes      | proxy   |
+| https         | Whether to enable https on this domain                   | bool            | yes      | true    |
+| https_only    | Whether to redirect all http connections to https        | bool            | yes      | true    |
+| target        | Target for redirect or proxy                             | string          | no       | None    |
+| extra_headers | Whether to place extra options within the `server` block | list of strings | yes      | None    |
+| proxy_headers | Whether to place extra options in the `proxy` block      | list of strings | yes      | None    |
+
+**type**: Whether to redirect to, or proxy to the host. 
+
+States: `present,``absent`
+
+Vars used:
+
+| Var name          | Purpose                                | Defined where |
+| ----------------- | -------------------------------------- | ------------- |
+| nginx_proxy_hosts | Dict containing the proxies for nginx. | host_vars     |
+
+Defaults:
+
+| Var Name                    | Purpose                                                            | Type   | Default   |
+| --------------------------- | ------------------------------------------------------------------ | ------ | --------- |
+| default_storage_mountpoint  | The default storage mountpoint under which NFS shares are accessed | string | /storage  |
+| torrent_server_storage_name | Name of the NFS share that is mounted.                             | string | downloads |
+
+

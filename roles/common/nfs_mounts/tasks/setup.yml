@@ -24,6 +24,7 @@
         state: directory
         mode: '0755'
       with_dict: "{{ nfs_mounts }}"
+      become: yes
     - mount:
         path: "{{ default_storage_mountpoint }}/nfs/{{ item.key }}"
         src: "{{ item.value.host }}:{{ item.value.path }}"
@@ -31,6 +32,7 @@
         fstype: nfs
         state: present
       with_dict: "{{ nfs_mounts }}"
+      become: yes
     - command:
         cmd: mount "{{ item.value.host }}:{{ item.value.path }}"
         warn: no
@@ -45,12 +47,14 @@
         path: "{{ default_storage_mountpoint }}/nfs/{{ nfs_mount }}"
         state: directory
         mode: '0755'
+      become: yes
     - mount:
         path: "{{ default_storage_mountpoint }}/nfs/{{ nfs_mount }}"
         src: "{{ nfs_mounts[nfs_mount].host }}:{{ nfs_mounts[nfs_mount].path }}"
         opts: "{{ nfs_mount_options }}"
         fstype: nfs
         state: present
+      become: yes
     - command:
         cmd: mount "{{ nfs_mounts[nfs_mount].host }}:{{ nfs_mounts[nfs_mount].path }}"
         warn: no

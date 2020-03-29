@@ -1,0 +1,12 @@
+---
+- name: "Template out Docker-compose file"
+  template:
+    src: docker-compose.j2
+    dest: /tmp/docker-compose.yml
+
+- name: "Launch services"
+  docker_compose:
+    project_src: /tmp
+    state: absent
+  become: yes
+

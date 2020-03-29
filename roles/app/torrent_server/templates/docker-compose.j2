@@ -1,0 +1,28 @@
+---
+version: '2'
+services:
+{% for name,opts in torrent_server_services.items() %}
+{% if opts.enabled %}
+  {{ name }}:
+    image: linuxserver/{{ name }}
+    container_name: {{ name }}
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - UMASK_SET=022
+{% if name == "qbittorrent" %}
+      - WEBUI_PORT=8080
+{% endif %}
+    volumes:
+{% for path in opts.paths %}
+{% if path == "config" %}
+      - {{ torrent_server_paths[path] }}/{{ name }}:/{{ path }}
+{% else %}
+      - {{ torrent_server_paths[path] }}:/{{ path }}
+{% endif %}
+{% endfor %}
+    network_mode: host
+    restart: unless-stopped
+{% endif %}
+{% endfor %}

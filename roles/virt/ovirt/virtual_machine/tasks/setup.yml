@@ -2,6 +2,9 @@
 - name: "Create ovirt vm {{ inventory_hostname }}"
   delegate_to: "127.0.0.1"
   ovirt_vm:
+    cpu_sockets: "{{ ovirt_vm_cores }}"
+    cpu_cores: 1
+    cpu_threads: 1
     auth: "{{ ovirt_auth }}"
     state: "present"
     name: "{{ inventory_hostname }}"
@@ -9,6 +12,7 @@
     cluster: "{{ ovirt_cluster_name }}"
     memory: "{{ ovirt_vm_ram }}MiB"
     high_availability: "{{ ovirt_vm_ha }}"
+    disk_format: "cow"
 
 - name: "Add nics to {{ inventory_hostname }}"
   delegate_to: "127.0.0.1"
@@ -21,3 +25,21 @@
     interface: "virtio"
     state: "present"
   with_list: "{{ ovirt_vm_networks }}"
+
+- name: "Get disk info for {{ inventory_hostname }}"
+  ovirt_disk_info:
+    auth: "{{ ovirt_auth }}"
+    pattern: "vm_names={{ inventory_hostname }}"
+  delegate_to: "127.0.0.1"
+  register: disk_info
+
+- name: "Get disk info for {{ inventory_hostname }}"
+  ovirt_disk:
+    auth: "{{ ovirt_auth }}"
+    id: "{{ disk_info.ovirt_disks[0].id }}"
+    name: "root_{{ inventory_hostname }}"
+    vm_name: "{{ inventory_hostname }}"
+    description: "Root filesystem for {{ inventory_hostname }}"
+    size: "{{ ovirt_vm_disk_size }}GiB"
+  delegate_to: "127.0.0.1"
+
