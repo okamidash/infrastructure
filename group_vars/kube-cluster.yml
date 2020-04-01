@@ -1,0 +1,7 @@
+ovirt_base_template_name: "kubernetes"
+ovirt_vm_networks:
+  - "kube"
+ovirt_vm_cores: 6
+ovirt_vm_ram: 6144
+ovirt_vm_disk_size: 12
+

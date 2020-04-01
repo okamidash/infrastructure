@@ -78,6 +78,20 @@ States: `present`,`absent`
 
 Imports a template and performs modifications on it, before saving it as a template.
 
+If `ovirt_template_extra_commands` is defined (as a list), these will be run in the `runcmd` portion of cloud-init.
+
+If `ovirt_template_extra_repos` is defined, with a specific structure (see below), it will add the repo to the cloud-init as a yum-repo.
+
+```yaml
+ovirt_template_extra_repos:
+    REPONAME:
+        url: "https://google.com"
+        name: "google-example"
+        gpgkey: "https://google.com/gpgkey"
+```
+
+
+
 By default, this will install the following packages:
 
 - vim
@@ -92,7 +106,8 @@ Default vars:
 
 | Var Name                        | Purpose                                           | Type    | Default                                                |
 | ------------------------------- | ------------------------------------------------- | ------- | ------------------------------------------------------ |
-| ovirt_base_template_name        | Name of template to load and then save to.        | string  | "base_image"                                           |
+| ovirt_base_template_name        | Name of template to load                          | string  | "base_image"                                           |
+| ovirt_base_template_savename    | Name of template to save as.                      | string  | "base_image"                                           |
 | ovirt_nic_network               | The name of the network to create the template on | string  | "virtual"                                              |
 | ovirt_template_packages         | List of packages to install onto template         | list    | vim,htop,qemu-guest-agent,freeipa-client,dnf-automatic |
 | ovirt_template_enabled_services | List of systemd units to enable at boot           | list    | qemu-guest-agent,dnf-automatic-install.timer           |
@@ -116,6 +131,8 @@ Unless specified otherwise, virtual machine will be created from the template na
 
 This will create a virtual machine and use the first user:ssh_key pair in the `ssh_keys` list to initiate the first user. The root account will not be given an ssh key or password.
 
+If you need to pass any additional arguements to cloud-init at boot; you can use the variable `ovirt_vm_cloud_init_extras` when running this role.
+
 States: `present`,`absent`,`started`,`stopped`
 
 Vars used:
@@ -129,14 +146,14 @@ Vars used:
 
 Default vars:
 
-| Var Name                 | Purpose                                                           | Type   | Default                                                |
-| ------------------------ | ----------------------------------------------------------------- | ------ | ------------------------------------------------------ |
-| ovirt_base_template_name | Name of template to create vm from                                | string | "base_image"                                           |
-| ovirt_vm_cores           | The number of cores to create for the vm                          | int    | "4"                                                    |
-| ovirt_vm_ram             | The amount of ram to create for the virtual machine (MB)          | int    | 2048                                                   |
-| ovirt_vm_admin_user      | User and ssh keypair to make as first user                        | string | oxide                                                  |
-| ovirt_vm_networks        | Networks to create on host (titles of networks in `networks` var) | list   | virtual                                                |
-| ovirt_vm_ha              | Enable High availability on vm                                    | string | no                                                     |
+| Var Name                 | Purpose                                                           | Type   | Default      |
+| ------------------------ | ----------------------------------------------------------------- | ------ | ------------ |
+| ovirt_base_template_name | Name of template to create vm from                                | string | "base_image" |
+| ovirt_vm_cores           | The number of cores to create for the vm                          | int    | "4"          |
+| ovirt_vm_ram             | The amount of ram to create for the virtual machine (MB)          | int    | 2048         |
+| ovirt_vm_admin_user      | User and ssh keypair to make as first user                        | string | oxide        |
+| ovirt_vm_networks        | Networks to create on host (titles of networks in `networks` var) | list   | virtual      |
+| ovirt_vm_ha              | Enable High availability on vm                                    | string | no           |
 
 Returned vars: `less`,`than`,`three`
 

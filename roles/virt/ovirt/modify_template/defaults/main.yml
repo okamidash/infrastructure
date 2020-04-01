@@ -10,4 +10,5 @@ ovirt_template_enabled_services:
   - "dnf-automatic-install.timer"
 ovirt_template_selinux_disabled: True
 ovirt_template_upgrade_all: False
-
+ovirt_base_template_name: "base_image"
+ovirt_base_template_savename: "{{ ovirt_base_template_name }}"

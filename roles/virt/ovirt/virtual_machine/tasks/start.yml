@@ -9,3 +9,9 @@
       host_name: "{{ inventory_hostname }}"
       authorized_ssh_keys: "{{ ssh_keys[ovirt_vm_admin_user] }}"
       user_name: "{{ ovirt_vm_admin_user }}"
+      custom_script: |
+        {% if ovirt_vm_cloud_init_extras is defined %}
+        {{ ovirt_vm_cloud_init_extras }}
+        {% else %}
+        # DEBUG
+        {% endif %}

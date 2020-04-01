@@ -28,6 +28,17 @@
     auth: "{{ ovirt_auth }}"
     cloud_init:
       custom_script: |
+        {% if ovirt_template_extra_repos is defined %}
+        yum_repos:
+        {% for repo,opts in ovirt_template_extra_repos.items() %}
+          {{ repo }}:
+              baseurl: {{ opts.url }}
+              enabled: true
+              gpgcheck: true
+              gpgkey: {{ opts.gpgkey }}
+              name: {{ opts.name }}
+        {% endfor %}
+        {% endif %}
         {% if ovirt_template_upgrade_all %}
         package_update: true
         package_upgrade: true
@@ -39,6 +50,11 @@
         runcmd:
         {% if ovirt_template_selinux_disabled %}
          - sed -i 's/enforcing/disabled/g' /etc/selinux/config /etc/selinux/config
+        {% endif %}
+        {% if ovirt_template_extra_commands is defined %}
+        {% for extra_command in ovirt_template_extra_commands %}
+         - {{ extra_command }}
+        {% endfor %}
         {% endif %}
         {% for unit in ovirt_template_enabled_services %}
          - systemctl enable {{ unit }}
@@ -82,13 +98,24 @@
 - name: "Update template {{ ovirt_base_template_name }} from created vm"
   ovirt_template:
     auth: "{{ ovirt_auth }}"
-    name: "{{ ovirt_base_template_name }}"
+    name: "{{ ovirt_base_template_savename }}"
     seal: "yes"
     cluster: "{{ ovirt_cluster_name }}"
     vm: "{{ ovirt_base_template_name }}"
     version:
       name: "subversion"
   delegate_to: "127.0.0.1"
+  when: ovirt_base_template_name == ovirt_base_template_savename
+
+- name: "Update template {{ ovirt_base_template_name }} from created vm"
+  ovirt_template:
+    auth: "{{ ovirt_auth }}"
+    name: "{{ ovirt_base_template_savename }}"
+    seal: "yes"
+    cluster: "{{ ovirt_cluster_name }}"
+    vm: "{{ ovirt_base_template_name }}"
+  delegate_to: "127.0.0.1"
+  when: ovirt_base_template_name != ovirt_base_template_savename
 
 - name: "Remove vm from system"
   ovirt_vm:
