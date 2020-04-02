@@ -1,0 +1,37 @@
+---
+- name: "Set keycloak database password if not defined"
+  set_fact:
+    keycloak_db_pw: "{{ lookup('password', '/tmp/keycloak_db_pw length=16 chars=ascii_letters') }}"
+  when: keycloak_db_pw is not defined
+
+- name: "Set keycloak database password if not defined"
+  set_fact:
+    keycloak_web_pw: "{{ lookup('password', '/tmp/keycloak_web_pw length=16 chars=ascii_letters') }}"
+  when: keycloak_web_pw is not defined
+
+- name: "Install docker"
+  include_role:
+    name: common/docker
+
+- name: "Get SSL Certs"
+  include_role:
+    name: common/acme
+
+- name: "Template out Docker-compose file"
+  template:
+    src: docker-compose.j2
+    dest: /tmp/docker-compose.yml
+
+- name: "Launch Keycloak"
+  docker_compose:
+    project_src: /tmp
+    state: present
+  become: yes
+
+- name: "Print out final statement"
+  debug:
+    msg: |
+      Your keycloak instance should now be up at https://{{ inventory_hostname }}"
+      Login details:
+        username: admin
+        password: {{ keycloak_web_pw }}

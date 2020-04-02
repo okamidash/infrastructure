@@ -1,0 +1,4 @@
+ovirt_vm_networks:
+  - "utility"
+ovirt_vm_cores: 4
+ovirt_vm_ram: 4096

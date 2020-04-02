@@ -7,6 +7,13 @@
     state: present
   become: yes
 
+- name: "Make sure that {{ acme_default_user }} group is created"
+  group:
+    name: "{{ acme_default_user }}"
+    system: yes
+    state: present
+  become: yes
+
 - name: "Make sure that {{ acme_default_user }} user is created"
   become: yes
   user:

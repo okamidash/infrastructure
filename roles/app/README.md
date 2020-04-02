@@ -183,3 +183,25 @@ Defaults:
 | --------------------------- | ------------------------------------------------------------------ | ------ | --------- |
 | default_storage_mountpoint  | The default storage mountpoint under which NFS shares are accessed | string | /storage  |
 | torrent_server_storage_name | Name of the NFS share that is mounted.                             | string | downloads |
+
+### keycloak
+
+Installs docker, ssl certificates and finally keycloak.
+
+The docker stack is as follows:
+
+- mariadb (latest)
+
+- keycloak (latest)
+
+Unless otherwise provided, the following vars will be randomly generated and printed out to the console at the end of the run.
+
+`keycloak_db_pw` - Database password
+
+`keycloak_web_pw` - Keycloak web password
+
+
+
+You will then be able to access the VM :D
+
+

@@ -1,20 +1,24 @@
 ---
-- import_role:
+- name: "Install docker"
+  include_role:
     name: common/docker
-  become: yes
+  vars:
+    state: absent
 
-- import_role:
-    name: common/nfs_mounts
-  become: yes
+- name: "Get SSL Certs"
+  include_role:
+    name: common/acme
+  vars:
+    state: absent
 
 - name: "Template out Docker-compose file"
   template:
     src: docker-compose.j2
     dest: /tmp/docker-compose.yml
 
-- name: "Launch services"
+- name: "Launch Keycloak"
   docker_compose:
     project_src: /tmp
-    state: present
+    state: absent
   become: yes
 
