@@ -1,0 +1,17 @@
+---
+- name: "Deploy Keycloak Authentication VM"
+  hosts: "auth.oxide.one"
+  gather_facts: no
+  roles:
+    - role: virt/ovirt/virtual_machine
+      state: present
+    - role: virt/ovirt/virtual_machine
+      state: started
+
+- name: "Add Docker"
+  hosts: "auth.oxide.one"
+  gather_facts: no
+  become: yes
+  roles:
+    - role: app/keycloak
+

@@ -200,8 +200,25 @@ Unless otherwise provided, the following vars will be randomly generated and pri
 
 `keycloak_web_pw` - Keycloak web password
 
-
-
 You will then be able to access the VM :D
 
 
+
+### kubernetes/multi-master
+
+This role is used for creating a multi-master kubernetes control plane.
+
+The var `kubernetes_controlplane_endpoint` is required. It must be a valid ipv4 address.
+
+If `kubernetes_master_listen_interface` is not defined, a default of `eth0` will be used.
+
+
+
+States: `present`,`absent`
+
+Defaults used:
+
+| Var Name                    | Purpose                                                            | Type   | Default   |
+| --------------------------- | ------------------------------------------------------------------ | ------ | --------- |
+| default_storage_mountpoint  | The default storage mountpoint under which NFS shares are accessed | string | /storage  |
+| torrent_server_storage_name | Name of the NFS share that is mounted.                             | string | downloads |

@@ -4,4 +4,5 @@ ovirt_vm_networks:
 ovirt_vm_cores: 6
 ovirt_vm_ram: 6144
 ovirt_vm_disk_size: 12
-
+kubernetes_controlplane_endpoint: "10.0.7.10"
+kubernetes_controlplane_dns_endpoint: "api.carbon.kube.oxide.one"

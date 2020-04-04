@@ -1,0 +1,9 @@
+---
+- name: "Setup a Kubernetes Multi-master node"
+  include_tasks: setup.yml
+  when: state|default('present') == 'present'
+
+- name: "Delete the Kubernetes Multi-master node"
+  include_tasks: destroy.yml
+  when: state|default('present') == 'absent'
+
