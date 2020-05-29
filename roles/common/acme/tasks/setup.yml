@@ -13,6 +13,7 @@
     system: yes
     state: present
   become: yes
+  when: acme_default_user != 'root'
 
 - name: "Make sure that {{ acme_default_user }} user is created"
   become: yes
@@ -24,6 +25,7 @@
     state: present
     shell: /sbin/nologin
     system: yes
+  when: acme_default_user != 'root'
 
 - name: "Download acme.sh"
   get_url:

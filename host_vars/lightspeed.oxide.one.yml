@@ -1,0 +1,4 @@
+haproxy_wireguard_entry_host: "solar.dhcp.oxide.one"
+haproxy_wireguard_subnet: "10.10.0.0/24"
+ansible_user: "root"
+

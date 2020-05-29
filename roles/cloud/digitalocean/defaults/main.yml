@@ -1,0 +1,4 @@
+digitalocean_image: fedora-31-x64
+digitalocean_size: s-1vcpu-3gb
+digitalocean_region: lon1
+digitalocean_call_cloudflare: True

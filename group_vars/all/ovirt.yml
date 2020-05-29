@@ -1,5 +1,5 @@
 ovirt_datacenter: "oxide"
-ovirt_cluster_name: "oxide.one"
-ovirt_storage_domain: "vmstore"
-ovirt_engine_endpoint: "https://ovirt.srv.oxide.one/ovirt-engine"
+ovirt_cluster_name: "void"
+ovirt_storage_domain: "data"
+ovirt_engine_endpoint: "https://void-engine.srv.oxide.one/ovirt-engine"
 

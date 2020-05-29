@@ -1,0 +1,7 @@
+{% set prefix = "set interfaces wireguard wg01" %}
+{{ prefix }} address {{ haproxy_wireguard_subnet | ipaddr('network') | ipmath(2) }}/24
+{{ prefix }} description 'Tunnel to {{ inventory_hostname_short }}'
+{{ prefix }} peer {{ inventory_hostname_short }} allowed-ips "{{ haproxy_wireguard_subnet | ipaddr('network') }}/{{ haproxy_wireguard_subnet | ipaddr('prefix') }}"
+{{ prefix }} peer {{ inventory_hostname_short }} endpoint '{{ inventory_hostname }}:55107'
+{{ prefix }} peer {{ inventory_hostname_short }} pubkey '{{ wireguard_server_publickey }}'
+{{ prefix }} peer {{ inventory_hostname_short }} persistent-keepalive 30

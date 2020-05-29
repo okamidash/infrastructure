@@ -18,6 +18,7 @@
 {% if static_mapping[1].mac is defined %}
 {{ prefix }} static-mapping {{ static_mapping[0] }}.{{ domain_name }} mac-address "{{ static_mapping[1].mac }}"
 {{ prefix }} static-mapping {{ static_mapping[0] }}.{{ domain_name }} ip-address "{{ static_mapping[1].ip }}"
+{{ action }} system static-host-mapping host-name "{{ static_mapping[0] }}.{{ domain_name }}" inet "{{ static_mapping[1].ip }}"
 {% endif %}
 {% endfor %}
 {% endif %}

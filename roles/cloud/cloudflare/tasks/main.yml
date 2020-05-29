@@ -1,0 +1,13 @@
+---
+- name: "Create IPV4 Address"
+  cloudflare_dns:
+    zone: "{{ item.zone | mandatory }}"
+    record: "{{ item.record | default('@')  }}"
+    type: "{{ item.type | default('A') }}"
+    ttl: "{{ item.ttl | default('120') }}"
+    value: "{{ item.value | mandatory }}"
+    account_email: "{{ cloudflare_email }}"
+    account_api_token: "{{ cloudflare_apikey }}"
+    state: "{{ state | default('present') }}"
+  with_list: "{{ cloudflare_dns_records }}"
+  delegate_to: localhost

@@ -1,0 +1,48 @@
+---
+
+- name: "Setup FirewallD"
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  with_list:
+    - "80/tcp"
+    - "443/tcp"
+    - "81/tcp"
+
+- name: "Set SSL dir"
+  set_fact: ssl_dir="/etc/haproxy/certs" acme_default_user_homedir="/root"
+- name: "Convert to yaml and set acme.sh command"
+  set_fact:
+    acme_default_user: "root"
+    acme_default_command: >
+      --issue --force --dns dns_cf -d {{ acme_domains | join (' -d ') }}
+      --key-file {{ ssl_dir }}/privkey.pem --fullchain-file {{ ssl_dir }}/fullchain.pem
+      --reloadcmd 'cat {{ ssl_dir }}/fullchain.pem {{ ssl_dir }}/privkey.pem >> {{ ssl_dir }}/wildcard.pem && service haproxy force-reload'
+
+#- name: "Import role acme.sh"
+#  include_role:
+#    name: common/acme
+
+- name: "Download dh-param-file"
+  get_url:
+    url: "https://ssl-config.mozilla.org/ffdhe2048.txt"
+    dest: "/etc/haproxy/dh-param"
+    owner: root
+    group: wheel
+    mode: '0440'
+
+- name: "Template out haproxy template"
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    owner: root
+    group: wheel
+    mode: 0755
+
+- name: "Reload haproxy"
+  systemd:
+    name: haproxy
+    enabled: yes
+    state: restarted

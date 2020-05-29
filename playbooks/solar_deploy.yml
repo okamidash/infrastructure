@@ -5,7 +5,12 @@
   tasks:
   roles:
     - role: net/vyos/init
-    - role: net/vyos/phys_network
+      state: present
+#    - role: net/vyos/phys_network
+#      state: present
     - role: net/vyos/dhcp
+      state: present
     - role: net/vyos/dns
-    - role: net/vyos/static_dhcp
+      state: present
+#    - role: net/vyos/static_dhcp
+#      state: present

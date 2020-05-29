@@ -1,0 +1,31 @@
+---
+- name: 'Check mandatory variables are defined'
+  assert:
+    that:
+      - kubernetes_controlplane_endpoint is defined
+
+- name: "Ensure HAproxy and Keepalived are installed"
+  dnf:
+    name:
+      - "haproxy"
+      - "keepalived"
+    state: present
+
+- name: "Template out HAproxy files"
+  template:
+    src: haproxy.conf.j2
+    dest: "/etc/haproxy/haproxy.cfg"
+
+- name: "Template out Keepalived files"
+  template:
+    src: keepalived.conf.j2
+    dest: "/etc/keepalived/keepalived.conf"
+
+- name: "Enable and start the services"
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  with_items:
+    - "haproxy"
+    - "keepalived"

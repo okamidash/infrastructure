@@ -2,7 +2,7 @@
 - name: "Get ovirt authentication"
   ovirt_auth:
     url: "{{ ovirt_engine_endpoint }}/api"
-    ca_file: "{{ playbook_dir }}/../files/ovirt.ca"
+    ca_file: "{{ role_path }}/files/ovirt.ca"
     username: "{{ ovirt_username }}"
     password: "{{ ovirt_password }}"
   when: state|default('present') == 'present'

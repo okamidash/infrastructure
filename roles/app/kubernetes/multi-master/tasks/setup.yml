@@ -16,10 +16,18 @@
     src: haproxy.conf.j2
     dest: "/etc/haproxy/haproxy.cfg"
 
-- name: "Template out Keepalived files"
+- name: "Template out Hosts file"
   template:
     src: keepalived.conf.j2
     dest: "/etc/keepalived/keepalived.conf"
+
+- name: "Template out Keepalived files"
+  template:
+    src: hosts.j2
+    dest: "/etc/hosts"
+    owner: root
+    group: root
+    mode: 0755
 
 - name: "Enable and start the services"
   systemd:

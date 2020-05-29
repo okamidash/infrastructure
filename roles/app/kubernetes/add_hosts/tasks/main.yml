@@ -1,0 +1,46 @@
+---
+# Loop over the var master_nodes to create a number of master nodes
+- name: "Add master nodes"
+  add_host:
+    name: "{{ cluster_name }}-kmaster-{{ lookup('password', '/tmp/kubehost-{{ item }} length=6 chars=ascii_letters') }}.{{ fqdn_end }}"
+    groups:
+      - kube-cluster
+      - kube-master
+    desired_ip: "{{ master_nodes_starting_ip | ipmath(item | int) }}"
+    ansible_host: "{{ master_nodes_starting_ip | ipmath(item | int) }}"
+    ovirt_vm_bootproto: "static"
+    ovirt_vm_netmask: "{{ cluster_network.gateway | ipaddr('netmask') }}"
+    ovirt_vm_gateway: "{{ cluster_network.gateway | ipaddr('address') }}"
+    ovirt_vm_ethintf: "eth0"
+    ovirt_vm_enable_nic: true
+  when: role == 'master'
+  with_sequence: count="{{ master_nodes }}"
+
+# Remove a temporary file created to define the names of the nodes
+- name: "Remove temporary file"
+  file:
+    path: "/tmp/kubehost-{{ item }}"
+    state: absent
+  when: role == 'master'
+  with_sequence: count="{{ master_nodes }}"
+
+# Loop over the worker_nodes var to create a number of worker nodes 
+- name: "Add master nodes"
+  add_host:
+    name: "{{ cluster_name }}-knode-{{ lookup('password', '/tmp/kubehost-{{ item }} length=6 chars=ascii_letters') }}.{{ fqdn_end }}"
+    groups:
+      - kube-cluster
+      - kube-node
+    ovirt_vm_cloud_init_extras: |
+      runcmd:
+        - "{{ join_token_command }}"
+  when: role == 'node'
+  with_sequence: count="{{ worker_nodes }}"
+
+# Remove a temporary file created to define the names of the nodes
+- name: "Remove temporary file"
+  file:
+    path: "/tmp/kubehost-{{ item }}"
+    state: absent
+  when: role == 'node'
+  with_sequence: count="{{ worker_nodes }}"

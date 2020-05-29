@@ -1,8 +1,24 @@
+---
+# Name of the cluster to create
+cluster_name: "hydra"
+# Number of master nodes to create
+master_nodes: 3
+# Number of worker nodes to create
+worker_nodes: 4
+# Name of template to build master and worker nodes from.
 ovirt_base_template_name: "kubernetes"
+#### Networking related
+# What network to create the cluster on
+kubernetes_network: "kube"
+# Any additional networks to add the cluster to
+# Required var for ovirt.
 ovirt_vm_networks:
-  - "kube"
-ovirt_vm_cores: 6
-ovirt_vm_ram: 6144
-ovirt_vm_disk_size: 12
+  - "{{ kubernetes_network }}"
+# Start ip for the master nodes
+master_nodes_starting_ip: "10.0.7.11"
+### Cluster related
+ovirt_vm_cores: 8
+ovirt_vm_ram: 10240
+ovirt_vm_disk_size: 35
 kubernetes_controlplane_endpoint: "10.0.7.10"
-kubernetes_controlplane_dns_endpoint: "api.carbon.kube.oxide.one"
+kubernetes_controlplane_dns_endpoint: "api.hydra.kube.oxide.one"

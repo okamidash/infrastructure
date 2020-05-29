@@ -1,0 +1,7 @@
+[Interface]
+PrivateKey = {{ wireguard_server_privatekey }}
+ListenPort = 55107
+Address = {{ haproxy_wireguard_subnet | ipaddr('network') | ipmath(1) }}/24
+[Peer]
+PublicKey = {{ wireguard_client_publickey[0]  }}
+AllowedIPs = {{ haproxy_wireguard_subnet | ipaddr('network') | ipmath(2) }}/32,{{ subnets | from_yaml | list | join(',') }}

@@ -1,0 +1,24 @@
+---
+- name: "Install docker"
+  include_role:
+    name: common/docker
+  vars:
+    state: absent
+
+- name: "Get SSL Certs"
+  include_role:
+    name: common/acme
+  vars:
+    state: absent
+
+- name: "Template out Docker-compose file"
+  template:
+    src: docker-compose.j2
+    dest: /tmp/docker-compose.yml
+
+- name: "Launch Keycloak"
+  docker_compose:
+    project_src: /tmp
+    state: absent
+  become: yes
+

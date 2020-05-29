@@ -1,6 +1,6 @@
 ---
 - name: "Modify template for Kubernetes cluster"
-  hosts: kube-master
+  hosts: localhost
   gather_facts: no
   vars:
     ovirt_base_template_name: "base_image"
@@ -19,8 +19,8 @@
       - "echo 'KUBELET_EXTRA_ARGS=--cgroup-driver=systemd --container-runtime=remote --container-runtime-endpoint=\"unix:///var/run/crio/crio.sock\"' >> /etc/sysconfig/kubelet"
       - "grubby --update-kernel=ALL --args='systemd.unified_cgroup_hierarchy=0'"
       - "yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes"
-      - "dnf module enable -y cri-o:1.17"
-      - "dnf install -y cri-o kubernetes-cni nfs-utils logrotate"
+      - "dnf module enable -y cri-o:1.18"
+      - "dnf install -y cri-o kubernetes-cni nfs-utils logrotate ceph-common"
     ovirt_template_enabled_services:
       - "kubelet"
       - "crio"

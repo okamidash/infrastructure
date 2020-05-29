@@ -1,0 +1,22 @@
+acme_domains:
+  - "oxide.one"
+  - "*.oxide.one"
+  - "*.vm.oxide.one"
+  - "*.srv.oxide.one"
+  - "*.doubledash.org"
+  - "doubledash.org"
+  - "okami.dev"
+  - "*.okami.dev"
+
+haproxy_hosts:
+  - name: "s3.oxide.one"
+  - name: "stats.oxide.one"
+  - name: "ipa.oxide.one"
+  - name: "nc.oxide.one"
+  - name: "request.oxide.one"
+    target: "request.media.oxide.one"
+  - name: "cloud.doubledash.org"
+  - name: "auth.oxide.one"
+    target: "halcyon.srv.oxide.one"
+  - name: "git.doubledash.org"
+    target: "halcyon.srv.oxide.one"

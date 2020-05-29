@@ -1,7 +1,7 @@
 ---
-- include_role:
-    name: virt/ovirt/auth
-  when: ovirt_auth is not defined
+#- include_role:
+#    name: virt/ovirt/auth
+#  when: ovirt_auth is not defined
 
 - name: "Get ovirt CA"
   include_tasks: setup.yml

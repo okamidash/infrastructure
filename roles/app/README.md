@@ -202,8 +202,6 @@ Unless otherwise provided, the following vars will be randomly generated and pri
 
 You will then be able to access the VM :D
 
-
-
 ### kubernetes/multi-master
 
 This role is used for creating a multi-master kubernetes control plane.
@@ -211,8 +209,6 @@ This role is used for creating a multi-master kubernetes control plane.
 The var `kubernetes_controlplane_endpoint` is required. It must be a valid ipv4 address.
 
 If `kubernetes_master_listen_interface` is not defined, a default of `eth0` will be used.
-
-
 
 States: `present`,`absent`
 
@@ -222,3 +218,48 @@ Defaults used:
 | --------------------------- | ------------------------------------------------------------------ | ------ | --------- |
 | default_storage_mountpoint  | The default storage mountpoint under which NFS shares are accessed | string | /storage  |
 | torrent_server_storage_name | Name of the NFS share that is mounted.                             | string | downloads |
+
+### haproxy_entrypoint
+
+Creates and installs a HAproxy virtual machine along with creating a wireguard endpoint to route into a network.
+
+`haproxy_wireguard_entry_host` is a required variable. It must point to a valid host running VyOS to setup the wireguard entrypoint on. Make sure you have generated a valid wireguard public key and placed it at `~/wireguard.pubkey` on the Vyos host.
+
+This can be done with the following commands:
+
+```bash
+run generate  wireguard default-keypaiy
+run show wireguard keypairs pubkey default > wireguard.pubkey
+```
+
+
+
+`haproxy_wireguard_subnet` is the subnet that haproxy will create for the wireguard clients. It will assume an ip of `.1` and the client `.2`. 
+
+Once the wireguard link is established, the resolver will be changed to the dns server located in `dns_server` var.
+
+
+
+Installs and sets up the following utilities:
+
+- wireguard
+
+- haproxy
+
+- dnf-automatic
+
+- logrotate
+
+- freeipa-client
+
+- fail2ban
+
+Vars used:
+
+| Var name                     | Purpose                                      | Defined where |
+| ---------------------------- | -------------------------------------------- | ------------- |
+| haproxy_wireguard_entry_host | VyOS Server to setup the wireguard client on |               |
+
+States: `present`,`absent`
+
+

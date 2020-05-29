@@ -1,5 +1,5 @@
-dns_server: 10.0.5.2
-
+dns_server: 10.0.0.1
+dns_server_failover: 1.1.1.1
 dhcp_range_start: 50
 dhcp_range_end:   200
 
@@ -8,23 +8,33 @@ networks:
     gateway:    "10.0.0.1/24"
     managed_by: "wan"
     subdomain:  "dhcp"
+  pixie:
+    gateway:    "10.0.1.1/24"
+    managed_by: "pi"
+    subdomain:  "pixie"
   server:
     gateway:    "10.0.2.1/24"
     managed_by: "solar"
     subdomain:  "srv"
     static_mappings:
-      infinity:
-        mac:  "90:E2:BA:3F:27:D0"
-        ip:   "10.0.2.2"
-      blackbird:
+      void-engine:
+        mac:  "00:16:3e:1f:13:c1"
+        ip:   "10.0.2.10"
+      void-centos-hypervisor-01:
         mac:  "90:E2:BA:34:82:AA"
-        ip:   "10.0.2.3"
-      inferno:
-        mac:  "90:E2:BA:3F:27:DA"
-        ip:   "10.0.2.4"
-      phoenix:
+        ip:   "10.0.2.21"
+      void-centos-hypervisor-02:
+        mac:  "90:E2:BA:3F:25:C4"
+        ip:   "10.0.2.22"
+      void-centos-hypervisor-03:
         mac:  "90:E2:BA:3F:25:D6"
-        ip:   "10.0.2.5"
+        ip:   "10.0.2.23"
+      void-centos-hypervisor-04:
+        mac:  "90:E2:BA:3F:27:D0"
+        ip:   "10.0.2.24"
+      void-centos-storage-01:
+        mac:  "90:E2:BA:3F:24:BA"
+        ip:   "10.0.2.25"
   virtual:
     gateway:    "10.0.4.1/24"
     managed_by: "solar"
@@ -35,14 +45,6 @@ networks:
     managed_by: "solar"
     subdomain:  "nix"
     vlan_id:    "5"
-    static_mappings:
-      lunar:
-        ip:     "10.0.5.10"
-      ipa:
-        ip:     "10.0.5.2"
-      nas:
-        mac:    "56:6f:7b:93:00:00"
-        ip:     "10.0.5.4"
   zoned:
     gateway:    "10.0.6.1/24"
     managed_by: "flare"
@@ -58,6 +60,42 @@ networks:
     managed_by: "lunar"
     subdomain:  "wg"
     vlan_id:    "8"
+  management:
+    gateway:    "10.0.10.1/24"
+    managed_by: "solar"
+    subdomain:  "mgmt"
+    vlan_id:    "10"
     static_mappings:
-      torrent:
-        ip:     "10.0.8.10"
+      void-centos-hypervisor-01:
+        mac:  "02:25:90:86:96:f8"
+        ip:   "10.0.10.21"
+      void-centos-hypervisor-02:
+        mac:  "0C:C4:7A:35:DB:76"
+        ip:   "10.0.10.22"
+      void-centos-hypervisor-03:
+        mac:  "0C:C4:7A:1C:C5:75"
+        ip:   "10.0.10.23"
+      void-centos-hypervisor-04:
+        mac:  "0c:c4:7a:5e:54:83"
+        ip:   "10.0.10.24"
+      void-centos-storage-01:
+        mac:  "00:25:90:cd:9d:a2"
+        ip:   "10.0.10.25"
+  ceph:
+    gateway:    "10.0.12.1/24"
+    managed_by: "solar"
+    subdomain:  "ceph"
+    vlan_id:    "12"
+    static_mappings:
+      void-centos-hypervisor-01:
+        mac:  "01:C4:90:86:96:f1"
+        ip:   "10.0.12.21"
+      void-centos-hypervisor-02:
+        mac:  "01:C4:90:86:96:f2"
+        ip:   "10.0.12.22"
+      void-centos-hypervisor-03:
+        mac:  "01:C4:90:86:96:f3"
+        ip:   "10.0.12.23"
+      void-centos-hypervisor-04:
+        mac:  "01:C4:90:86:96:f4"
+        ip:   "10.0.12.24"

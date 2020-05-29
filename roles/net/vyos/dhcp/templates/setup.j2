@@ -18,7 +18,16 @@
 {% set domain_name = network[1].subdomain + "." + domain %}
 {% set prefix = action + " service dhcp-server shared-network-name " + network[0] + " subnet " + subnet %}
 {{ prefix }} default-router {{ address }}
+{% if network[1].dns_server is defined %}
+{{ prefix }} dns-server {{ network[1].dns_server }}
+{% else %}
 {{ prefix }} dns-server {{ address }}
+{% endif %}
+{% if network[1].dns_server_failover is defined %}
+{{ prefix }} dns-server {{ network[1].dns_server_failover }}
+{% else %}
+{{ prefix }} dns-server {{ dns_server_failover }}
+{% endif %}
 {{ prefix }} domain-name {{ domain_name }}
 {{ prefix }} domain-search {{ domain_name }}
 {{ prefix }} lease 86400

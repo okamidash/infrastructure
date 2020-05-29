@@ -1,0 +1,62 @@
+- name: "Deploy kube-masters"
+  hosts: kube-cluster
+  gather_facts: no
+  roles:
+    - role: virt/ovirt/virtual_machine
+      state: present
+    - role: virt/ovirt/virtual_machine
+      state: started
+
+
+- name: "Setup Multi-master control planes"
+  hosts: kube-master
+  become: yes
+  gather_facts: yes
+  roles:
+    - role: app/kubernetes/multi-master
+
+- name: "Create cluster on kubernetes master"
+  hosts: "{{ groups['kube-master'] | first }}"
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: "Create certificate key"
+      command: "kubeadm alpha certs certificate-key"
+      register: kubeadm_cert_key
+
+    - name: "Initialize the cluster"
+      command: |
+        kubeadm init --pod-network-cidr=10.88.0.0/16
+        --control-plane-endpoint {{ kubernetes_controlplane_dns_endpoint | mandatory }}:6445
+        --upload-certs
+        --certificate-key {{ kubeadm_cert_key.stdout }}
+    - name: "Get Join token"
+      command: kubeadm token create --print-join-command
+      register: join_command
+
+    - name: Copy file with owner and permissions
+      fetch:
+        src: /etc/kubernetes/admin.conf
+        dest: /tmp/kubeconf.conf
+        flat: yes
+
+- name: "Join masters to cluster"
+  hosts: "{{ groups['kube-master'] | difference(groups['kube-master'] | first) }}"
+  become: yes
+  vars:
+    join_token_command: "{{ hostvars[groups['kube-master'][0]].join_command.stdout }}"
+    certificate_key: "{{ hostvars[groups['kube-master'][0]].kubeadm_cert_key.stdout }}"
+  tasks:
+    - debug: msg="{{ join_token_command }}"
+    - name: "Initialie the cluster"
+      command: "{{ join_token_command }} --control-plane --certificate-key {{ certificate_key }}"
+
+- name: "Join nodes to kubernetes cluster"
+  hosts: kube-nodes
+  gather_facts: yes
+  become: yes
+  vars:
+    join_token_command: "{{ hostvars[groups['kube-master'][0]].join_command.stdout }}"
+  tasks:
+    - name: "Initialie the cluster"
+      command: "{{ join_token_command }}"

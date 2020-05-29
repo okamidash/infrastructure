@@ -1,0 +1,30 @@
+---
+- name: "Create Digitalocean droplet {{ inventory_hostname }}"
+  digital_ocean_droplet:
+    oauth_token: "{{ digitalocean_apikey }}"
+    name: "{{ inventory_hostname }}"
+    size: "{{ digitalocean_size }}"
+    image: "{{ digitalocean_image }}"
+    ipv6: yes
+    ssh_keys: "{{ digitalocean_sshkey }}"
+    region: "{{ digitalocean_region }}"
+    unique_name: yes
+    tags: "{{ digitalocean_vm_tags | default(omit) }}"
+    state: "{{ state | default('present') }}"
+  register: droplet_info
+  delegate_to: localhost
+
+- name: "Set facts to call the cloudflare module"
+  set_fact:
+    cloudflare_dns_records:
+      - zone: "{{ domain }}"
+        record: "{{ inventory_hostname_short }}"
+        value: "{{ droplet_info.data.ip_address }}"
+      - zone: "{{ domain }}"
+        type: "AAAA"
+        value: "{{ droplet_info.data.ipv6_address }}"
+  when: digitalocean_call_cloudflare
+
+- include_role:
+    name: cloud/cloudflare
+  when:  digitalocean_call_cloudflare

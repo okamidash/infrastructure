@@ -1,0 +1,5 @@
+---
+cloudflare_dns_records:
+  - zone: "oxide.one"
+    record: "test2"
+    value: "82.19.155.57"

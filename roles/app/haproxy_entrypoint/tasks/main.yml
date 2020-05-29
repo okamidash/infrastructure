@@ -1,0 +1,9 @@
+---
+- name: "Setup Keycloak and docker"
+  #include_tasks: setup.yml
+  include_tasks: haproxy.yml
+  when: state|default('present') == 'present'
+
+- name: "Delete Keycloak and docker"
+  include_tasks: destroy.yml
+  when: state|default('present') == 'absent'

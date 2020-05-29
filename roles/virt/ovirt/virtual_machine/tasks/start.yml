@@ -9,6 +9,12 @@
       host_name: "{{ inventory_hostname }}"
       authorized_ssh_keys: "{{ ssh_keys[ovirt_vm_admin_user] }}"
       user_name: "{{ ovirt_vm_admin_user }}"
+      nic_boot_protocol: "{{ ovirt_vm_bootproto | default(omit) }}"
+      nic_ip_address: "{{ desired_ip | default(omit) }}"
+      nic_netmask: "{{ ovirt_vm_netmask | default(omit) }}"
+      nic_gateway: "{{ ovirt_vm_gateway | default(omit) }}"
+      nic_name: "{{ ovirt_vm_ethintf | default(omit) }}"
+      nic_on_boot: "{{ ovirt_vm_enable_nic | default(omit) }}"
       custom_script: |
         {% if ovirt_vm_cloud_init_extras is defined %}
         {{ ovirt_vm_cloud_init_extras }}
