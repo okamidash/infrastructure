@@ -14,6 +14,8 @@ kubernetes_network: "kube"
 # Required var for ovirt.
 ovirt_vm_networks:
   - "{{ kubernetes_network }}"
+cluster_network: "{{ networks[kubernetes_network] }}"
+fqdn_end: "{{ cluster_network.subdomain }}.{{ domain }}"
 # Start ip for the master nodes
 master_nodes_starting_ip: "10.0.7.11"
 ### Cluster related

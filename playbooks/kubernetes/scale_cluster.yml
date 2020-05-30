@@ -3,39 +3,13 @@
   hosts: localhost
   connection: local
   gather_facts: no
-  tasks:
-    - name: "Add temporary host to access group variables"
-      add_host:
-        name: "temp-node"
-        groups: kube-cluster
-
-    - name: "Set facts for worker and master nodes"
-      set_fact:
-        worker_nodes: "{{ hostvars['temp-node'].worker_nodes }}"
-        master_nodes: "{{ hostvars['temp-node'].master_nodes }}"
-        kubernetes_network: "{{ hostvars['temp-node'].kubernetes_network }}"
-        cluster_name: "{{ hostvars['temp-node'].cluster_name }}"
-        cluster_network: "{{ networks[hostvars['temp-node'].kubernetes_network] }}"
-        fqdn_end: "{{ networks[hostvars['temp-node'].kubernetes_network].subdomain }}.{{ domain }}"
-        master_nodes_starting_ip: "{{ hostvars['temp-node'].master_nodes_starting_ip }}"
-        kubernetes_controlplane_endpoint: "{{ hostvars['temp-node'].kubernetes_controlplane_endpoint }}"
-        kubernetes_controlplane_dns_endpoint: "{{ hostvars['temp-node'].kubernetes_controlplane_dns_endpoint }}"
-
-    - name: "Refresh inventory"
-      meta: refresh_inventory
-
-    - name: "Add worker nodes"
-      include_role:
-        name: app/kubernetes/add_hosts
-      vars:
-        role: node
-
-- name: "Deploy kube-masters"
-  hosts: kube-node
-  gather_facts: no
+  vars_files:
+    - "{{ playbook_dir }}/../../group_vars/kube-cluster.yml"
   roles:
-    - role: virt/ovirt/virtual_machine
-      state: present
-    - role: virt/ovirt/virtual_machine
-      state: started
-
+    - virt/ovirt/auth
+  tasks:
+    - name: "Pull ovirt vms"
+      ovirt_vm_info:
+        auth: "{{ ovirt_auth }}"
+        pattern: name="{{ cluster_name }}-knode-*"
+      register: result

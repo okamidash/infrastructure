@@ -34,6 +34,8 @@
     ovirt_vm_cloud_init_extras: |
       runcmd:
         - "{{ join_token_command }}"
+      power_state:
+        mode: "reboot"
   when: role == 'node'
   with_sequence: count="{{ worker_nodes }}"
 
