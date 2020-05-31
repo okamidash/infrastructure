@@ -11,6 +11,7 @@
         name: app/kubernetes/add_hosts
       vars:
         role: master
+        hosts_to_add: "{{ master_nodes }}"
 
     - name: "Pause playbook to confirm that details are setup"
       pause:
@@ -77,24 +78,5 @@
     - name: "Initialie the cluster"
       command: "{{ join_token_command }} --control-plane --certificate-key {{ certificate_key }}"
 
-- name: "Add hosts to cluster"
-  hosts: localhost
-  connection: local
-  gather_facts: no
-  vars:
-    join_token_command: "{{ hostvars[groups['kube-master'][0]].join_command.stdout }}"
-  tasks:
-    - name: "Add worker nodes"
-      include_role:
-        name: app/kubernetes/add_hosts
-      vars:
-        role: node
-
-- name: "Deploy kube-masters"
-  hosts: kube-node
-  gather_facts: no
-  roles:
-    - role: virt/ovirt/virtual_machine
-      state: present
-    - role: virt/ovirt/virtual_machine
-      state: started
+- name: "Import extra playbook"
+  import_playbook: scale_cluster.yml

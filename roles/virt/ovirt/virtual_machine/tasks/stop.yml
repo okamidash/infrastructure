@@ -5,8 +5,3 @@
     name: "{{ inventory_hostname }}"
   delegate_to: "127.0.0.1"
 
-- ovirt_vm:
-    auth: "{{ ovirt_auth }}"
-    state: absent
-    name: "{{ inventory_hostname }}"
-  delegate_to: "127.0.0.1"

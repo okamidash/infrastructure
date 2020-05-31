@@ -1,0 +1,18 @@
+---
+- name: "Get Join token"
+  command: "kubeadm token create --print-join-command"
+  become: yes
+  register: join_command
+  delegate_to: "kube-apiserver"
+- name: "Set worker nodes var to the number needed to add"
+  set_fact:
+    join_token_command: "{{ join_command.stdout }}"
+
+- name: "Add worker nodes"
+  include_role:
+    name: app/kubernetes/add_hosts
+  vars:
+    role: node
+    hosts_to_add: "{{ knode_diff }}"
+    extra_group: "kube-node-added"
+

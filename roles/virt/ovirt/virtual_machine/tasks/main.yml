@@ -12,7 +12,7 @@
   when: state|default('present') == 'started'
 
 - name: "Stop virtual machine on ovirt"
-  include_tasks: setup.yml
+  include_tasks: stop.yml
   when: state|default('present') == 'stopped'
 
 - name: "Remove virtual machine on ovirt"

@@ -1,15 +1,28 @@
 ---
-- name: "Add hosts to cluster"
+- name: "Get current state of the cluster"
   hosts: localhost
   connection: local
   gather_facts: no
   vars_files:
     - "{{ playbook_dir }}/../../group_vars/kube-cluster.yml"
   roles:
-    - virt/ovirt/auth
-  tasks:
-    - name: "Pull ovirt vms"
-      ovirt_vm_info:
-        auth: "{{ ovirt_auth }}"
-        pattern: name="{{ cluster_name }}-knode-*"
-      register: result
+    - app/kubernetes/scale
+
+- name: "Deploy new kube-nodes"
+  hosts: kube-node-added
+  gather_facts: no
+  roles:
+    - role: virt/ovirt/virtual_machine
+      state: present
+
+    - role: virt/ovirt/virtual_machine
+      state: started
+
+- name: "Remove kube nodes"
+  hosts: kube-node-removed
+  gather_facts: no
+  roles:
+    - role: virt/ovirt/virtual_machine
+      state: present
+    - role: virt/ovirt/virtual_machine
+      state: absent

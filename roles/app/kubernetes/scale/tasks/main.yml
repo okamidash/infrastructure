@@ -1,0 +1,49 @@
+---
+- include_role:
+    name: virt/ovirt/auth
+  when: ovirt_auth is not defined
+
+- name: "Pull ovirt {{ worker_node_naming }} Nodes"
+  ovirt_vm_info:
+    auth: "{{ ovirt_auth }}"
+    pattern: name="{{ cluster_name }}-{{ worker_node_naming }}-*"
+  register: knodes
+
+- name: "Add Worker nodes to ansible inventory"
+  add_host:
+    name: "{{ item.name }}"
+    groups:
+      - kube-node
+      - kube-cluster
+  with_list: "{{ knodes.ovirt_vms }}"
+  when: knodes.ovirt_vms is defined
+
+- name: "Set number of worker nodes"
+  set_fact:
+    knode_count: "{{ groups['kube-node'] | count }}"
+  when: groups['kube-node'] is defined
+
+- name: "Set number of worker nodes if null"
+  set_fact:
+    knode_count: 0
+  when: groups['kube-node'] is not defined
+
+- name: "Add host for the api server"
+  add_host:
+    name: "kube-apiserver"
+    hostname: "{{ kubernetes_controlplane_dns_endpoint }}"
+    ansible_host: "{{ kubernetes_controlplane_endpoint }}"
+    groups: kube-cluster
+
+- name: "Find difference between current hosts and desired hosts"
+  set_fact:
+    knode_diff: "{{ (worker_nodes | int) - (knode_count | int)}}"
+
+- debug: msg="{{ (knode_diff | int) > 0 }} {{ knode_count }} {{ knode_diff }}"
+- name: "Scale up the cluster if more nodes are needed"
+  include_tasks: scale-up.yml
+  when: "{{ knode_diff | int > 0 }}"
+
+- name: "Scale down the cluster if more nodes are needed"
+  include_tasks: scale-down.yml
+  when: "{{ knode_diff | int < 0 }}"

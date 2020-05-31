@@ -16,11 +16,19 @@ ovirt_vm_networks:
   - "{{ kubernetes_network }}"
 cluster_network: "{{ networks[kubernetes_network] }}"
 fqdn_end: "{{ cluster_network.subdomain }}.{{ domain }}"
-# Start ip for the master nodes
+# Start ip for the master nodes. Master nodes are created with static ip addresses
 master_nodes_starting_ip: "10.0.7.11"
-### Cluster related
-ovirt_vm_cores: 8
-ovirt_vm_ram: 10240
-ovirt_vm_disk_size: 35
+
+### Master node specs
+master_node_cores: 8
+master_node_ram: 10240
+master_node_disk_size: 35
+master_node_naming: "kube-master"
+
+### Worker node specs
+worker_node_cores: 6
+worker_node_ram: 8192
+worker_node_disk_size: 35
+worker_node_naming: "kube-node"
 kubernetes_controlplane_endpoint: "10.0.7.10"
 kubernetes_controlplane_dns_endpoint: "api.hydra.kube.oxide.one"
