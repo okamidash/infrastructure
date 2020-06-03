@@ -34,12 +34,9 @@
     hostname: "{{ kubernetes_controlplane_dns_endpoint }}"
     ansible_host: "{{ kubernetes_controlplane_endpoint }}"
     groups: kube-cluster
-
 - name: "Find difference between current hosts and desired hosts"
   set_fact:
-    knode_diff: "{{ (worker_nodes | int) - (knode_count | int)}}"
-
-- debug: msg="{{ (knode_diff | int) > 0 }} {{ knode_count }} {{ knode_diff }}"
+    knode_diff: "{{ (worker_node_count | int) - (knode_count | int) }}"
 - name: "Scale up the cluster if more nodes are needed"
   include_tasks: scale-up.yml
   when: "{{ knode_diff | int > 0 }}"

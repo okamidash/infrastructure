@@ -1,34 +1,80 @@
 ---
 # Name of the cluster to create
 cluster_name: "hydra"
-# Number of master nodes to create
-master_nodes: 3
-# Number of worker nodes to create
-worker_nodes: 4
 # Name of template to build master and worker nodes from.
 ovirt_base_template_name: "kubernetes"
 #### Networking related
-# What network to create the cluster on
-kubernetes_network: "kube"
-# Any additional networks to add the cluster to
-# Required var for ovirt.
-ovirt_vm_networks:
-  - "{{ kubernetes_network }}"
-cluster_network: "{{ networks[kubernetes_network] }}"
-fqdn_end: "{{ cluster_network.subdomain }}.{{ domain }}"
-# Start ip for the master nodes. Master nodes are created with static ip addresses
-master_nodes_starting_ip: "10.0.7.11"
+# IP address of the desired controlplane endpoint
+kubernetes_controlplane_endpoint: "10.0.7.10"
+# DNS record of the controlplane endpoint
+kubernetes_controlplane_dns_endpoint: "api.hydra.kube.oxide.one"
+
+master_nodes:
+  count: 3
+  cores: 8
+  ram: 10240
+  disk: 35
+  naming: kube-master
+  network: kube
+  starting_ip:  "10.0.7.11"
+
+worker_nodes:
+  count: 4
+  cores: 6
+  ram: 8192
+  disk: 35
+  naming: kube-node
+  network: kube
+
+special_nodes:
+  count: 2
+  cores: 8
+  ram: 10240
+  disk: 35
+  naming: kube-special
+  network: wireguard
 
 ### Master node specs
+# Number of master nodes to create
+master_node_count: 3
+# Number of cores to give the master nodes
 master_node_cores: 8
+# Ram (in MB) to give the master nodes
 master_node_ram: 10240
+# Size (in GB) to give the master nodes
 master_node_disk_size: 35
+# Naming convention to give the master nodes
 master_node_naming: "kube-master"
+# Network for the master nodes
+master_node_network: "kube"
+# IP address that the master nodes will start on. For 3 nodes this will take the next 3 ip addresses etc...
+master_node_starting_ip: "10.0.7.11"
 
 ### Worker node specs
+# Number of worker nodes to create
+worker_node_count: 4
+# Number of cores to give the worker nodes
 worker_node_cores: 6
+# Ram (in MB) to give the worker nodes
 worker_node_ram: 8192
+# Size (in GB) to give the worker nodes
 worker_node_disk_size: 35
+# Naming convention to give the worker nodes
 worker_node_naming: "kube-node"
-kubernetes_controlplane_endpoint: "10.0.7.10"
-kubernetes_controlplane_dns_endpoint: "api.hydra.kube.oxide.one"
+# Network for the worker nodes
+worker_node_network: "kube"
+
+### Kube special node specs
+# Number of special nodes to create
+special_node_count: 2
+# Number of cores to give the special nodes
+special_node_cores: 8
+# Ram (in MB) to give the special nodes
+special_node_ram: 10240
+# Size (in GB) to give the special nodes
+special_node_disk_size: 30
+# Naming convention to give the special nodes
+special_node_naming: "kube-special"
+# Network for the special nodes
+special_node_network: "wireguard"
+

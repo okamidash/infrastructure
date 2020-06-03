@@ -1,0 +1,35 @@
+---
+- name: "Set facts relevant to the special nodes"
+  set_fact:
+    cluster_network: "{{ networks[special_node_network] }}"
+    fqdn_end: "{{ networks[special_node_network].subdomain }}.{{ domain }}"
+
+# Loop over the worker_node_count var to create a number of worker nodes 
+- name: "Add worker nodes"
+  add_host:
+    name: "{{ cluster_name }}-{{ worker_node_naming }}-{{ lookup('password', '/tmp/kubehost-{{ item }} length=6 chars=ascii_letters') | lower }}.{{ fqdn_end }}"
+    groups:
+      - kube-cluster
+      - kube-node
+      - "{{ extra_group | default(omit) }}"
+    ovirt_vm_cores: "{{ worker_node_cores }}"
+    ovirt_vm_ram: "{{ worker_node_ram }}"
+    ovirt_vm_disk_size: "{{ worker_node_disk_size }}"
+    ovirt_vm_cloud_init_extras: |
+      runcmd:
+        - "{{ join_token_command }}"
+      power_state:
+        mode: "reboot"
+    ovirt_vm_networks:
+      - "{{ special_node_network }}"
+
+  when: role == 'node'
+  with_sequence: count="{{ hosts_to_add }}"
+
+# Remove a temporary file created to define the names of the nodes
+- name: "Remove temporary file"
+  file:
+    path: "/tmp/kubehost-{{ item }}"
+    state: absent
+  when: role == 'node'
+  with_sequence: count="{{ hosts_to_add }}"

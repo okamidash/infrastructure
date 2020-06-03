@@ -1,4 +1,6 @@
 ---
+- debug:
+    msg: "{{ networks }}"
 - name: "Creation of static DHCP mappings for VyOS"
 #  template: src=setup.j2 dest=/tmp/test
 #  delegate_to: localhost

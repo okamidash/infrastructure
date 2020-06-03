@@ -2,11 +2,8 @@
 - name: "Login to vyos machine and generate default wireguard key"
   vyos_command:
     commands:
-        - "configure"
-        - "run generate wireguard default-keypair"
-        - "run show wireguard keypairs pubkey default > wgpubkey"
-        - "save"
-        - "exit"
+        - "generate wireguard keypair"
+        - "show wireguard pubkey > wgpubkey"
 
 - name: "Print Wireguard key"
   vyos_command:

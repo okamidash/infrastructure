@@ -1,0 +1,34 @@
+---
+- name: "Set facts relevant to the master nodes"
+  set_fact:
+    cluster_network: "{{ networks[master_node_network] }}"
+    fqdn_end: "{{ networks[master_node_network].subdomain }}.{{ domain }}"
+# Loop over the var master_node_count to create a number of master nodes
+- name: "Add master nodes"
+  add_host:
+    name: "{{ cluster_name }}-{{ master_node_naming }}-{{ lookup('password', '/tmp/kubehost-{{ item }} length=6 chars=ascii_letters') | lower }}.{{ fqdn_end }}"
+    groups:
+      - kube-cluster
+      - kube-master
+    desired_ip: "{{ master_node_starting_ip | ipmath(item | int) }}"
+    ansible_host: "{{ master_node_starting_ip | ipmath(item | int) }}"
+    ovirt_vm_bootproto: "static"
+    ovirt_vm_netmask: "{{ cluster_network.gateway | ipaddr('netmask') }}"
+    ovirt_vm_gateway: "{{ cluster_network.gateway | ipaddr('address') }}"
+    ovirt_vm_ethintf: "eth0"
+    ovirt_vm_enable_nic: true
+    ovirt_vm_cores: "{{ master_node_cores }}"
+    ovirt_vm_ram: "{{ master_node_ram }}"
+    ovirt_vm_disk_size: "{{ master_node_disk_size }}"
+    ovirt_vm_networks:
+      - "{{ master_node_network }}"
+  when: role == 'master'
+  with_sequence: count="{{ master_node_count }}"
+
+# Remove a temporary file created to define the names of the nodes
+- name: "Remove temporary file"
+  file:
+    path: "/tmp/kubehost-{{ item }}"
+    state: absent
+  when: role == 'master'
+  with_sequence: count="{{ master_node_count }}"

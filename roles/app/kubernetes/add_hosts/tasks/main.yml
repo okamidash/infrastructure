@@ -1,55 +1,15 @@
 ---
-# Loop over the var master_nodes to create a number of master nodes
 - name: "Add master nodes"
-  add_host:
-    name: "{{ cluster_name }}-{{ master_node_naming }}-{{ lookup('password', '/tmp/kubehost-{{ item }} length=6 chars=ascii_letters') | lower }}.{{ fqdn_end }}"
-    groups:
-      - kube-cluster
-      - kube-master
-    desired_ip: "{{ master_nodes_starting_ip | ipmath(item | int) }}"
-    ansible_host: "{{ master_nodes_starting_ip | ipmath(item | int) }}"
-    ovirt_vm_bootproto: "static"
-    ovirt_vm_netmask: "{{ cluster_network.gateway | ipaddr('netmask') }}"
-    ovirt_vm_gateway: "{{ cluster_network.gateway | ipaddr('address') }}"
-    ovirt_vm_ethintf: "eth0"
-    ovirt_vm_enable_nic: true
-    ovirt_vm_cores: "{{ master_node_cores }}"
-    ovirt_vm_ram: "{{ master_node_ram }}"
-    ovirt_vm_disk_size: "{{ master_node_disk_size }}"
+  include_tasks: master_nodes.yml
   when: role == 'master'
-  with_sequence: count="{{ hosts_to_add }}"
 
-# Remove a temporary file created to define the names of the nodes
-- name: "Remove temporary file"
-  file:
-    path: "/tmp/kubehost-{{ item }}"
-    state: absent
-  when: role == 'master'
-  with_sequence: count="{{ master_nodes }}"
-
-# Loop over the worker_nodes var to create a number of worker nodes 
 - name: "Add worker nodes"
-  add_host:
-    name: "{{ cluster_name }}-{{ worker_node_naming }}-{{ lookup('password', '/tmp/kubehost-{{ item }} length=6 chars=ascii_letters') | lower }}.{{ fqdn_end }}"
-    groups:
-      - kube-cluster
-      - kube-node
-      - "{{ extra_group | default(omit) }}"
-    ovirt_vm_cores: "{{ worker_node_cores }}"
-    ovirt_vm_ram: "{{ worker_node_ram }}"
-    ovirt_vm_disk_size: "{{ worker_node_disk_size }}"
-    ovirt_vm_cloud_init_extras: |
-      runcmd:
-        - "{{ join_token_command }}"
-      power_state:
-        mode: "reboot"
+  include_tasks: worker_nodes.yml
   when: role == 'node'
-  with_sequence: count="{{ hosts_to_add }}"
 
-# Remove a temporary file created to define the names of the nodes
-- name: "Remove temporary file"
-  file:
-    path: "/tmp/kubehost-{{ item }}"
-    state: absent
-  when: role == 'node'
-  with_sequence: count="{{ worker_nodes }}"
+- name: "Add special nodes"
+  include_tasks: special_nodes.yml
+  when: role == 'special'
+
+
+

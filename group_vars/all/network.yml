@@ -45,6 +45,10 @@ networks:
     managed_by: "solar"
     subdomain:  "nix"
     vlan_id:    "5"
+    static_mappings:
+      vpn-gateway.nix.oxide.one:
+        ip: "10.0.5.10"
+        mac: "56:6f:1a:91:00:83"
   zoned:
     gateway:    "10.0.6.1/24"
     managed_by: "flare"
@@ -60,6 +64,8 @@ networks:
     managed_by: "lunar"
     subdomain:  "wg"
     vlan_id:    "8"
+    dns_server: 10.0.2.1
+    dns_server_failover: 1.1.1.1
   management:
     gateway:    "10.0.10.1/24"
     managed_by: "solar"

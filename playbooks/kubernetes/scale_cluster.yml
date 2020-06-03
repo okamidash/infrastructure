@@ -22,7 +22,7 @@
   hosts: kube-node-removed
   gather_facts: no
   roles:
-    - role: virt/ovirt/virtual_machine
+    - role: virt/ovirt/auth
       state: present
     - role: virt/ovirt/virtual_machine
       state: absent

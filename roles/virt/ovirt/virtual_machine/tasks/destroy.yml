@@ -1,12 +1,18 @@
 ---
-- ovirt_vm:
+- include_role:
+    name: virt/ovirt/auth
+  when: ovirt_auth is not defined
+
+- name: "Stop the ovirt virtual machine"
+  delegate_to: 127.0.0.1
+  ovirt_vm:
     auth: "{{ ovirt_auth }}"
     state: stopped
     name: "{{ inventory_hostname }}"
-  delegate_to: "127.0.0.1"
 
-- ovirt_vm:
+- name: "Destroy the ovirt virtual machine"
+  delegate_to: 127.0.0.1
+  ovirt_vm:
     auth: "{{ ovirt_auth }}"
     state: absent
     name: "{{ inventory_hostname }}"
-  delegate_to: "127.0.0.1"

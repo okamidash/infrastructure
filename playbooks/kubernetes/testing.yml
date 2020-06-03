@@ -1,0 +1,9 @@
+---
+- name: "Get current state of the cluster"
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - "{{ playbook_dir }}/../../group_vars/kube-cluster.yml"
+  tasks:
+    - debug: msg="{{ master_nodes.cores }}"
