@@ -2,45 +2,82 @@
 - include_role:
     name: virt/ovirt/auth
   when: ovirt_auth is not defined
-
-- name: "Pull ovirt {{ worker_node_naming }} Nodes"
+#### WORKER NODE RELATED
+- name: "Pull ovirt {{ worker_nodes.naming }} Nodes"
   ovirt_vm_info:
     auth: "{{ ovirt_auth }}"
-    pattern: name="{{ cluster_name }}-{{ worker_node_naming }}-*"
-  register: knodes
+    pattern: name="{{ cluster_name }}-{{ worker_nodes.naming }}-*"
+  register: kworkers
 
-- name: "Add Worker nodes to ansible inventory"
+- name: "Add Worker nodes to ansible inventory if any are picked up"
   add_host:
     name: "{{ item.name }}"
     groups:
       - kube-node
+      - kube-worker
       - kube-cluster
-  with_list: "{{ knodes.ovirt_vms }}"
-  when: knodes.ovirt_vms is defined
+  with_list: "{{ kworkers.ovirt_vms }}"
+  when: kworkers.ovirt_vms is defined
 
 - name: "Set number of worker nodes"
   set_fact:
-    knode_count: "{{ groups['kube-node'] | count }}"
-  when: groups['kube-node'] is defined
+    kworker_count: "{{ groups['kube-worker'] | count }}"
+  when: groups['kube-worker'] is defined
 
 - name: "Set number of worker nodes if null"
   set_fact:
-    knode_count: 0
-  when: groups['kube-node'] is not defined
+    kworker_count: 0
+  when: groups['kube-worker'] is not defined
 
+- name: "Find difference between current hosts and desired hosts"
+  set_fact:
+    kworker_diff: "{{ (worker_nodes.count | int) - (kworker_count | int) }}"
+
+#### SPECIAL NODE RELATED
+- name: "Pull ovirt {{ special_nodes.naming }} Nodes"
+  ovirt_vm_info:
+    auth: "{{ ovirt_auth }}"
+    pattern: name="{{ cluster_name }}-{{ special_nodes.naming }}-*"
+  register: kspecial
+
+- name: "Add Worker nodes to ansible inventory if any are picked up"
+  add_host:
+    name: "{{ item.name }}"
+    groups:
+      - kube-node
+      - kube-special
+      - kube-cluster
+  with_list: "{{ kspecial.ovirt_vms }}"
+  when: kspecial.ovirt_vms is defined
+
+- name: "Set number of special nodes"
+  set_fact:
+    kspecial_count: "{{ groups['kube-special'] | count }}"
+  when: groups['kube-special'] is defined
+
+- name: "Set number of special nodes if null"
+  set_fact:
+    kspecial_count: 0
+  when: groups['kube-special'] is not defined
+
+- name: "Find difference between current hosts and desired hosts"
+  set_fact:
+    kspecial_diff: "{{ (special_nodes.count | int) - (kspecial_count | int) }}"
+
+#### RELATED TO ALL
 - name: "Add host for the api server"
   add_host:
     name: "kube-apiserver"
     hostname: "{{ kubernetes_controlplane_dns_endpoint }}"
     ansible_host: "{{ kubernetes_controlplane_endpoint }}"
     groups: kube-cluster
-- name: "Find difference between current hosts and desired hosts"
-  set_fact:
-    knode_diff: "{{ (worker_node_count | int) - (knode_count | int) }}"
+
 - name: "Scale up the cluster if more nodes are needed"
   include_tasks: scale-up.yml
-  when: "{{ knode_diff | int > 0 }}"
+  when: ({{ kworker_diff | int > 0 }}) or
+        ({{ kspecial_diff | int > 0 }})
 
-- name: "Scale down the cluster if more nodes are needed"
+- name: "Scale down the cluster if less nodes are needed"
   include_tasks: scale-down.yml
-  when: "{{ knode_diff | int < 0 }}"
+  when: ({{ kworker_diff | int < 0 }}) or
+        ({{ kspecial_diff | int < 0 }})

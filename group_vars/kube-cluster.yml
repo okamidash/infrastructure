@@ -25,6 +25,7 @@ worker_nodes:
   disk: 35
   naming: kube-node
   network: kube
+  role: "worker"
 
 special_nodes:
   count: 2
@@ -33,48 +34,4 @@ special_nodes:
   disk: 35
   naming: kube-special
   network: wireguard
-
-### Master node specs
-# Number of master nodes to create
-master_node_count: 3
-# Number of cores to give the master nodes
-master_node_cores: 8
-# Ram (in MB) to give the master nodes
-master_node_ram: 10240
-# Size (in GB) to give the master nodes
-master_node_disk_size: 35
-# Naming convention to give the master nodes
-master_node_naming: "kube-master"
-# Network for the master nodes
-master_node_network: "kube"
-# IP address that the master nodes will start on. For 3 nodes this will take the next 3 ip addresses etc...
-master_node_starting_ip: "10.0.7.11"
-
-### Worker node specs
-# Number of worker nodes to create
-worker_node_count: 4
-# Number of cores to give the worker nodes
-worker_node_cores: 6
-# Ram (in MB) to give the worker nodes
-worker_node_ram: 8192
-# Size (in GB) to give the worker nodes
-worker_node_disk_size: 35
-# Naming convention to give the worker nodes
-worker_node_naming: "kube-node"
-# Network for the worker nodes
-worker_node_network: "kube"
-
-### Kube special node specs
-# Number of special nodes to create
-special_node_count: 2
-# Number of cores to give the special nodes
-special_node_cores: 8
-# Ram (in MB) to give the special nodes
-special_node_ram: 10240
-# Size (in GB) to give the special nodes
-special_node_disk_size: 30
-# Naming convention to give the special nodes
-special_node_naming: "kube-special"
-# Network for the special nodes
-special_node_network: "wireguard"
-
+  role: "torrent"

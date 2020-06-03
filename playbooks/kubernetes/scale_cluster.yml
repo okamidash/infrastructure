@@ -18,6 +18,8 @@
     - role: virt/ovirt/virtual_machine
       state: started
 
+    - role: app/kubernetes/label
+
 - name: "Remove kube nodes"
   hosts: kube-node-removed
   gather_facts: no

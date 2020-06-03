@@ -1,29 +1,28 @@
 ---
 - name: "Set facts relevant to the special nodes"
   set_fact:
-    cluster_network: "{{ networks[special_node_network] }}"
-    fqdn_end: "{{ networks[special_node_network].subdomain }}.{{ domain }}"
-
-# Loop over the worker_node_count var to create a number of worker nodes 
-- name: "Add worker nodes"
+    cluster_network: "{{ networks[special_nodes.network] }}"
+    fqdn_end: "{{ networks[special_nodes.network].subdomain }}.{{ domain }}"
+# Loop over the special_nodes.count var to create a number of special nodes 
+- name: "Add special nodes"
   add_host:
-    name: "{{ cluster_name }}-{{ worker_node_naming }}-{{ lookup('password', '/tmp/kubehost-{{ item }} length=6 chars=ascii_letters') | lower }}.{{ fqdn_end }}"
+    name: "{{ cluster_name }}-{{ special_nodes.naming }}-{{ lookup('password', '/tmp/kubehost-{{ item }} length=6 chars=ascii_letters') | lower }}.{{ fqdn_end }}"
     groups:
       - kube-cluster
       - kube-node
+      - kube-special
       - "{{ extra_group | default(omit) }}"
-    ovirt_vm_cores: "{{ worker_node_cores }}"
-    ovirt_vm_ram: "{{ worker_node_ram }}"
-    ovirt_vm_disk_size: "{{ worker_node_disk_size }}"
+    ovirt_vm_cores: "{{ special_nodes.cores }}"
+    ovirt_vm_ram: "{{ special_nodes.ram }}"
+    ovirt_vm_disk_size: "{{ special_nodes.disk }}"
     ovirt_vm_cloud_init_extras: |
       runcmd:
         - "{{ join_token_command }}"
       power_state:
         mode: "reboot"
     ovirt_vm_networks:
-      - "{{ special_node_network }}"
-
-  when: role == 'node'
+      - "{{ special_nodes.network }}"
+    label: "{{ special_nodes.role }}"
   with_sequence: count="{{ hosts_to_add }}"
 
 # Remove a temporary file created to define the names of the nodes
@@ -31,5 +30,4 @@
   file:
     path: "/tmp/kubehost-{{ item }}"
     state: absent
-  when: role == 'node'
   with_sequence: count="{{ hosts_to_add }}"

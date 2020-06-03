@@ -1,0 +1,12 @@
+- name: "Add host for the api server"
+  add_host:
+    name: "kube-apiserver"
+    hostname: "{{ kubernetes_controlplane_dns_endpoint }}"
+    ansible_host: "{{ kubernetes_controlplane_endpoint }}"
+    groups: kube-cluster
+
+- name: "Get Join token from api server"
+  command: "kubectl --kubeconfig /etc/kubernetes/admin.conf label node {{ inventory_hostname }} kubernetes.io/role={{ label }}"
+  become: yes
+  delegate_to: "kube-apiserver"
+

@@ -1,7 +1,8 @@
 ---
 - name: "Create list of nodes to remove"
   set_fact:
-    removed_nodes: "{{ groups['kube-node'][:(knode_diff | int | abs)] }}"
+    removed_worker_nodes: "{{ groups['kube-worker'][:(kworker_diff | int | abs)] }}"
+    removed_special_nodes: "{{ groups['kube-special'][:(kspecial_diff | int | abs)] }}"
 
 - name: "Add Worker nodes to ansible inventory"
   add_host:
@@ -10,18 +11,37 @@
       - kube-node
       - kube-cluster
       - kube-node-removed
-  with_list: "{{ removed_nodes }}"
+  with_list: "{{ removed_worker_nodes }}"
 
-- debug: msg="{{ removed_nodes }}"
+- name: "Add Worker nodes to ansible inventory"
+  add_host:
+    name: "{{ item }}"
+    groups:
+      - kube-special
+      - kube-cluster
+      - kube-node-removed
+  with_list: "{{ removed_special_nodes }}"
 
-- name: "Get Join token"
+- name: "Drain selected worker nodes"
   command: "kubectl --kubeconfig /etc/kubernetes/admin.conf drain {{ item | lower }} --ignore-daemonsets --delete-local-data"
-  with_list: "{{ removed_nodes }}"
+  with_list: "{{ removed_worker_nodes }}"
   delegate_to: "kube-apiserver"
   become: yes
 
-- name: "Get Join token"
+- name: "Drain selected Special nodes"
+  command: "kubectl --kubeconfig /etc/kubernetes/admin.conf drain {{ item | lower }} --ignore-daemonsets --delete-local-data"
+  with_list: "{{ removed_special_nodes }}"
+  delegate_to: "kube-apiserver"
+  become: yes
+
+- name: "Remove selected worker nodes"
   command: "kubectl --kubeconfig /etc/kubernetes/admin.conf delete node {{ item | lower }}"
-  with_list: "{{ removed_nodes }}"
+  with_list: "{{ removed_worker_nodes }}"
+  delegate_to: "kube-apiserver"
+  become: yes
+
+- name: "Remove selected special nodes"
+  command: "kubectl --kubeconfig /etc/kubernetes/admin.conf delete node {{ item | lower }}"
+  with_list: "{{ removed_special_nodes }}"
   delegate_to: "kube-apiserver"
   become: yes

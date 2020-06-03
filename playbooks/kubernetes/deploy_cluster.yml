@@ -11,7 +11,7 @@
         name: app/kubernetes/add_hosts
       vars:
         role: master
-        hosts_to_add: "{{ master_node_count }}"
+        hosts_to_add: "{{ master_nodes.count }}"
 
     - name: "Pause playbook to confirm that details are setup"
       pause:
@@ -21,21 +21,31 @@
           ===============================================================================================
             Please make sure that you had a dns records setup for the follwing
             {{ kubernetes_controlplane_dns_endpoint }} pointing to {{ kubernetes_controlplane_endpoint }}
-            There will be {{ worker_node_count }} initial worker nodes and {{ master_node_count }} master nodes.
+            There will be {{ worker_nodes.count }} initial worker nodes and {{ master_nodes.count }} master nodes.
           ===============================================================================================
             The masters will be named as such:
-              {{ cluster_name }}-{{ master_node_naming }}-RANDOMSTRING
+              {{ cluster_name }}-{{ master_nodes.naming }}-RANDOMSTRING
             They will be created to the following specs
-              CPUS:      {{ master_node_cores }}
-              RAM:       {{ master_node_ram }}MB
-              DISK SIZE: {{ master_node_disk_size }}GB
+              CPUS:      {{ master_nodes.cores }}
+              RAM:       {{ master_nodes.ram }}MB
+              DISK SIZE: {{ master_nodes.disk }}GB
+              NETWORK:   {{ master_nodes.network }}
           ===============================================================================================
             The workers will be named as such:
-              {{ cluster_name }}-{{ worker_node_naming }}-RANDOMSTRING
+              {{ cluster_name }}-{{ worker_nodes.naming }}-RANDOMSTRING
             They will be created to the following specs
-              CPUS:      {{ worker_node_cores }}
-              RAM:       {{ worker_node_ram }}MB
-              DISK SIZE: {{ worker_node_disk_size }}GB
+              CPUS:      {{ worker_nodes.cores }}
+              RAM:       {{ worker_nodes.ram }}MB
+              DISK SIZE: {{ worker_nodes.disk }}GB
+              NETWORK:   {{ worker_nodes.network }}
+          ===============================================================================================
+            The special nodes will be named as such:
+              {{ cluster_name }}-{{ special_nodes.naming }}-RANDOMSTRING
+            They will be created to the following specs
+              CPUS:      {{ special_nodes.cores }}
+              RAM:       {{ special_nodes.ram }}MB
+              DISK SIZE: {{ special_nodes.disk }}GB
+              NETWORK:   {{ special_nodes.network }}
           ===============================================================================================
             Press enter to continue
           ===============================================================================================
