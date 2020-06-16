@@ -51,7 +51,7 @@ networks:
         mac: "56:6f:1a:91:00:83"
   zoned:
     gateway:    "10.0.6.1/24"
-    managed_by: "flare"
+    managed_by: "solar"
     subdomain:  "zone"
     vlan_id:    "6"
   kube:

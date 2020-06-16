@@ -5,8 +5,8 @@
   roles:
     - role: common/acme
     - role: app/freeipa/letsencrypt
-    - role: app/freeipa/dns_zones
-    - role: app/freeipa/dynamic_dns
+#    - role: app/freeipa/dns_zones
+#    - role: app/freeipa/dynamic_dns
 - name: "Deploy Dynamic DNS onto solar"
   hosts: solar
   gather_facts: no

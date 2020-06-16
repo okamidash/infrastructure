@@ -1,0 +1,44 @@
+---
+- name: "Deploy Virtual Machine"
+  hosts: lunar
+  gather_facts: no
+  connection: local
+  roles:
+    - role: virt/ovirt/auth
+  tasks:
+    - ovirt_nic_info:
+          auth: "{{ ovirt_auth }}"
+          vm: "{{ inventory_hostname }}"
+          name: "*"
+      register: result
+    - debug: 
+        msg: "{{ result }}"
+
+    - set_fact:
+        vm_network_interfaces: |
+          {# Handle ovirt_nics not being defined #}
+          {% if result.ovirt_nics is defined %}
+          {# iterate over the nics #}
+          {% for nic in result.ovirt_nics %}
+          {# Handle reported_devices not being defined #}
+          {% if nic.reported_devices is defined %}
+          {% for device in nic.reported_devices %}
+          {# Handle ips not being defined #}
+          {% if device.ips is defined %}
+          {% for ip in device.ips %}
+          {% if ip.address is defined %}
+          {% if (ip.address | ipv4) %}
+          - address: {{ ip.address }}
+            intf_name: {{ device.name }}
+            network_name: {{ nic.name }}
+          {% endif %}
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+    - set_fact: vm_network_interfaces="{{ vm_network_interfaces | from_yaml }}"
+    - debug: msg="{{ item }}"
+      with_list: "{{ vm_network_interfaces }}"

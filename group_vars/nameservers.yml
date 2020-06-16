@@ -1,0 +1,11 @@
+ovirt_base_template_name: "base_image"
+ovirt_vm_bootproto: "static"
+ovirt_vm_netmask: "255.255.255.0"
+ovirt_vm_gateway: "10.0.5.1"
+ovirt_vm_ethintf: "eth0"
+ovirt_vm_enable_nic: true
+ovirt_vm_cores: "6"
+ovirt_vm_ram: "6144"
+ovirt_vm_disk_size: "15"
+ovirt_vm_networks:
+  - "utility"

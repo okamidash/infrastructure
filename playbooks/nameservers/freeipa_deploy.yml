@@ -1,0 +1,10 @@
+---
+- name: "Deploy ovirt Virtual Machine"
+  hosts: nameservers
+  gather_facts: no
+  roles:
+    - role: virt/ovirt/auth
+    - role: virt/ovirt/virtual_machine
+      state: present
+    - role: virt/ovirt/virtual_machine
+      state: started

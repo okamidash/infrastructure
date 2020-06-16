@@ -28,7 +28,7 @@ worker_nodes:
   role: "worker"
 
 special_nodes:
-  count: 2
+  count: 1
   cores: 8
   ram: 10240
   disk: 35

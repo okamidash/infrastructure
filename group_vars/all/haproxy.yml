@@ -1,12 +1,12 @@
-acme_domains:
-  - "oxide.one"
-  - "*.oxide.one"
-  - "*.vm.oxide.one"
-  - "*.srv.oxide.one"
-  - "*.doubledash.org"
-  - "doubledash.org"
-  - "okami.dev"
-  - "*.okami.dev"
+#acme_domains:
+#  - "oxide.one"
+#  - "*.oxide.one"
+#  - "*.vm.oxide.one"
+#  - "*.srv.oxide.one"
+#  - "*.doubledash.org"
+#  - "doubledash.org"
+#  - "okami.dev"
+#  - "*.okami.dev"
 
 haproxy_hosts:
   - name: "s3.oxide.one"
